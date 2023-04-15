@@ -3,7 +3,7 @@ import AddButton from "../form/AddButton";
 const EditPlatformForm = () => {
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center min-h-screen">
       <h1 className="text-4xl text-gray-900 text-center my-10">Edit Platform Name</h1>
       <form className="my-4 w-1/2">
         <div className="mb-6">
