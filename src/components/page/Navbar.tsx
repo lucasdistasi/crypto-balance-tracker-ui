@@ -1,6 +1,12 @@
 import {NavLink} from "react-router-dom";
+import {useEffect} from "react";
+import {initFlowbite} from "flowbite";
 
 const Navbar = () => {
+
+  useEffect(() => {
+  initFlowbite();
+  }, []);
 
   return (
     <nav className="border-gray-200 bg-white dark:bg-gray-900">
