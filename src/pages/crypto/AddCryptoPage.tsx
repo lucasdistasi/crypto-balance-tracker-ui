@@ -1,6 +1,7 @@
 import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
 import AddCryptoForm from "../../components/crypto/AddCryptoForm";
+import withScrollToTop from "../../hoc/withScrollToTop";
 
 const AddCryptoPage = () => {
 
@@ -13,4 +14,4 @@ const AddCryptoPage = () => {
   );
 }
 
-export default AddCryptoPage
+export default withScrollToTop(AddCryptoPage)

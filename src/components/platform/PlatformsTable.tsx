@@ -6,7 +6,7 @@ const PlatformsTable = () => {
   const arr: Array<String> = ["a", "b", "c", "d"]
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-10 w-11/12  min-h-screen">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-10 w-11/12">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
@@ -27,7 +27,7 @@ const PlatformsTable = () => {
                   "Apple MacBook Pro 17\"".toUpperCase()
                 }
               </th>
-              <td className="px-6 py-4 text-center">
+              <td className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                 <EditButton editLink={`/platform/${platform}`}/>
                 <DeleteButton deleteLink={`/platform/${platform}`}/>
               </td>

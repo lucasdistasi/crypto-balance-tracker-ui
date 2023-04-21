@@ -1,5 +1,6 @@
 import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
+import withScrollToTop from "../../hoc/withScrollToTop";
 
 const DashboardsPage = () => {
 
@@ -30,4 +31,4 @@ const DashboardsPage = () => {
   );
 }
 
-export default DashboardsPage
+export default withScrollToTop(DashboardsPage)

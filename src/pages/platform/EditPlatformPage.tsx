@@ -1,6 +1,7 @@
 import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
 import EditPlatformForm from "../../components/platform/EditPlatformForm";
+import withScrollToTop from "../../hoc/withScrollToTop";
 
 const EditPlatformPage = () => {
 
@@ -13,4 +14,4 @@ const EditPlatformPage = () => {
   );
 }
 
-export default EditPlatformPage
+export default withScrollToTop(EditPlatformPage)
