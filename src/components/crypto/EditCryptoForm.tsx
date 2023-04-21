@@ -1,4 +1,5 @@
 import AddButton from "../form/AddButton";
+import PlatformDropdown from "./PlatformDropdown";
 
 const EditCryptoForm = () => {
 
@@ -23,18 +24,7 @@ const EditCryptoForm = () => {
           <input type="text" id="base-input"
                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
         </div>
-        <div className="mb-6">
-          <label htmlFor="platforms" className="block mb-2 text-sm font-medium text-gray-900">
-            Platform
-          </label>
-          <select id="platforms"
-                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-            <option>Binance</option>
-            <option>Trezor</option>
-            <option>Ledger</option>
-            <option>Safepal</option>
-          </select>
-        </div>
+        <PlatformDropdown/>
         <AddButton text="Add Crypto"/>
       </form>
     </div>
