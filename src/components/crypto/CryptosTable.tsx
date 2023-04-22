@@ -35,7 +35,7 @@ const CryptosTable = () => {
       }
 
       {
-        error && <ErrorAlert message="Error retrieving platforms"/>
+        error && <ErrorAlert message="Error retrieving cryptos"/>
       }
 
       {

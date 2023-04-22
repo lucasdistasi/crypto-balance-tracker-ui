@@ -1,6 +1,7 @@
-import AddButton from "../form/AddButton";
+import ActionButton from "../form/ActionButton";
+import Platform from "../../model/Platform";
 
-const EditPlatformForm = () => {
+const EditPlatformForm = (platform: Platform) => {
 
   return (
     <div className="flex flex-col items-center min-h-screen">
@@ -10,10 +11,12 @@ const EditPlatformForm = () => {
           <label htmlFor="base-input" className="block mb-2 text-sm font-medium text-gray-900">
             Platform Name
           </label>
-          <input type="text" id="base-input"
+          <input type="text"
+                 id="base-input"
+                 defaultValue={platform.name}
                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
         </div>
-        <AddButton text="Add Platform"/>
+        <ActionButton text="Edit Platform"/>
       </form>
     </div>
   );

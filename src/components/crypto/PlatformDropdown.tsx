@@ -1,7 +1,7 @@
 import {usePlatforms} from "../../hooks/usePlatforms";
 import ErrorAlert from "../page/ErrorAlert";
 
-const PlatformDropdown = () => {
+const PlatformDropdown = (props: { platform?: string; }) => {
 
   const {platforms, error, loading} = usePlatforms();
 
@@ -19,6 +19,7 @@ const PlatformDropdown = () => {
             Platform
           </label>
           <select id="platforms"
+                  defaultValue={props?.platform}
                   className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             <option>
               Select Platform

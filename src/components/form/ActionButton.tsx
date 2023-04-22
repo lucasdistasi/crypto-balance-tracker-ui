@@ -1,4 +1,4 @@
-const AddButton = ({...props}) => {
+const ActionButton = ({...props}) => {
 
   return (
     <button type="submit"
@@ -10,4 +10,4 @@ const AddButton = ({...props}) => {
   );
 }
 
-export default AddButton
+export default ActionButton

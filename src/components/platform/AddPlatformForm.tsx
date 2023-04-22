@@ -1,4 +1,4 @@
-import AddButton from "../form/AddButton";
+import ActionButton from "../form/ActionButton";
 
 const AddPlatformForm = () => {
 
@@ -15,7 +15,7 @@ const AddPlatformForm = () => {
           <input type="text" id="base-input"
                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
         </div>
-        <AddButton text="Add Platform"/>
+        <ActionButton text="Add Platform"/>
       </form>
     </div>
   );
