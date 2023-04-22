@@ -2,11 +2,10 @@ import {Link, useRouteError} from "react-router-dom";
 
 const NotFound = () => {
 
-  const {status}: any = useRouteError();
+  //const {status}: any = useRouteError();
 
   return (
-    <body className="bg-gray-100 flex flex-col items-center justify-center h-screen">
-    <div className="text-center">
+    <div className="text-center bg-gray-100 flex flex-col items-center justify-center h-screen">
       <img src="https://via.placeholder.com/300x300" alt="Error 404" className="mx-auto"/>
       <h1 className="text-2xl font-bold mt-6">
         ¡Oops! Page was not found
@@ -18,7 +17,6 @@ const NotFound = () => {
         Take me back home
       </Link>
     </div>
-    </body>
   );
 }
 

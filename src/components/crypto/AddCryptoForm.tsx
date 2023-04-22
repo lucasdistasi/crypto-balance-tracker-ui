@@ -1,4 +1,4 @@
-import AddButton from "../form/AddButton";
+import ActionButton from "../form/ActionButton";
 import PlatformDropdown from "./PlatformDropdown";
 
 const AddCryptoForm = () => {
@@ -28,7 +28,7 @@ const AddCryptoForm = () => {
                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
         </div>
         <PlatformDropdown/>
-        <AddButton text="Add Crypto"/>
+        <ActionButton text="Add Crypto"/>
       </form>
     </div>
   );
