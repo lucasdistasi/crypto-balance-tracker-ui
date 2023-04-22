@@ -4,7 +4,7 @@ import EditCryptoForm from "../../components/crypto/EditCryptoForm";
 import withScrollToTop from "../../hoc/withScrollToTop";
 import React, {Fragment, useEffect, useState} from "react";
 import Crypto from "../../model/Crypto";
-import {getCryptoInfoURL} from "../../constants/Constants";
+import {getCryptosURL} from "../../constants/Constants";
 import NotFound from "../error/NotFound";
 
 const EditCryptoPage = () => {
@@ -20,7 +20,7 @@ const EditCryptoPage = () => {
 
   useEffect(() => {
     const cryptoId: string = window.location.pathname.split('/').pop() ?? "";
-    const cryptoInfoURL = getCryptoInfoURL(cryptoId);
+    const cryptoInfoURL = getCryptosURL(cryptoId);
 
     fetch(cryptoInfoURL)
       .then(response => response.json())

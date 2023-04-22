@@ -4,7 +4,7 @@ import {Fragment, useEffect, useState} from "react";
 import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
 import Crypto from "../../model/Crypto";
-import {CRYPTOS_ENDPOINT} from "../../constants/Constants";
+import {CRYPTOS_ENDPOINT, getCryptosURL} from "../../constants/Constants";
 
 const CryptosTable = () => {
 
@@ -16,7 +16,10 @@ const CryptosTable = () => {
     fetch(CRYPTOS_ENDPOINT)
       .then(response => {
         setLoading(true)
-        return response.json();
+
+        if (response.status === 200) {
+          return response.json();
+        }
       })
       .then(data => {
         setCryptos(data);
@@ -27,6 +30,20 @@ const CryptosTable = () => {
         setError(true);
       })
   }, []);
+
+  function deleteCrypto(cryptoId: string) {
+    const cryptosUrl = getCryptosURL(cryptoId);
+
+    fetch(cryptosUrl, {
+      method: "DELETE"
+    })
+      .then(response => {
+        if (response.status === 204) {
+          const updatedCryptos = cryptos.filter(crypto => crypto.coinId !== cryptoId);
+          setCryptos(updatedCryptos);
+        }
+      });
+  }
 
   return (
     <Fragment>
@@ -44,16 +61,20 @@ const CryptosTable = () => {
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-4 text-center">
+              <th scope="col"
+                  className="px-6 py-4 text-center">
                 Coin
               </th>
-              <th scope="col" className="px-6 py-4 text-center">
+              <th scope="col"
+                  className="px-6 py-4 text-center">
                 Quantity
               </th>
-              <th scope="col" className="px-6 py-4 text-center">
+              <th scope="col"
+                  className="px-6 py-4 text-center">
                 Platform
               </th>
-              <th scope="col" className="px-6 py-4 text-center">
+              <th scope="col"
+                  className="px-6 py-4 text-center">
                 Action
               </th>
             </tr>
@@ -64,7 +85,8 @@ const CryptosTable = () => {
                 const {coinId, coinName, platform, quantity} = crypto;
 
                 return (
-                  <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700" key={coinId}>
+                  <tr key={coinId}
+                      className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                     <th scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                       {
@@ -78,13 +100,15 @@ const CryptosTable = () => {
                     </td>
                     <td className="px-6 py-4 text-center">
                       {
-                        platform.toUpperCase()
+                        platform
                       }
                     </td>
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                       <EditButton editLink={`/crypto/${coinId}`}/>
-                      <DeleteButton deleteLink={`/crypto/${coinId}`}/>
+                      <DeleteButton deleteFunction={() => deleteCrypto(coinId)}
+                                    deleteId={coinId}
+                                    deleteMessage={`Are you sure you want to delete ${coinName.toUpperCase()} in ${platform}?`}/>
                     </td>
                   </tr>
                 );

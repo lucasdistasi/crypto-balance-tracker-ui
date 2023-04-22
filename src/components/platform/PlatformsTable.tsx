@@ -7,7 +7,7 @@ import {usePlatforms} from "../../hooks/usePlatforms";
 
 const PlatformsTable = () => {
 
-  const {platforms, error, loading} = usePlatforms();
+  const {platforms, error, loading, deletePlatform} = usePlatforms();
 
   return (
     <Fragment>
@@ -43,13 +43,15 @@ const PlatformsTable = () => {
                     <th scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                       {
-                        platformName.toUpperCase()
+                        platformName
                       }
                     </th>
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                       <EditButton editLink={`/platform/${platformName}`}/>
-                      <DeleteButton deleteLink={`/platform/${platformName}`}/>
+                      <DeleteButton deleteFunction={() => deletePlatform(platformName)}
+                                    deleteId={platformName}
+                                    deleteMessage={`Are you sure you want to delete ${platformName}? All cryptos in ${platformName} will be deleted too!`}/>
                     </td>
                   </tr>
                 );

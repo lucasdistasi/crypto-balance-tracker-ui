@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PLATFORMS_ENDPOINT} from "../constants/Constants";
+import {getPlatformsURL, PLATFORMS_ENDPOINT} from "../constants/Constants";
 import Platform from "../model/Platform";
 
 export function usePlatforms() {
@@ -7,6 +7,20 @@ export function usePlatforms() {
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  function deletePlatform(platformId: string) {
+    const platformsURL = getPlatformsURL(platformId);
+
+    fetch(platformsURL, {
+      method: "DELETE"
+    })
+      .then(response => {
+        if (response.status === 204) {
+          const updatedPlatforms = platforms.filter(platform => platform.name !== platformId);
+          setPlatforms(updatedPlatforms);
+        }
+      });
+  }
 
   useEffect(() => {
     fetch(PLATFORMS_ENDPOINT, {
@@ -29,5 +43,5 @@ export function usePlatforms() {
       });
   }, []);
 
-  return { platforms, error, loading };
+  return { platforms, error, loading, deletePlatform };
 }
