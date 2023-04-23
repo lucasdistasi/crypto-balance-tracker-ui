@@ -4,7 +4,7 @@ import EditPlatformForm from "../../components/platform/EditPlatformForm";
 import withScrollToTop from "../../hoc/withScrollToTop";
 import React, {Fragment, useEffect, useState} from "react";
 import Platform from "../../model/Platform";
-import {getPlatformInfoURL} from "../../constants/Constants";
+import {getPlatformsURL} from "../../constants/Constants";
 import NotFound from "../error/NotFound";
 
 const EditPlatformPage = () => {
@@ -17,7 +17,7 @@ const EditPlatformPage = () => {
 
   useEffect(() => {
     const platformId: string = window.location.pathname.split('/').pop() ?? "";
-    const platformInfoURL = getPlatformInfoURL(platformId);
+    const platformInfoURL = getPlatformsURL(platformId);
 
     fetch(platformInfoURL)
       .then(response => response.json())
