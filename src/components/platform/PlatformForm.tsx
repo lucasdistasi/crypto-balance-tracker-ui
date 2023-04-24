@@ -2,20 +2,46 @@ import ActionButton from "../form/ActionButton";
 import {usePlatforms} from "../../hooks/usePlatforms";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {FORM_ACTION} from "../../model/FormAction";
+import React, {useEffect, useState} from "react";
+import {getPlatformsURL} from "../../constants/Constants";
+import NotFound from "../../pages/error/NotFound";
 
-const PlatformForm = ({action, currentValue}: { action: FORM_ACTION, currentValue?: string }) => {
+const PlatformForm = ({action}: { action: FORM_ACTION }) => {
 
   const {
     errors,
     platformNameError,
     platformName,
+    setPlatformName,
     handleInputChange,
     addPlatform,
     updatePlatform,
   } = usePlatforms();
+  const [notFound, setNotFound] = useState(false);
 
   const errorMessage: string = `Error ${action === FORM_ACTION.ADD ? 'adding' : 'updating'} platform`;
   const title: string = action === FORM_ACTION.ADD ? "Add new Platform" : "Update Platform";
+
+  if (action === FORM_ACTION.UPDATE) {
+    useEffect(() => {
+      const platformId: string = window.location.pathname.split('/').pop() ?? "";
+      const platformInfoURL = getPlatformsURL(platformId.toUpperCase());
+
+      fetch(platformInfoURL)
+        .then(response => response.json())
+        .then(response => {
+          if (response.statusCode === 404) {
+            setNotFound(true);
+          }
+
+          setPlatformName(response.name);
+        })
+    }, []);
+
+    if (notFound) {
+      return <NotFound/>
+    }
+  }
 
   return (
     <div className="flex flex-col items-center min-h-screen">
@@ -42,7 +68,7 @@ const PlatformForm = ({action, currentValue}: { action: FORM_ACTION, currentValu
           <input type="text"
                  id="base-input"
                  autoComplete="off"
-                 value={platformName ? platformName : currentValue}
+                 value={platformName}
                  onChange={event => handleInputChange(event)}
                  placeholder="Binance"
                  minLength={1}
