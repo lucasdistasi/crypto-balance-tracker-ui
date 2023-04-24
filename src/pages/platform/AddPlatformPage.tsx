@@ -1,6 +1,6 @@
 import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
-import AddPlatformForm from "../../components/platform/AddPlatformForm";
+import AddPlatform from "../../components/platform/AddPlatform";
 import withScrollToTop from "../../hoc/withScrollToTop";
 
 const AddPlatformPage = () => {
@@ -8,7 +8,7 @@ const AddPlatformPage = () => {
   return (
     <>
       <Navbar/>
-      <AddPlatformForm/>
+      <AddPlatform/>
       <Footer/>
     </>
   );

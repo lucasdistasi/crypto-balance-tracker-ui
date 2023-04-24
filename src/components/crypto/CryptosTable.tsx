@@ -5,6 +5,7 @@ import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
 import Crypto from "../../model/Crypto";
 import {CRYPTOS_ENDPOINT, getCryptosURL} from "../../constants/Constants";
+import {HTTP_METHOD} from "../../model/HttpMethod";
 
 const CryptosTable = () => {
 
@@ -35,7 +36,7 @@ const CryptosTable = () => {
     const cryptosUrl = getCryptosURL(cryptoId);
 
     fetch(cryptosUrl, {
-      method: "DELETE"
+      method: HTTP_METHOD.DELETE
     })
       .then(response => {
         if (response.status === 204) {
