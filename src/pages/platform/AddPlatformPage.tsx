@@ -1,14 +1,15 @@
 import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
-import AddPlatform from "../../components/platform/AddPlatform";
 import withScrollToTop from "../../hoc/withScrollToTop";
+import {FORM_ACTION} from "../../model/FormAction";
+import PlatformForm from "../../components/platform/PlatformForm";
 
 const AddPlatformPage = () => {
 
   return (
     <>
       <Navbar/>
-      <AddPlatform/>
+      <PlatformForm action={FORM_ACTION.ADD}/>
       <Footer/>
     </>
   );
