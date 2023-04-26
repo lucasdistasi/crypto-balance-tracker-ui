@@ -1,15 +1,16 @@
 import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
-import EditPlatform from "../../components/platform/EditPlatform";
 import withScrollToTop from "../../hoc/withScrollToTop";
 import React, {Fragment} from "react";
+import {FORM_ACTION} from "../../model/FormAction";
+import PlatformForm from "../../components/platform/PlatformForm";
 
 const EditPlatformPage = () => {
 
   return (
     <Fragment>
       <Navbar/>
-      <EditPlatform />
+      <PlatformForm action={FORM_ACTION.UPDATE}/>
       <Footer/>
     </Fragment>
   );

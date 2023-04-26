@@ -5,6 +5,8 @@ import {HTTP_METHOD} from "../model/HttpMethod";
 import ErrorResponse from "../model/ErrorResponse";
 import ApiErrorResponse from "../model/ApiErrorResponse";
 import {NavigateFunction, useNavigate} from "react-router-dom";
+import {HEADERS} from "../model/Headers";
+import {HEADERS_VALUE} from "../model/HeadersValue";
 
 export function usePlatforms() {
 
@@ -20,7 +22,7 @@ export function usePlatforms() {
     fetch(PLATFORMS_ENDPOINT, {
       method: HTTP_METHOD.GET,
       headers: {
-        "Content-Type": "application/json"
+        [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
       }
     })
       .then(response => {
@@ -72,7 +74,7 @@ export function usePlatforms() {
       method: HTTP_METHOD.POST,
       body: body,
       headers: {
-        "Content-Type": "application/json"
+        [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
       },
     }).then(response => {
       if (response.ok) {
@@ -109,7 +111,7 @@ export function usePlatforms() {
       method: HTTP_METHOD.PUT,
       body: body,
       headers: {
-        "Content-Type": "application/json"
+        [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
       },
     }).then(response => {
       if (response.ok) {

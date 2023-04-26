@@ -1,26 +1,28 @@
 import {usePlatforms} from "../../hooks/usePlatforms";
 import ErrorAlert from "../page/ErrorAlert";
+import {Fragment} from "react";
 
-const PlatformDropdown = (props: { platform?: string; }) => {
+const PlatformDropdown = ({...props}) => {
 
   const {platforms, error, loading} = usePlatforms();
 
   return (
-    <div className="mb-6">
+    <Fragment>
       {
         error && <ErrorAlert message="Error retrieving platforms"/>
       }
 
       {
         platforms && !error && !loading &&
-        <>
+        <Fragment>
           <label htmlFor="platforms"
                  className="block mb-2 text-sm font-medium text-gray-900">
             Platform
           </label>
           <select id="platforms"
                   defaultValue={props?.platform}
-                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                  onChange={props.onChangeFunction}
+                  className={props.classes}>
             <option>
               Select Platform
             </option>
@@ -39,9 +41,9 @@ const PlatformDropdown = (props: { platform?: string; }) => {
               })
             }
           </select>
-        </>
+        </Fragment>
       }
-    </div>
+    </Fragment>
   );
 }
 
