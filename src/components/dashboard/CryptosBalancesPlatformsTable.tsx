@@ -9,6 +9,7 @@ const CryptosBalancesPlatformsTable = () => {
     coinInfoResponse: [],
   });
 
+  // TODO - custom hooke to avoid duplicate code
   useEffect(() => {
     fetch(DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT, {
       method: HTTP_METHOD.GET
@@ -24,7 +25,7 @@ const CryptosBalancesPlatformsTable = () => {
 
   return (
     response?.coinInfoResponse?.length > 0 ?
-      <div className="relative overflow-x-auto sm:rounded-lg mt-14 w-11/12 mb-8">
+      <div className="relative overflow-x-auto sm:rounded-lg w-11/12 mb-8">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
