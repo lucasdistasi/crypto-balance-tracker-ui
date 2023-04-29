@@ -8,8 +8,8 @@ import Crypto from "../../model/Crypto";
 import ErrorAlert from "../page/ErrorAlert";
 import {HTTP_METHOD} from "../../model/HttpMethod";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import ApiErrorResponse from "../../model/ApiErrorResponse";
-import ErrorResponse from "../../model/ErrorResponse";
+import ApiErrorResponse from "../../response/ApiErrorResponse";
+import ErrorResponse from "../../response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {HEADERS_VALUE} from "../../model/HeadersValue";
 import {HEADERS} from "../../model/Headers";
@@ -33,8 +33,8 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
     quantity: 0n
   });
 
-  if (action == FORM_ACTION.UPDATE) {
-    useEffect(() => {
+  useEffect(() => {
+    if (action == FORM_ACTION.UPDATE) {
       const cryptoId: string = window.location.pathname.split('/').pop() ?? "";
       const cryptoInfoURL = getCryptosURL(cryptoId);
 
@@ -49,8 +49,8 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
           setQuantity(data.quantity)
           setCryptoPlatformName(data.platform)
         })
-    }, [])
-  }
+    }
+  }, [])
 
   if (notFound) {
     return <NotFound/>
@@ -68,7 +68,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
 
   const isValidCryptoName = (cryptoName: string) => {
     if (cryptoName.length > 64) return false;
-    const cryptoNameRegexValidation = /^(?! )(?!.*  )[a-zA-Z0-9]+(?:[ ][a-zA-Z0-9]+)*$(?<! )/;
+    const cryptoNameRegexValidation = /^(?! )(?!.* {2})[a-zA-Z0-9]+(?:[ {2}][a-zA-Z0-9]+)*$(?<! )/;
 
     return cryptoNameRegexValidation.test(cryptoName);
   }

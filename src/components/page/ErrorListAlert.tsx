@@ -1,4 +1,4 @@
-import ErrorResponse from "../../model/ErrorResponse";
+import ErrorResponse from "../../response/ErrorResponse";
 
 const ErrorListAlert = ({...props}) => {
 
@@ -25,9 +25,9 @@ const ErrorListAlert = ({...props}) => {
         </span>
         <ul className="mt-1.5 ml-4 list-disc list-inside">
           {
-            errors.map((error: ErrorResponse, index: number) => {
+            errors.map((error: ErrorResponse) => {
               return(
-                <li key={index}>
+                <li key={error.errorMessage}>
                   {
                     error.errorMessage
                   }
