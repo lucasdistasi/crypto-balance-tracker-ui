@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className="border-gray-200 bg-white dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <Link to="/" className="flex items-center">
-          <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579" className="mr-3 h-8" alt="Flowbite Logo"/>
+          <img src="/bitcoin.svg" className="mr-3 h-8" alt="Flowbite Logo"/>
           <span className="self-center whitespace-nowrap hidden text-lg font-semibold dark:text-white xs:block md:text-2xl">
             Crypto Balance Tracker
           </span>
