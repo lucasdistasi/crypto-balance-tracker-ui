@@ -22,8 +22,8 @@ const PlatformForm = ({action}: { action: FORM_ACTION }) => {
   const errorMessage: string = `Error ${action === FORM_ACTION.ADD ? 'adding' : 'updating'} platform`;
   const title: string = action === FORM_ACTION.ADD ? "Add new Platform" : "Update Platform";
 
-  if (action === FORM_ACTION.UPDATE) {
-    useEffect(() => {
+  useEffect(() => {
+    if (action === FORM_ACTION.UPDATE) {
       const platformId: string = window.location.pathname.split('/').pop() ?? "";
       const platformInfoURL = getPlatformsURL(platformId.toUpperCase());
 
@@ -36,11 +36,11 @@ const PlatformForm = ({action}: { action: FORM_ACTION }) => {
 
           setPlatformName(response.name);
         })
-    }, []);
-
-    if (notFound) {
-      return <NotFound/>
     }
+  }, []);
+
+  if (notFound) {
+    return <NotFound/>
   }
 
   return (

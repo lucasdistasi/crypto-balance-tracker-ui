@@ -1,8 +1,6 @@
-import {Link, useRouteError} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const NotFound = () => {
-
-  //const {status}: any = useRouteError();
 
   return (
     <div className="text-center bg-gray-100 flex flex-col items-center justify-center h-screen">

@@ -5,8 +5,8 @@ import DashboardCryptosTable from "../../components/dashboard/DashboardCryptosTa
 import PlatformBalancesChart from "../../components/dashboard/PlatformBalancesChart";
 import CryptosBalancesPlatformsTable from "../../components/dashboard/CryptosBalancesPlatformsTable";
 import CryptosBalancesChart from "../../components/dashboard/CryptosBalancesChart";
-import PlatformCryptosChart from "../../components/dashboard/PlatformCryptosChart";
-import CryptoDistributionChart from "../../components/dashboard/CryptoDistributionChart";
+import PlatformsCryptosDistributionChart from "../../components/dashboard/PlatformsCryptosDistributionChart";
+import CryptoPlatformsDistributionChart from "../../components/dashboard/CryptoPlatformsDistributionChart";
 
 const DashboardsPage = () => {
 
@@ -18,12 +18,8 @@ const DashboardsPage = () => {
         <CryptosBalancesPlatformsTable/>
         <CryptosBalancesChart/>
         <PlatformBalancesChart/>
-        <PlatformCryptosChart/>
-
-        <h1 className="text-4xl">
-          Crypto Distributions
-        </h1>
-        <CryptoDistributionChart/>
+        <PlatformsCryptosDistributionChart/>
+        <CryptoPlatformsDistributionChart/>
       </div>
       <Footer/>
     </>
