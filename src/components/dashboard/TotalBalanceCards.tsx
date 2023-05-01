@@ -7,11 +7,17 @@ const TotalBalanceCards = ({...props}) => {
   return (
     <div className="xl:flex-row flex flex-col w-11/12 justify-center justify-around mt-10">
       <TotalBalanceCard title={"Total portfolio value in USD"}
-                        value={`U$D ${totalUsdValue}`}/>
+                        value={totalUsdValue}
+                        decimals={2}
+                        symbol="$"/>
       <TotalBalanceCard title={"Total portfolio value in EUR"}
-                        value={`€ ${totalEurValue}`}/>
+                        value={totalEurValue}
+                        decimals={2}
+                        symbol="€"/>
       <TotalBalanceCard title={"Total portfolio value in BTC"}
-                        value={`₿ ${totalBtcValue}`}/>
+                        value={totalBtcValue}
+                        decimals={10}
+                        symbol="₿"/>
     </div>
   );
 }

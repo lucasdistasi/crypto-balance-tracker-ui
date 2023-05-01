@@ -1,4 +1,30 @@
-const TotalBalanceCard = ({title, value}: {title: string, value: string}) => {
+import {useSpring, animated} from "react-spring";
+
+const Number = ({...props}) => {
+  const {n, decimals, symbol} = props;
+
+  const {number} = useSpring({
+    from: {
+      number: 0
+    },
+    number: n,
+    delay: 50,
+    config: {
+      mass: 1,
+      tension: 200,
+      friction: 50,
+    }
+  });
+
+  return <animated.div>{number.to(n => `${symbol} ${n.toFixed(decimals)}`)}</animated.div>
+}
+
+const TotalBalanceCard = ({title, value, decimals, symbol}: {
+  title: string,
+  value: string,
+  decimals: number,
+  symbol: string
+}) => {
 
   return (
     <div className="xl:max-w mb-8 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center">
@@ -7,11 +33,11 @@ const TotalBalanceCard = ({title, value}: {title: string, value: string}) => {
           title
         }
       </h5>
-      <p className="font-semibold text-2xl text-gray-700 dark:text-gray-400">
+      <div className="font-semibold text-2xl text-gray-700 dark:text-gray-400">
         {
-          value
+          <Number n={value} decimals={decimals} symbol={symbol}/>
         }
-      </p>
+      </div>
     </div>
   );
 }
