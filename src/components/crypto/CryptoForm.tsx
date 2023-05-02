@@ -74,7 +74,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
   }
 
   const isValidPlatform = (platformName: string) => {
-    return platformName !== "Select Platform" && !!platformName;
+    return platformName !== "Select Platform" && Boolean(platformName);
   }
 
   const addCrypto = (crypto: Crypto) => {
@@ -97,7 +97,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
 
     if (!isInvalidCryptoName && !isInvalidQuantity && !isInvalidPlatform) {
       const request = JSON.stringify({
-        coin_name: coinName,
+        coinName,
         quantity,
         platform,
       });
@@ -123,7 +123,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
   }
 
   const updateCrypto = (newCrypto: Crypto) => {
-    const {coinName, quantity, platform} = newCrypto;
+    const {quantity, platform} = newCrypto;
 
     const isInvalidQuantity = !isValidQuantity(quantity.toString());
     const isInvalidPlatform = !isValidPlatform(platform);
@@ -144,7 +144,6 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
     if (!isInvalidQuantity && !isInvalidPlatform) {
       const cryptoId: string = window.location.pathname.split('/').pop() ?? "";
       const request = JSON.stringify({
-        coin_name: coinName, // TODO - this should not be needed. Modify backend.
         quantity,
         platform
       });
@@ -303,7 +302,6 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
           <ActionButton
             text="Add Crypto"
             actionFunction={() => addCrypto({
-              coinId: "",
               coinName: cryptoName,
               quantity: quantity,
               platform: cryptoPlatformName
@@ -314,8 +312,6 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
           <ActionButton
             text={`Update ${crypto.coinName}`}
             actionFunction={() => updateCrypto({
-              coinId: crypto.coinId,
-              coinName: crypto.coinName,
               quantity: quantity,
               platform: cryptoPlatformName
             })}/>
