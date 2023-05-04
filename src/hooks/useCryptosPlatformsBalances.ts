@@ -1,28 +1,33 @@
 import {useEffect, useState} from "react";
 import {CryptosBalancesPlatformsResponse} from "../response/CryptosBalancesPlatformsResponse";
 import {DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT} from "../constants/Constants";
-import {HTTP_METHOD} from "../model/HttpMethod";
+import axios from "axios";
 
-export function useCryptosPlatformsBalances() {
+export const useCryptosPlatformsBalances = () => {
 
   const [response, setResponse] = useState<CryptosBalancesPlatformsResponse>({
     coinInfoResponse: []
   });
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT, {
-      method: HTTP_METHOD.GET
-    }).then(response => {
-      if (response.status === 200) {
-        const apiResponse = response.json();
-        apiResponse.then(responseBody => {
-          setResponse(responseBody);
-        });
+    (async () => {
+        try {
+          const response = await axios.get(DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT);
+          setResponse(response.data);
+        } catch (err) {
+          setError(true);
+        } finally {
+          setLoading(false);
+        }
       }
-    });
+    )();
   }, []);
 
   return {
-    response
+    response,
+    error,
+    loading
   }
 }

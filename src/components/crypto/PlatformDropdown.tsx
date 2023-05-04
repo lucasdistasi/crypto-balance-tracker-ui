@@ -5,6 +5,7 @@ import {Fragment} from "react";
 const PlatformDropdown = ({...props}) => {
 
   const {platforms, error, loading} = usePlatforms();
+  const {platform, onChangeFunction, classes} = props;
 
   return (
     <Fragment>
@@ -20,9 +21,9 @@ const PlatformDropdown = ({...props}) => {
             Platform
           </label>
           <select id="platforms"
-                  defaultValue={props?.platform}
-                  onChange={props.onChangeFunction}
-                  className={props.classes}>
+                  defaultValue={platform}
+                  onChange={onChangeFunction}
+                  className={classes}>
             <option>
               Select Platform
             </option>

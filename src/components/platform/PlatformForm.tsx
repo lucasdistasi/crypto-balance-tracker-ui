@@ -4,7 +4,8 @@ import ErrorListAlert from "../page/ErrorListAlert";
 import {FORM_ACTION} from "../../model/FormAction";
 import React, {useEffect, useState} from "react";
 import {getPlatformsURL} from "../../constants/Constants";
-import NotFound from "../../pages/error/NotFound";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const PlatformForm = ({action}: { action: FORM_ACTION }) => {
 
@@ -17,30 +18,38 @@ const PlatformForm = ({action}: { action: FORM_ACTION }) => {
     addPlatform,
     updatePlatform,
   } = usePlatforms();
+  const navigate = useNavigate();
   const [notFound, setNotFound] = useState(false);
-
   const errorMessage: string = `Error ${action === FORM_ACTION.ADD ? 'adding' : 'updating'} platform`;
   const title: string = action === FORM_ACTION.ADD ? "Add new Platform" : "Update Platform";
 
   useEffect(() => {
     if (action === FORM_ACTION.UPDATE) {
-      const platformId: string = window.location.pathname.split('/').pop() ?? "";
-      const platformInfoURL = getPlatformsURL(platformId.toUpperCase());
+      (async () => {
+          const platformId: string = window.location.pathname.split('/').pop() ?? "";
+          const platformInfoURL = getPlatformsURL(platformId.toUpperCase());
 
-      fetch(platformInfoURL)
-        .then(response => response.json())
-        .then(response => {
-          if (response.statusCode === 404) {
-            setNotFound(true);
+          try {
+            const {data} = await axios.get(platformInfoURL);
+            setPlatformName(data.name);
+          } catch (err: any) {
+            const {status} = err.response;
+
+            if (status === 404) {
+              setNotFound(true);
+            }
+
+            if (status >= 500) {
+              navigate("/error");
+            }
           }
-
-          setPlatformName(response.name);
-        })
+        }
+      )();
     }
   }, []);
 
   if (notFound) {
-    return <NotFound/>
+    navigate("/404");
   }
 
   return (

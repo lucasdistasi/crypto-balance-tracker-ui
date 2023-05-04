@@ -2,7 +2,7 @@ const ErrorAlert = ({message = "An error has occurred"}) => {
 
   return(
     <div id="alert-border-2"
-         className="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 mt-10 rounded-2xl dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+         className="flex p-4 my-4 text-red-800 border-t-4 border-red-300 bg-red-50 mt-10 rounded-2xl dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
          role="alert">
       <svg className="flex-shrink-0 w-5 h-5"
            fill="currentColor"

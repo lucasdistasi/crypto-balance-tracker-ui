@@ -8,9 +8,7 @@ const Footer = () => {
         <div className="md:flex md:justify-between">
           <div className="flex flex-row justify-center text-center mb-6 md:mb-0">
             <div className="xs:flex-row flex flex-col items-center">
-              <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
-                   className="h-8 mr-3"
-                   alt="FlowBite Logo"/>
+              <img src="/bitcoin.svg" className="mr-3 h-8" alt="Bitcoin Logo"/>
               <span className="xs:mt-0 mt-3 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 Crypto Balance Tracker
               </span>
@@ -76,6 +74,7 @@ const Footer = () => {
             Made by <a href="https://www.linkedin.com/in/lucas-david-distasi/" target="_blank" className="hover:underline">Lucas Di Stasi</a> using <a href="https://www.coingecko.com/en/api" target="_blank" className="hover:underline">
               CoinGecko API
             </a>.
+            <img src="/coingecko.svg" className="inline-block h-8 ml-1" alt="Coingecko Logo"/>
           </span>
         </div>
       </div>
