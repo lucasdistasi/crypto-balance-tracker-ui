@@ -3,16 +3,12 @@ import PlatformDropdown from "./PlatformDropdown";
 import ActionButton from "../form/ActionButton";
 import React, {useEffect, useState} from "react";
 import {CRYPTOS_ENDPOINT, getCryptosURL} from "../../constants/Constants";
-import NotFound from "../../pages/error/NotFound";
 import Crypto from "../../model/Crypto";
 import ErrorAlert from "../page/ErrorAlert";
-import {HTTP_METHOD} from "../../model/HttpMethod";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import ApiErrorResponse from "../../response/ApiErrorResponse";
 import ErrorResponse from "../../response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
-import {HEADERS_VALUE} from "../../model/HeadersValue";
-import {HEADERS} from "../../model/Headers";
+import axios from "axios";
 
 const CryptoForm = ({action}: { action: FORM_ACTION }) => {
 
@@ -35,25 +31,37 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
 
   useEffect(() => {
     if (action == FORM_ACTION.UPDATE) {
-      const cryptoId: string = window.location.pathname.split('/').pop() ?? "";
-      const cryptoInfoURL = getCryptosURL(cryptoId);
+      (async () => {
+          const cryptoId: string = window.location.pathname.split('/').pop() ?? "";
+          const cryptoInfoURL = getCryptosURL(cryptoId);
 
-      fetch(cryptoInfoURL)
-        .then(response => response.json())
-        .then(data => {
-          if (data.statusCode === 404) {
-            setNotFound(true);
+          try {
+            const {data} = await axios.get(cryptoInfoURL);
+
+            setCrypto(data);
+            setQuantity(data.quantity)
+            setCryptoPlatformName(data.platform)
+          } catch (err: any) {
+            const {status} = err.response;
+            if (status === 400) {
+              setErrors(err.response.data.errors);
+            }
+
+            if (status === 404) {
+              setNotFound(true);
+            }
+
+            if (status >= 500) {
+              navigate("/error");
+            }
           }
-
-          setCrypto(data);
-          setQuantity(data.quantity)
-          setCryptoPlatformName(data.platform)
-        })
+        }
+      )();
     }
   }, [])
 
   if (notFound) {
-    return <NotFound/>
+    navigate("/404");
   }
 
   const redirectToCryptosPage = (navigate: NavigateFunction) => {
@@ -77,7 +85,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
     return platformName !== "Select Platform" && Boolean(platformName);
   }
 
-  const addCrypto = (crypto: Crypto) => {
+  const addCrypto = async (crypto: Crypto) => {
     const {coinName, quantity, platform} = crypto;
     const isInvalidCryptoName = !isValidCryptoName(coinName);
     const isInvalidQuantity = !isValidQuantity(quantity.toString());
@@ -96,33 +104,21 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
     }
 
     if (!isInvalidCryptoName && !isInvalidQuantity && !isInvalidPlatform) {
-      const request = JSON.stringify({
-        coinName,
-        quantity,
-        platform,
-      });
-
-      fetch(CRYPTOS_ENDPOINT, {
-        method: HTTP_METHOD.POST,
-        body: request,
-        headers: {
-          [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
-        }
-      })
-        .then(response => {
-          if (response.ok) {
-            redirectToCryptosPage(navigate);
-          } else {
-            response.json()
-              .then((apiErrorResponse: ApiErrorResponse) => {
-                setErrors(apiErrorResponse.errors);
-              });
-          }
+      try {
+        await axios.post(CRYPTOS_ENDPOINT, {
+          coinName,
+          quantity,
+          platform,
         });
+
+        redirectToCryptosPage(navigate);
+      } catch (err: any) {
+        setErrors(err.response.data.errors);
+      }
     }
   }
 
-  const updateCrypto = (newCrypto: Crypto) => {
+  const updateCrypto = async (newCrypto: Crypto) => {
     const {quantity, platform} = newCrypto;
 
     const isInvalidQuantity = !isValidQuantity(quantity.toString());
@@ -143,27 +139,17 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
 
     if (!isInvalidQuantity && !isInvalidPlatform) {
       const cryptoId: string = window.location.pathname.split('/').pop() ?? "";
-      const request = JSON.stringify({
-        quantity,
-        platform
-      });
 
-      fetch(getCryptosURL(cryptoId), {
-        body: request,
-        method: HTTP_METHOD.PUT,
-        headers: {
-          [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
-        }
-      }).then(response => {
-        if (response.ok) {
-          redirectToCryptosPage(navigate);
-        } else {
-          response.json()
-            .then((apiErrorResponse: ApiErrorResponse) => {
-              setErrors(apiErrorResponse.errors);
-            });
-        }
-      });
+      try {
+        await axios.put(getCryptosURL(cryptoId), {
+          quantity,
+          platform
+        });
+
+        redirectToCryptosPage(navigate);
+      } catch (err: any) {
+        setErrors(err.response.data.errors);
+      }
     }
   }
 
@@ -219,7 +205,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
       {
         errors.length >= 1 &&
         <ErrorListAlert
-          title="Error adding Crypto"
+          title={action === FORM_ACTION.ADD ? "Error adding Crypto" : "Error updating Crypto"}
           errors={errors}/>
       }
 
@@ -238,7 +224,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
                    id="base-input"
                    autoComplete="off"
                    placeholder="Bitcoin"
-                   maxLength={65} // update to 64
+                   maxLength={64}
                    onChange={event => handleCryptoNameChange(event)}
                    className={`${cryptoNameInputError ?
                      'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500 focus:outline-none' :
@@ -284,13 +270,30 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
             </p>
           }
         </div>
-        <PlatformDropdown
-          classes={`${cryptoPlatformInputError ?
-            'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500' :
-            'bg-gray-100 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500'}
+
+        {
+          // if I don't do this, the dropdown randomly sometimes does not set as default value the crypto platform
+          crypto?.platform &&
+          <PlatformDropdown
+            classes={`${cryptoPlatformInputError ?
+              'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500' :
+              'bg-gray-100 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500'}
           border text-sm rounded-lg block w-full p-2.5`}
-          platform={crypto?.platform}
-          onChangeFunction={handleCryptoPlatformChange}/>
+            platform={crypto.platform}
+            onChangeFunction={handleCryptoPlatformChange}/>
+        }
+
+        {
+          // if I don't do this, the dropdown randomly sometimes does not set as default value the crypto platform
+          !crypto?.platform &&
+          <PlatformDropdown
+            classes={`${cryptoPlatformInputError ?
+              'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500' :
+              'bg-gray-100 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500'}
+          border text-sm rounded-lg block w-full p-2.5`}
+            onChangeFunction={handleCryptoPlatformChange}/>
+        }
+
         {
           cryptoPlatformInputError &&
           <p className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">

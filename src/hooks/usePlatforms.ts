@@ -1,42 +1,32 @@
 import React, {useEffect, useState} from "react";
 import {getPlatformsURL, PLATFORMS_ENDPOINT} from "../constants/Constants";
 import Platform from "../model/Platform";
-import {HTTP_METHOD} from "../model/HttpMethod";
 import ErrorResponse from "../response/ErrorResponse";
-import ApiErrorResponse from "../response/ApiErrorResponse";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import {HEADERS} from "../model/Headers";
-import {HEADERS_VALUE} from "../model/HeadersValue";
+import axios from "axios";
 
 export function usePlatforms() {
 
   const navigate = useNavigate();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [platformName, setPlatformName] = useState("");
   const [errors, setErrors] = useState<ErrorResponse[]>([]);
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [platformNameError, setPlatformNameError] = useState(false);
 
   useEffect(() => {
-    fetch(PLATFORMS_ENDPOINT, {
-      method: HTTP_METHOD.GET,
-      headers: {
-        [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
+    (async () => {
+        try {
+          const response = await axios.get(PLATFORMS_ENDPOINT);
+          setPlatforms(response.data);
+        } catch (err) {
+          setError(true);
+        } finally {
+          setLoading(false);
+        }
       }
-    })
-      .then(response => {
-        setLoading(true);
-        return response.json();
-      })
-      .then(data => {
-        setPlatforms(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(true);
-        setLoading(false);
-      });
+    )();
   }, []);
 
   const redirectToPlatformsPage = (navigate: NavigateFunction) => {
@@ -60,41 +50,30 @@ export function usePlatforms() {
     return regex.test(platformName);
   }
 
-  const addPlatform = (platformName: string) => {
+  const addPlatform = async (platformName: string) => {
     if (!isValidPlatformName(platformName)) {
       setPlatformNameError(true);
       return;
     }
 
-    const body = JSON.stringify({
-      name: platformName
-    });
-
-    fetch(PLATFORMS_ENDPOINT, {
-      method: HTTP_METHOD.POST,
-      body: body,
-      headers: {
-        [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
-      },
-    }).then(response => {
-      if (response.ok) {
-        redirectToPlatformsPage(navigate);
-      } else {
-        response.json()
-          .then((apiErrorResponse: ApiErrorResponse) => {
-            setErrors(apiErrorResponse.errors);
-          });
-      }
-    }).catch(error => {
-      const errorResponse: ErrorResponse = {
-        errorMessage: error.message,
+    try {
+      await axios.post(PLATFORMS_ENDPOINT, {
+        name: platformName
+      });
+      redirectToPlatformsPage(navigate);
+    } catch (err: any) {
+      const {status, data} = err.response;
+      if (status === 400) {
+        setErrors(data.errors);
       }
 
-      setErrors([errorResponse]);
-    });
+      if (status >= 500) {
+        navigate("/error");
+      }
+    }
   }
 
-  const updatePlatform = (platformName: string) => {
+  const updatePlatform = async (platformName: string) => {
     if (!isValidPlatformName(platformName)) {
       setPlatformNameError(true);
       return;
@@ -103,46 +82,46 @@ export function usePlatforms() {
     const updatePlatformName: string = window.location.pathname.split('/').pop() ?? "";
     const platformsURL = getPlatformsURL(updatePlatformName);
 
-    const body = JSON.stringify({
-      name: platformName
-    });
+    try {
+      const response = await axios.put(platformsURL, {
+        name: platformName
+      });
 
-    fetch(platformsURL, {
-      method: HTTP_METHOD.PUT,
-      body: body,
-      headers: {
-        [HEADERS.CONTENT_TYPE]: HEADERS_VALUE.APPLICATION_JSON,
-      },
-    }).then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         redirectToPlatformsPage(navigate);
-      } else {
-        response.json()
-          .then((apiErrorResponse: ApiErrorResponse) => {
-            setErrors(apiErrorResponse.errors);
-          });
       }
-    }).catch(error => {
-      const errorResponse: ErrorResponse = {
-        errorMessage: error.message,
+    } catch (err: any) {
+      const {status, data} = err.response;
+      if (status === 400) {
+        setErrors(data.errors);
       }
 
-      setErrors([errorResponse]);
-    });
+      if (status >= 500) {
+        navigate("/error");
+      }
+    }
   }
 
-  const deletePlatform = (platformId: string) => {
+  const deletePlatform = async (platformId: string) => {
     const platformsURL = getPlatformsURL(platformId);
 
-    fetch(platformsURL, {
-      method: HTTP_METHOD.DELETE
-    })
-      .then(response => {
-        if (response.status === 204) {
-          const updatedPlatforms = platforms.filter(platform => platform.name !== platformId);
-          setPlatforms(updatedPlatforms);
-        }
-      });
+    try {
+      const {status} = await axios.delete(platformsURL);
+
+      if (status === 204) {
+        const updatedPlatforms = platforms.filter(platform => platform.name !== platformId);
+        setPlatforms(updatedPlatforms);
+      }
+    } catch (err: any) {
+      const {status, data} = err.response;
+      if (status === 400) {
+        setErrors(data.errors);
+      }
+
+      if (status >= 500) {
+        navigate("/error");
+      }
+    }
   }
 
   return {

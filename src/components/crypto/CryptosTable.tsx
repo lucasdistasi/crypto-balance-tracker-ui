@@ -5,59 +5,52 @@ import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
 import Crypto from "../../model/Crypto";
 import {CRYPTOS_ENDPOINT, getCryptosURL} from "../../constants/Constants";
-import {HTTP_METHOD} from "../../model/HttpMethod";
+import axios from "axios";
 
 const CryptosTable = () => {
 
   const [cryptos, setCryptos] = useState<Crypto[]>([]);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(CRYPTOS_ENDPOINT)
-      .then(response => {
-        setLoading(true)
-
-        if (response.status === 200) {
-          return response.json();
+    (async () => {
+        try {
+          const {data} = await axios.get(CRYPTOS_ENDPOINT);
+          setCryptos(data);
+        } catch (err) {
+          setError(true);
+        } finally {
+          setLoading(false);
         }
-      })
-      .then(data => {
-        setCryptos(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setLoading(false);
-        setError(true);
-      })
+      }
+    )();
   }, []);
 
-  function deleteCrypto(cryptoId: string) {
+  const deleteCrypto = async (cryptoId: string) => {
     const cryptosUrl = getCryptosURL(cryptoId);
 
-    fetch(cryptosUrl, {
-      method: HTTP_METHOD.DELETE
-    })
-      .then(response => {
-        if (response.status === 204) {
-          const updatedCryptos = cryptos.filter(crypto => crypto.coinId !== cryptoId);
-          setCryptos(updatedCryptos);
-        }
-      });
+    try {
+      await axios.delete(cryptosUrl);
+      const updatedCryptos = cryptos.filter(crypto => crypto.coinId !== cryptoId);
+      setCryptos(updatedCryptos);
+    } catch (err) {
+      setError(true);
+    }
   }
 
   return (
     <Fragment>
       {
-        loading && <Spinner/>
+        loading && !error && <Spinner/>
       }
 
       {
-        error && <ErrorAlert message="Error retrieving cryptos"/>
+        error && !loading && <ErrorAlert message="Error retrieving cryptos"/>
       }
 
       {
-        cryptos && !loading && !error &&
+        !error && !loading && cryptos?.length > 0 &&
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-10 w-11/12">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
