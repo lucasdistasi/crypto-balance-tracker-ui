@@ -3,7 +3,7 @@ import PlatformDropdown from "./PlatformDropdown";
 import ActionButton from "../form/ActionButton";
 import React, {useEffect, useState} from "react";
 import {CRYPTOS_ENDPOINT, getCryptosURL} from "../../constants/Constants";
-import Crypto from "../../model/Crypto";
+import {Crypto} from "../../model/Crypto";
 import ErrorAlert from "../page/ErrorAlert";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import ErrorResponse from "../../response/ErrorResponse";
@@ -13,11 +13,12 @@ import axios from "axios";
 const CryptoForm = ({action}: { action: FORM_ACTION }) => {
 
   const navigate = useNavigate();
+
   const [quantity, setQuantity] = useState("0.0");
-  const [errors, setErrors] = useState<ErrorResponse[]>([]);
   const [cryptoName, setCryptoName] = useState("");
   const [cryptoPlatformName, setCryptoPlatformName] = useState("");
-  const [notFound, setNotFound] = useState(false);
+
+  const [errors, setErrors] = useState<ErrorResponse[]>([]);
   const [quantityInputError, setQuantityInputError] = useState(false);
   const [noChangesError, setNoChangesError] = useState(false);
   const [cryptoNameInputError, setCryptoNameInputError] = useState(false);
@@ -47,21 +48,21 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
               setErrors(err.response.data.errors);
             }
 
-            if (status === 404) {
-              setNotFound(true);
-            }
-
-            if (status >= 500) {
-              navigate("/error");
-            }
+            redirectToPage(status);
           }
         }
       )();
     }
-  }, [])
+  }, []);
 
-  if (notFound) {
-    navigate("/404");
+  const redirectToPage = (status: number) => {
+    if (status === 404) {
+      navigate("/404");
+    }
+
+    if (status >= 500) {
+      navigate("/error");
+    }
   }
 
   const redirectToCryptosPage = (navigate: NavigateFunction) => {

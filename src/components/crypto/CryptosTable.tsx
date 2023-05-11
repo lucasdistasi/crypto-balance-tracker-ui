@@ -1,11 +1,11 @@
 import EditButton from "../table/EditButton";
 import DeleteButton from "../table/DeleteButton";
 import {Fragment, useEffect, useState} from "react";
-import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
-import Crypto from "../../model/Crypto";
+import {Crypto} from "../../model/Crypto";
 import {CRYPTOS_ENDPOINT, getCryptosURL} from "../../constants/Constants";
 import axios from "axios";
+import TableSkeleton from "../skeletons/TableSkeleton";
 
 const CryptosTable = () => {
 
@@ -42,11 +42,13 @@ const CryptosTable = () => {
   return (
     <Fragment>
       {
-        loading && !error && <Spinner/>
+        loading && !error &&
+        <TableSkeleton/>
       }
 
       {
-        error && !loading && <ErrorAlert message="Error retrieving cryptos"/>
+        error && !loading &&
+        <ErrorAlert message="Error retrieving cryptos"/>
       }
 
       {
@@ -80,7 +82,7 @@ const CryptosTable = () => {
 
                 return (
                   <tr key={coinId}
-                      className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                      className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
                     <th scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                       {
@@ -97,8 +99,7 @@ const CryptosTable = () => {
                         platform
                       }
                     </td>
-                    <td
-                      className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
+                    <td className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                       <EditButton editLink={`/crypto/${coinId}`}/>
                       <DeleteButton deleteFunction={() => deleteCrypto(coinId)}
                                     deleteId={coinId}

@@ -29,7 +29,7 @@ const InternalErrorPage = () => {
           </polygon>
         </svg>
         <p className="text-3xl">
-          Looks like our services are currently offline
+          This is not good... Something unexpected just happened.
         </p>
         <Link to="/" className="px-8 py-3 font-semibold rounded dark:bg-gray-400 dark:text-black">
           Take me back home

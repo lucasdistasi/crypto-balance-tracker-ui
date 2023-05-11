@@ -1,5 +1,3 @@
-interface Platform {
+export interface Platform {
   name: string
 }
-
-export default Platform
