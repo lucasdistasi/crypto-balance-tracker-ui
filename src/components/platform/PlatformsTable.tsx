@@ -12,11 +12,13 @@ const PlatformsTable = () => {
   return (
     <Fragment>
       {
-        loading && !error && <Spinner/>
+        loading && !error &&
+        <Spinner/>
       }
 
       {
-        error && !loading && <ErrorAlert message="Error retrieving platforms"/>
+        error && !loading &&
+        <ErrorAlert message="Error retrieving platforms"/>
       }
 
       {
@@ -39,7 +41,7 @@ const PlatformsTable = () => {
                 const {name: platformName} = platform;
 
                 return (
-                  <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700" key={platformName}>
+                  <tr className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700" key={platformName}>
                     <th scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                       {

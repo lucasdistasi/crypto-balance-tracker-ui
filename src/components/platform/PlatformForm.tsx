@@ -2,7 +2,7 @@ import ActionButton from "../form/ActionButton";
 import {usePlatforms} from "../../hooks/usePlatforms";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {FORM_ACTION} from "../../model/FormAction";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {getPlatformsURL} from "../../constants/Constants";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -19,7 +19,6 @@ const PlatformForm = ({action}: { action: FORM_ACTION }) => {
     updatePlatform,
   } = usePlatforms();
   const navigate = useNavigate();
-  const [notFound, setNotFound] = useState(false);
   const errorMessage: string = `Error ${action === FORM_ACTION.ADD ? 'adding' : 'updating'} platform`;
   const title: string = action === FORM_ACTION.ADD ? "Add new Platform" : "Update Platform";
 
@@ -35,21 +34,21 @@ const PlatformForm = ({action}: { action: FORM_ACTION }) => {
           } catch (err: any) {
             const {status} = err.response;
 
-            if (status === 404) {
-              setNotFound(true);
-            }
-
-            if (status >= 500) {
-              navigate("/error");
-            }
+            redirectToPage(status);
           }
         }
       )();
     }
   }, []);
 
-  if (notFound) {
-    navigate("/404");
+  const redirectToPage = (status: number) => {
+    if (status === 404) {
+      navigate("/404");
+    }
+
+    if (status >= 500) {
+      navigate("/error");
+    }
   }
 
   return (
@@ -61,8 +60,8 @@ const PlatformForm = ({action}: { action: FORM_ACTION }) => {
       </h1>
 
       {
-        errors.length >= 1 && <ErrorListAlert title={errorMessage}
-                                              errors={errors}/>
+        errors.length >= 1 &&
+        <ErrorListAlert title={errorMessage} errors={errors}/>
       }
 
       <form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
