@@ -16,3 +16,7 @@ export const getCryptosURL = (cryptoId: string) => {
 export const getPlatformsURL = (platformId: string) => {
   return `${PLATFORMS_ENDPOINT}/${platformId}`
 }
+
+export const getPageCryptosURL = (page: number) => {
+  return `${CRYPTO_BALANCE_TRACKER_URL}/cryptos?page=${page}`;
+}
