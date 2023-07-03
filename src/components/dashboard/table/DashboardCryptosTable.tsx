@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {ALL_CRYPTOS_DASHBOARD_ENDPOINT} from "../../../constants/Constants";
-import {CryptosBalancesResponse} from "../../../response/crypto/CryptosBalancesResponse";
+import {CryptosBalancesResponse} from "../../../model/response/crypto/CryptosBalancesResponse";
 import TotalBalanceCards from "./TotalBalanceCards";
 import axios from "axios";
 import TableSkeleton from "../../skeletons/TableSkeleton";

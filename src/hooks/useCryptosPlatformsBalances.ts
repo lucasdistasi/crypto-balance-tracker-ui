@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {CryptosBalancesPlatformsResponse} from "../response/crypto/CryptosBalancesPlatformsResponse";
+import {CryptosBalancesPlatformsResponse} from "../model/response/crypto/CryptosBalancesPlatformsResponse";
 import {DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT} from "../constants/Constants";
 import axios from "axios";
 

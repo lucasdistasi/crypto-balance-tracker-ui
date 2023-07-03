@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getPlatformsURL, PLATFORMS_ENDPOINT} from "../constants/Constants";
 import {Platform} from "../model/Platform";
-import ErrorResponse from "../response/ErrorResponse";
+import ErrorResponse from "../model/response/ErrorResponse";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import axios from "axios";
 

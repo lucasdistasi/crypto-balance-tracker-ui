@@ -8,6 +8,9 @@ import AddCryptoPage from "../pages/crypto/AddCryptoPage";
 import EditCryptoPage from "../pages/crypto/EditCryptoPage";
 import EditPlatformPage from "../pages/platform/EditPlatformPage";
 import InternalErrorPage from "../pages/error/InternalErrorPage";
+import GoalsPage from "../pages/goal/GoalsPage";
+import EditGoalPage from "../pages/goal/EditGoalPage";
+import AddGoalPage from "../pages/goal/AddGoalPage";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +44,18 @@ const router = createBrowserRouter([
   {
     path: '/crypto/:id',
     element: <EditCryptoPage/>,
+  },
+  {
+    path: '/goal',
+    element: <AddGoalPage/>
+  },
+  {
+    path: '/goals',
+    element: <GoalsPage/>
+  },
+  {
+    path: '/goal/:id',
+    element: <EditGoalPage/>
   },
   {
     path: '/404',

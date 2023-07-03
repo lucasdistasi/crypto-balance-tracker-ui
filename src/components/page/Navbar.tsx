@@ -5,7 +5,7 @@ import {initFlowbite} from "flowbite";
 const Navbar = () => {
 
   useEffect(() => {
-  initFlowbite();
+    initFlowbite();
   }, []);
 
   return (
@@ -13,7 +13,8 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <Link to="/" className="flex items-center">
           <img src="/bitcoin.svg" className="mr-3 h-8" alt="Bitcoin Logo"/>
-          <span className="self-center whitespace-nowrap hidden text-lg font-semibold dark:text-white xs:block md:text-2xl">
+          <span
+            className="self-center whitespace-nowrap hidden text-lg font-semibold dark:text-white xs:block md:text-2xl">
             Crypto Balance Tracker
           </span>
         </Link>
@@ -47,6 +48,12 @@ const Navbar = () => {
               <NavLink to="/platforms"
                        className="block rounded py-2 pr-4 pl-3 text-gray-900 hover:bg-gray-100 dark:text-white md:border-0 md:p-0 dark:hover:bg-gray-700 dark:hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500">
                 Platforms
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/goals"
+                       className="block rounded py-2 pr-4 pl-3 text-gray-900 hover:bg-gray-100 dark:text-white md:border-0 md:p-0 dark:hover:bg-gray-700 dark:hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500">
+                Goals
               </NavLink>
             </li>
           </ul>
