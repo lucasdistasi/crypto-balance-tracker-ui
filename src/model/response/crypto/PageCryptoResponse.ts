@@ -1,4 +1,4 @@
-import {Crypto} from "../../model/Crypto";
+import {Crypto} from "./Crypto";
 
 export interface PageCryptoResponse {
   page: number,

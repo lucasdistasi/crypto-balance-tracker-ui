@@ -1,4 +1,4 @@
-import ErrorResponse from "../../response/ErrorResponse";
+import ErrorResponse from "../../model/response/ErrorResponse";
 
 const ErrorListAlert = ({...props}) => {
 

@@ -2,53 +2,64 @@ import {FORM_ACTION} from "../../model/FormAction";
 import PlatformDropdown from "./PlatformDropdown";
 import ActionButton from "../form/ActionButton";
 import React, {useEffect, useState} from "react";
-import {CRYPTOS_ENDPOINT, getCryptosURL} from "../../constants/Constants";
-import {Crypto} from "../../model/Crypto";
+import {
+  CRYPTOS_ENDPOINT,
+  getCryptosURL,
+  isValidQuantity,
+  MONGO_ID_REGEX
+} from "../../constants/Constants";
+import {Crypto} from "../../model/request/crypto/Crypto";
+import {UpdateCrypto} from "../../model/request/crypto/UpdateCrypto";
 import ErrorAlert from "../page/ErrorAlert";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import ErrorResponse from "../../response/ErrorResponse";
+import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import axios from "axios";
+import {useCryptoNameHook} from "../../hooks/useCryptoNameHook";
 
 const CryptoForm = ({action}: { action: FORM_ACTION }) => {
 
   const navigate = useNavigate();
+  const {
+    cryptoName,
+    cryptoNameInputError,
+    handleCryptoNameChange,
+    setCryptoNameInputError
+  } = useCryptoNameHook()
 
   const [quantity, setQuantity] = useState("0.0");
-  const [cryptoName, setCryptoName] = useState("");
   const [cryptoPlatformName, setCryptoPlatformName] = useState("");
 
   const [errors, setErrors] = useState<ErrorResponse[]>([]);
   const [quantityInputError, setQuantityInputError] = useState(false);
   const [noChangesError, setNoChangesError] = useState(false);
-  const [cryptoNameInputError, setCryptoNameInputError] = useState(false);
   const [cryptoPlatformInputError, setCryptoPlatformInputError] = useState(false);
-  const [crypto, setCrypto] = useState<Crypto>({
-    coinId: "",
-    coinName: "",
-    platform: "",
-    quantity: 0n
-  });
+  const [crypto, setCrypto] = useState<Crypto>();
 
   useEffect(() => {
     if (action == FORM_ACTION.UPDATE) {
       (async () => {
           const cryptoId: string = window.location.pathname.split('/').pop() ?? "";
-          const cryptoInfoURL = getCryptosURL(cryptoId);
 
-          try {
-            const {data} = await axios.get(cryptoInfoURL);
+          if (MONGO_ID_REGEX.test(cryptoId)) {
+            const cryptoInfoURL = getCryptosURL(cryptoId);
 
-            setCrypto(data);
-            setQuantity(data.quantity)
-            setCryptoPlatformName(data.platform)
-          } catch (err: any) {
-            const {status} = err.response;
-            if (status === 400) {
-              setErrors(err.response.data.errors);
+            try {
+              const {data} = await axios.get(cryptoInfoURL);
+
+              setCrypto(data);
+              setQuantity(data.quantity)
+              setCryptoPlatformName(data.platform)
+            } catch (err: any) {
+              const {status} = err.response;
+              if (status === 400) {
+                setErrors(err.response.data.errors);
+              }
+
+              redirectToPage(status);
             }
-
-            redirectToPage(status);
+          } else {
+            navigate("/404");
           }
         }
       )();
@@ -69,12 +80,6 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
     navigate("/cryptos");
   }
 
-  const isValidQuantity = (quantity: string) => {
-    const regex = /^(?=.*[1-9])\d{0,16}(\.\d{1,12})?$/;
-
-    return regex.test(quantity);
-  }
-
   const isValidCryptoName = (cryptoName: string) => {
     if (cryptoName.length > 64) return false;
     const cryptoNameRegexValidation = /^(?! )(?!.* {2})[a-zA-Z0-9]+(?:[ {2}][a-zA-Z0-9]+)*$(?<! )/;
@@ -89,7 +94,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
   const addCrypto = async (crypto: Crypto) => {
     const {coinName, quantity, platform} = crypto;
     const isInvalidCryptoName = !isValidCryptoName(coinName);
-    const isInvalidQuantity = !isValidQuantity(quantity.toString());
+    const isInvalidQuantity = !isValidQuantity(quantity);
     const isInvalidPlatform = !isValidPlatform(platform);
 
     if (isInvalidCryptoName) {
@@ -119,8 +124,8 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
     }
   }
 
-  const updateCrypto = async (newCrypto: Crypto) => {
-    const {quantity, platform} = newCrypto;
+  const updateCrypto = async (updatedCrypto: UpdateCrypto) => {
+    const {quantity, platform} = updatedCrypto;
 
     const isInvalidQuantity = !isValidQuantity(quantity.toString());
     const isInvalidPlatform = !isValidPlatform(platform);
@@ -133,7 +138,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
       setCryptoPlatformInputError(true);
     }
 
-    if (crypto.quantity.toString() === quantity.toString() && crypto.platform === platform) {
+    if (crypto?.quantity.toString() === quantity.toString() && crypto.platform === platform) {
       setNoChangesError(true);
       return;
     }
@@ -176,17 +181,6 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
     }
   }
 
-  const handleCryptoNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setCryptoName(event.target.value);
-
-    if (isValidCryptoName(event.target.value)) {
-      setCryptoNameInputError(false);
-    } else {
-      setCryptoNameInputError(true);
-    }
-  }
-
   return (
     <div className="flex flex-col items-center min-h-screen">
       <h1 className="text-4xl text-gray-900 text-center my-10">
@@ -217,7 +211,7 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
                    'text-red-500' :
                    'text-gray-900'} 
                    block mb-2 text-sm font-medium`}>
-            Coin Name
+            Crypto Name
           </label>
           {
             action == FORM_ACTION.ADD &&
@@ -307,16 +301,16 @@ const CryptoForm = ({action}: { action: FORM_ACTION }) => {
             text="Add Crypto"
             actionFunction={() => addCrypto({
               coinName: cryptoName,
-              quantity: quantity,
+              quantity,
               platform: cryptoPlatformName
             })}/>
         }
         {
           action === FORM_ACTION.UPDATE &&
           <ActionButton
-            text={`Update ${crypto.coinName}`}
+            text={`Update ${crypto?.coinName}`}
             actionFunction={() => updateCrypto({
-              quantity: quantity,
+              quantity,
               platform: cryptoPlatformName
             })}/>
         }

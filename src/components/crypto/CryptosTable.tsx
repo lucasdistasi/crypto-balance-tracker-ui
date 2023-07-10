@@ -2,11 +2,11 @@ import EditButton from "../table/EditButton";
 import DeleteButton from "../table/DeleteButton";
 import React, {Fragment, useEffect, useState} from "react";
 import ErrorAlert from "../page/ErrorAlert";
-import {Crypto} from "../../model/Crypto";
+import {Crypto} from "../../model/response/crypto/Crypto";
 import {getCryptosURL, getPageCryptosURL} from "../../constants/Constants";
 import axios from "axios";
 import TableSkeleton from "../skeletons/TableSkeleton";
-import {PageCryptoResponse} from "../../response/crypto/PageCryptoResponse";
+import {PageCryptoResponse} from "../../model/response/crypto/PageCryptoResponse";
 
 const CryptosTable = () => {
 

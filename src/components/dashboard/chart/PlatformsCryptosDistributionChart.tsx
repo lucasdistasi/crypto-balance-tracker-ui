@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {Chart} from "react-google-charts";
-import {PlatformCryptosDistributionResponse} from "../../../response/platform/PlatformCryptosDistributionResponse";
+import {PlatformCryptosDistributionResponse} from "../../../model/response/platform/PlatformCryptosDistributionResponse";
 import {DASHBOARDS_PLATFORMS_CRYPTOS_DISTRIBUTION_ENDPOINT} from "../../../constants/Constants";
 import axios from "axios";
 import ChartSkeleton from "../../skeletons/ChartSkeleton";

@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {CryptoPlatformsDistributionResponse} from "../../../response/crypto/CryptoPlatformsDistributionResponse";
+import {CryptoPlatformsDistributionResponse} from "../../../model/response/crypto/CryptoPlatformsDistributionResponse";
 import {Chart} from "react-google-charts";
 import {DASHBOARDS_CRYPTOS_PLATFORMS_DISTRIBUTION_ENDPOINT} from "../../../constants/Constants";
 import axios from "axios";

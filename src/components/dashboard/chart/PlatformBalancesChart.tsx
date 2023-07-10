@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {Chart} from "react-google-charts";
 import {DASHBOARDS_PLATFORMS_BALANCES_ENDPOINT} from "../../../constants/Constants";
-import {PlatformsBalancesResponse} from "../../../response/platform/PlatformsBalancesResponse";
+import {PlatformsBalancesResponse} from "../../../model/response/platform/PlatformsBalancesResponse";
 import axios from "axios";
 import ChartSkeleton from "../../skeletons/ChartSkeleton";
 import ErrorAlert from "../../page/ErrorAlert";
