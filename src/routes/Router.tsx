@@ -11,6 +11,9 @@ import InternalErrorPage from "../pages/error/InternalErrorPage";
 import GoalsPage from "../pages/goal/GoalsPage";
 import EditGoalPage from "../pages/goal/EditGoalPage";
 import AddGoalPage from "../pages/goal/AddGoalPage";
+import TransferCryptoPage from "../pages/crypto/TransferCryptoPage";
+
+// TODO - ADD ErrorBoundary.
 
 const router = createBrowserRouter([
   {
@@ -56,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: '/goal/:id',
     element: <EditGoalPage/>
+  },
+  {
+    path: '/transfer/:id',
+    element: <TransferCryptoPage/>
   },
   {
     path: '/404',

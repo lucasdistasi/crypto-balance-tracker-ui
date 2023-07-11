@@ -5,7 +5,7 @@ import {Fragment} from "react";
 const PlatformDropdown = ({...props}) => {
 
   const {platforms, error, loading} = usePlatforms();
-  const {platform, onChangeFunction, classes} = props;
+  const {platform, onChangeFunction, classes, title} = props;
 
   return (
     <Fragment>
@@ -18,7 +18,9 @@ const PlatformDropdown = ({...props}) => {
         <Fragment>
           <label htmlFor="platforms"
                  className="block mb-2 text-sm font-medium text-gray-900">
-            Platform
+            {
+              title || "Platform"
+            }
           </label>
           <select id="platforms"
                   defaultValue={platform}

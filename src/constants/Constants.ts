@@ -9,6 +9,7 @@ export const DASHBOARDS_PLATFORMS_BALANCES_ENDPOINT = DASHBOARDS_ENDPOINT.concat
 export const DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT = DASHBOARDS_ENDPOINT.concat("/crypto/balances/platforms");
 export const DASHBOARDS_PLATFORMS_CRYPTOS_DISTRIBUTION_ENDPOINT = DASHBOARDS_ENDPOINT.concat("/platforms/coins");
 export const DASHBOARDS_CRYPTOS_PLATFORMS_DISTRIBUTION_ENDPOINT = DASHBOARDS_ENDPOINT.concat("/cryptos");
+export const TRANSFER_CRYPTO_ENDPOINT = CRYPTOS_ENDPOINT.concat("/transfer");
 
 export const getCryptosURL = (cryptoId: string) => {
   return `${CRYPTOS_ENDPOINT}/${cryptoId}`
