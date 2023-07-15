@@ -7,6 +7,7 @@ import {getCryptosURL, getPageCryptosURL} from "../../constants/Constants";
 import axios from "axios";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import {PageCryptoResponse} from "../../model/response/crypto/PageCryptoResponse";
+import TransferButton from "../table/TransferButton";
 
 const CryptosTable = () => {
 
@@ -185,6 +186,7 @@ const CryptosTable = () => {
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                       <EditButton editLink={`/crypto/${coinId}`}/>
+                      <TransferButton transferLink={`/transfer/${coinId}`}/>
                       <DeleteButton deleteFunction={() => deleteCrypto(coinId)}
                                     deleteId={coinId}
                                     deleteMessage={`Are you sure you want to delete ${coinName.toUpperCase()} in ${platform}?`}/>

@@ -1,4 +1,4 @@
-const ErrorAlert = ({message = "An error has occurred"}) => {
+const ErrorAlert = ({message = "An error has occurred"}: {message? : string }) => {
 
   return(
     <div id="alert-border-2"
