@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {getPlatformsURL, PLATFORMS_ENDPOINT} from "../constants/Constants";
 import {Platform} from "../model/Platform";
 import ErrorResponse from "../model/response/ErrorResponse";
-import {NavigateFunction, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 export function usePlatforms() {
@@ -10,10 +10,8 @@ export function usePlatforms() {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [platformName, setPlatformName] = useState("");
   const [errors, setErrors] = useState<ErrorResponse[]>([]);
   const [platforms, setPlatforms] = useState<Platform[]>([]);
-  const [platformNameError, setPlatformNameError] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -28,79 +26,6 @@ export function usePlatforms() {
       }
     )();
   }, []);
-
-  const redirectToPlatformsPage = (navigate: NavigateFunction) => {
-    navigate("/platforms");
-  }
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setPlatformName(event.target.value);
-
-    if (isValidPlatformName(event.target.value)) {
-      setPlatformNameError(false);
-    } else {
-      setPlatformNameError(true);
-    }
-  }
-
-  const isValidPlatformName = (platformName: string) => {
-    const regex = /^[a-zA-Z]{1,24}$/;
-
-    return regex.test(platformName);
-  }
-
-  const addPlatform = async (platformName: string) => {
-    if (!isValidPlatformName(platformName)) {
-      setPlatformNameError(true);
-      return;
-    }
-
-    try {
-      await axios.post(PLATFORMS_ENDPOINT, {
-        name: platformName
-      });
-      redirectToPlatformsPage(navigate);
-    } catch (err: any) {
-      const {status, data} = err.response;
-      if (status === 400) {
-        setErrors(data.errors);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    }
-  }
-
-  const updatePlatform = async (platformName: string) => {
-    if (!isValidPlatformName(platformName)) {
-      setPlatformNameError(true);
-      return;
-    }
-
-    const updatePlatformName: string = window.location.pathname.split('/').pop() ?? "";
-    const platformsURL = getPlatformsURL(updatePlatformName);
-
-    try {
-      const response = await axios.put(platformsURL, {
-        name: platformName
-      });
-
-      if (response.status === 200) {
-        redirectToPlatformsPage(navigate);
-      }
-    } catch (err: any) {
-      const {status, data} = err.response;
-      if (status === 400) {
-        setErrors(data.errors);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    }
-  }
 
   const deletePlatform = async (platformId: string) => {
     const platformsURL = getPlatformsURL(platformId);
@@ -128,13 +53,7 @@ export function usePlatforms() {
     platforms,
     error,
     loading,
-    platformName,
     errors,
-    platformNameError,
-    addPlatform,
     deletePlatform,
-    updatePlatform,
-    handleInputChange,
-    setPlatformName,
   };
 }
