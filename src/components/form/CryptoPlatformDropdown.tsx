@@ -33,7 +33,7 @@ const CryptoPlatformDropdown = ({label, ...props}) => {
           <select className={`${classes} border text-sm rounded-lg block w-full p-2.5`}
                   {...field}
                   {...props}>
-            <option>
+            <option value="">
               Select Platform
             </option>
             {
