@@ -120,8 +120,7 @@ const TransferCryptoForm = () => {
           <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
             <DisabledTextInput label="Crypto Name"
                                type="text"
-                               name="cryptoName"
-                               maxLength={64}/>
+                               name="cryptoName"/>
             <EditableTextInput label="Quantity to transfer"
                                name="quantityToTransfer"
                                type="number"

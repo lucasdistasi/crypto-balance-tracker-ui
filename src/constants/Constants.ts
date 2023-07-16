@@ -28,9 +28,3 @@ export const getPageCryptosURL = (page: number) => {
 }
 
 export const MONGO_ID_REGEX = /^[a-zA-Z0-9]{24}$/;
-
-export const isValidQuantity = (quantity: string) => {
-  const regex = /^(?=.*[1-9])\d{0,16}(\.\d{1,12})?$/;
-
-  return regex.test(quantity);
-}
