@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import {createBrowserRouter, Outlet} from "react-router-dom";
 import NotFoundPage from "../pages/error/NotFoundPage";
 import PlatformsPage from "../pages/platform/PlatformsPage";
 import CryptosPage from "../pages/crypto/CryptosPage";
@@ -12,66 +12,73 @@ import GoalsPage from "../pages/goal/GoalsPage";
 import EditGoalPage from "../pages/goal/EditGoalPage";
 import AddGoalPage from "../pages/goal/AddGoalPage";
 import TransferCryptoPage from "../pages/crypto/TransferCryptoPage";
+import ErrorBoundary from "../ErrorBoundary";
 
-// TODO - ADD ErrorBoundary.
+const ErrorBoundaryLayout = () => (
+  <ErrorBoundary fallback={<InternalErrorPage/>}>
+    <Outlet/>
+  </ErrorBoundary>
+);
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <DashboardsPage/>,
-  },
-  {
-    path: '/home',
-    element: <DashboardsPage/>,
-  },
-  {
-    path: '/platforms',
-    element: <PlatformsPage/>,
-  },
-  {
-    path: '/platform',
-    element: <AddPlatformPage/>,
-  },
-  {
-    path: '/platform/:id',
-    element: <EditPlatformPage/>,
-  },
-  {
-    path: '/cryptos',
-    element: <CryptosPage/>,
-  },
-  {
-    path: '/crypto',
-    element: <AddCryptoPage/>,
-  },
-  {
-    path: '/crypto/:id',
-    element: <EditCryptoPage/>,
-  },
-  {
-    path: '/goal',
-    element: <AddGoalPage/>
-  },
-  {
-    path: '/goals',
-    element: <GoalsPage/>
-  },
-  {
-    path: '/goal/:id',
-    element: <EditGoalPage/>
-  },
-  {
-    path: '/transfer/:id',
-    element: <TransferCryptoPage/>
-  },
-  {
-    path: '/404',
-    element: <NotFoundPage/>
-  },
-  {
-    path: '/error',
-    element: <InternalErrorPage/>
-  }
-]);
+const router = createBrowserRouter([{
+  element: <ErrorBoundaryLayout/>,
+  children: [
+    {
+      path: '/',
+      element: <DashboardsPage/>,
+    },
+    {
+      path: '/home',
+      element: <DashboardsPage/>,
+    },
+    {
+      path: '/platforms',
+      element: <PlatformsPage/>,
+    },
+    {
+      path: '/platform',
+      element: <AddPlatformPage/>,
+    },
+    {
+      path: '/platform/:id',
+      element: <EditPlatformPage/>,
+    },
+    {
+      path: '/cryptos',
+      element: <CryptosPage/>,
+    },
+    {
+      path: '/crypto',
+      element: <AddCryptoPage/>,
+    },
+    {
+      path: '/crypto/:id',
+      element: <EditCryptoPage/>,
+    },
+    {
+      path: '/goal',
+      element: <AddGoalPage/>
+    },
+    {
+      path: '/goals',
+      element: <GoalsPage/>
+    },
+    {
+      path: '/goal/:id',
+      element: <EditGoalPage/>
+    },
+    {
+      path: '/transfer/:id',
+      element: <TransferCryptoPage/>
+    },
+    {
+      path: '/404',
+      element: <NotFoundPage/>
+    },
+    {
+      path: '/error',
+      element: <InternalErrorPage/>
+    }]
+}]);
 
 export default router
