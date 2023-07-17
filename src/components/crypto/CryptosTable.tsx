@@ -1,6 +1,6 @@
 import EditButton from "../table/EditButton";
 import DeleteButton from "../table/DeleteButton";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useRef, useState} from "react";
 import ErrorAlert from "../page/ErrorAlert";
 import {Crypto} from "../../model/response/crypto/Crypto";
 import TableSkeleton from "../skeletons/TableSkeleton";
@@ -12,14 +12,13 @@ import {TableColumnContent} from "../table/TableColumnContent";
 
 const CryptosTable = () => {
 
-  // TODO - maybe use useRef ? => https://youtu.be/mNJOWXc83Y4?t=3461
+  const filteredCryptos = useRef<Array<Crypto>>([]);
   const [pageCryptoResponse, setPageCryptoResponse] = useState<PageCryptoResponse>({
     cryptos: [],
     hasNextPage: false,
     page: 0,
     totalPages: 0
   });
-  const [filteredCryptos, setFilteredCryptos] = useState<Array<Crypto>>([]);
   const [filterValue, setFilterValue] = useState("");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [page, setPage] = useState(0);
@@ -32,7 +31,7 @@ const CryptosTable = () => {
           const response = await getCryptosByPageService({page});
 
           setPageCryptoResponse(response);
-          setFilteredCryptos(response.cryptos);
+          filteredCryptos.current = response.cryptos;
         } catch (err) {
           setError(true);
         } finally {
@@ -46,7 +45,7 @@ const CryptosTable = () => {
     try {
       await deleteCryptoService({cryptoId});
 
-      const updatedFilteredCryptos = filteredCryptos.filter(crypto => crypto.coinId !== cryptoId);
+      const updatedFilteredCryptos = filteredCryptos.current.filter(crypto => crypto.coinId !== cryptoId);
       const updatedCryptos = pageCryptoResponse.cryptos.filter(crypto => crypto.coinId !== cryptoId);
       const {hasNextPage, page, totalPages} = pageCryptoResponse;
 
@@ -56,7 +55,7 @@ const CryptosTable = () => {
         page,
         totalPages
       });
-      setFilteredCryptos(updatedFilteredCryptos);
+      filteredCryptos.current = updatedFilteredCryptos;
     } catch (err) {
       setError(true);
     }
@@ -64,9 +63,7 @@ const CryptosTable = () => {
 
   const filterTable = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    const filteredCryptos = pageCryptoResponse.cryptos.filter(crypto => doesMatchFilter(crypto, value));
-
-    setFilteredCryptos(filteredCryptos);
+    filteredCryptos.current = pageCryptoResponse.cryptos.filter(crypto => doesMatchFilter(crypto, value));
     setFilterValue(value);
   }
 
@@ -77,9 +74,7 @@ const CryptosTable = () => {
 
     try {
       const response: PageCryptoResponse = await getCryptosByPageService({page: nextPage});
-      const allFiltered = [...filteredCryptos, ...response.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))]
-
-      setFilteredCryptos(allFiltered);
+      filteredCryptos.current = [...filteredCryptos.current, ...response.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))];
       setPageCryptoResponse({
         cryptos: [...pageCryptoResponse.cryptos, ...response.cryptos],
         hasNextPage: response.hasNextPage,
@@ -152,7 +147,7 @@ const CryptosTable = () => {
             </thead>
             <tbody>
             {
-              filteredCryptos.map(crypto => {
+              filteredCryptos.current.map(crypto => {
                 const {coinId, coinName, platform, quantity} = crypto;
 
                 return (
