@@ -2,12 +2,11 @@ import {Form, Formik} from "formik";
 import EditableTextInput from "../form/EditableTextInput";
 import SubmitButton from "../form/SubmitButton";
 import React, {useState} from "react";
-import axios from "axios";
-import {PLATFORMS_ENDPOINT} from "../../constants/Constants";
 import {useNavigate} from "react-router-dom";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {platformValidationsSchema} from "../../constants/ValidationSchemas";
+import {addPlatformService} from "../../services/platformServvice";
 
 const AddPlatformForm = () => {
 
@@ -19,9 +18,7 @@ const AddPlatformForm = () => {
     const {platformName} = values;
 
     try {
-      await axios.post(PLATFORMS_ENDPOINT, {
-        name: platformName
-      });
+      await addPlatformService({platformName});
 
       navigate("/platforms");
     } catch (error: any) {

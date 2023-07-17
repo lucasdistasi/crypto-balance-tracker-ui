@@ -1,9 +1,8 @@
 import {useEffect, useState} from "react";
-import {getPlatformsURL, PLATFORMS_ENDPOINT} from "../constants/Constants";
 import {Platform} from "../model/Platform";
 import ErrorResponse from "../model/response/ErrorResponse";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import {deletePlatformService, getAllPlatformsService} from "../services/platformServvice";
 
 export function usePlatforms() {
 
@@ -16,8 +15,8 @@ export function usePlatforms() {
   useEffect(() => {
     (async () => {
         try {
-          const response = await axios.get(PLATFORMS_ENDPOINT);
-          setPlatforms(response.data);
+          const response = await getAllPlatformsService();
+          setPlatforms(response);
         } catch (err) {
           setError(true);
         } finally {
@@ -28,10 +27,8 @@ export function usePlatforms() {
   }, []);
 
   const deletePlatform = async (platformId: string) => {
-    const platformsURL = getPlatformsURL(platformId);
-
     try {
-      const {status} = await axios.delete(platformsURL);
+      const {status} = await deletePlatformService({platformId});
 
       if (status === 204) {
         const updatedPlatforms = platforms.filter(platform => platform.name !== platformId);

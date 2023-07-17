@@ -1,11 +1,10 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {Chart} from "react-google-charts";
 import {PlatformCryptosDistributionResponse} from "../../../model/response/platform/PlatformCryptosDistributionResponse";
-import {DASHBOARDS_PLATFORMS_CRYPTOS_DISTRIBUTION_ENDPOINT} from "../../../constants/Constants";
-import axios from "axios";
 import ChartSkeleton from "../../skeletons/ChartSkeleton";
 import ErrorAlert from "../../page/ErrorAlert";
 import {Link} from "react-router-dom";
+import {getDashboardsPlatformsCryptosDistributionService} from "../../../services/platformServvice";
 
 const PlatformsCryptosDistributionChart = () => {
 
@@ -16,8 +15,8 @@ const PlatformsCryptosDistributionChart = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await axios.get(DASHBOARDS_PLATFORMS_CRYPTOS_DISTRIBUTION_ENDPOINT);
-          setCryptoPlatformBalanceResponses(response.data);
+          const response = await getDashboardsPlatformsCryptosDistributionService();
+          setCryptoPlatformBalanceResponses(response);
         } catch (err) {
           setError(true);
         } finally {

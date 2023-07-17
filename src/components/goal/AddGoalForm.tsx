@@ -2,12 +2,11 @@ import React, {useState} from "react";
 import {Form, Formik} from "formik";
 import EditableTextInput from "../form/EditableTextInput";
 import SubmitButton from "../form/SubmitButton";
-import {GOALS_ENDPOINT} from "../../constants/Constants";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {addGoalValidationSchema} from "../../constants/ValidationSchemas";
+import {addGoalService} from "../../services/goalService";
 
 const AddGoalForm = () => {
 
@@ -19,7 +18,7 @@ const AddGoalForm = () => {
     const {cryptoName, goalQuantity} = values;
 
     try {
-      await axios.post(GOALS_ENDPOINT, {
+      await addGoalService({
         cryptoName,
         quantityGoal: goalQuantity
       });

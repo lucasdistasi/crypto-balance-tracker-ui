@@ -1,8 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {Crypto} from "../../model/request/crypto/Crypto";
-import {getCryptosURL, MONGO_ID_REGEX} from "../../constants/Constants";
-import axios from "axios";
+import {MONGO_ID_REGEX} from "../../constants/Constants";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import {Form, Formik} from "formik";
 import EditableTextInput from "../form/EditableTextInput";
@@ -12,6 +11,7 @@ import ErrorAlert from "../page/ErrorAlert";
 import ErrorListAlert from "../page/ErrorListAlert";
 import DisabledTextInput from "../form/DisabledTextInput";
 import {updateCryptoValidationSchema} from "../../constants/ValidationSchemas";
+import {getCryptoService, updateCryptoService} from "../../services/cryptoService";
 
 const EditCryptoForm = () => {
 
@@ -28,12 +28,10 @@ const EditCryptoForm = () => {
   useEffect(() => {
     (async () => {
         if (MONGO_ID_REGEX.test(cryptoId)) {
-          const cryptoInfoURL = getCryptosURL(cryptoId);
-
           try {
-            const {data} = await axios.get(cryptoInfoURL);
+            const response = await getCryptoService({cryptoId});
 
-            setCrypto(data);
+            setCrypto(response);
           } catch (error: any) {
             setFetchInfoError(true);
           } finally {
@@ -55,10 +53,7 @@ const EditCryptoForm = () => {
     }
 
     try {
-      await axios.put(getCryptosURL(cryptoId), {
-        quantity,
-        platform
-      });
+      await updateCryptoService({cryptoId, quantity, platform});
 
       navigate("/cryptos");
     } catch (error: any) {

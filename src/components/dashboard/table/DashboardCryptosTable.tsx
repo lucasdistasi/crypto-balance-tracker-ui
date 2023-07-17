@@ -1,10 +1,11 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {ALL_CRYPTOS_DASHBOARD_ENDPOINT} from "../../../constants/Constants";
 import {CryptosBalancesResponse} from "../../../model/response/crypto/CryptosBalancesResponse";
 import TotalBalanceCards from "./TotalBalanceCards";
-import axios from "axios";
 import TableSkeleton from "../../skeletons/TableSkeleton";
 import ErrorAlert from "../../page/ErrorAlert";
+import {getAllCryptosDashboardService} from "../../../services/cryptoService";
+import {TableColumnTitle} from "../../table/TableColumnTitle";
+import {TableColumnContent} from "../../table/TableColumnContent";
 
 const DashboardCryptosTable = () => {
 
@@ -20,8 +21,8 @@ const DashboardCryptosTable = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await axios.get(ALL_CRYPTOS_DASHBOARD_ENDPOINT);
-          setCryptosDashboard(response.data);
+          const response = await getAllCryptosDashboardService();
+          setCryptosDashboard(response);
         } catch (err) {
           setError(true);
         } finally {
@@ -60,85 +61,33 @@ const DashboardCryptosTable = () => {
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-6 py-3">
-                  Name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Symbol
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Current Price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Circulating Supply
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Max Supply
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Quantity
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Balance
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Percentage
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Platform
-                </th>
+                <TableColumnTitle title="Name"/>
+                <TableColumnTitle title="Symbol"/>
+                <TableColumnTitle title="Current Price"/>
+                <TableColumnTitle title="Circulating Supply"/>
+                <TableColumnTitle title="Max Supply"/>
+                <TableColumnTitle title="Quantity"/>
+                <TableColumnTitle title="Balance"/>
+                <TableColumnTitle title="Percentage"/>
+                <TableColumnTitle title="Platform"/>
               </tr>
               </thead>
               <tbody>
               {
                 cryptosDashboard?.coins?.map(crypto => {
                   return (
-                    <tr key={crypto.coin_id} className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {
-                          crypto.coin_info.name
-                        }
-                      </th>
-                      <td className="px-6 py-4">
-                        {
-                          crypto.coin_info.symbol.toUpperCase()
-                        }
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {
-                          `U$D ${crypto.coin_info.market_data.current_price.usd}`
-                        }
-                      </td>
-                      <td className="px-6 py-4">
-                        {
-                          crypto.coin_info.market_data.circulating_supply.toString()
-                        }
-                      </td>
-                      <td className="px-6 py-4">
-                        {
-                          crypto.coin_info.market_data.max_supply?.toString() ?? "∞"
-                        }
-                      </td>
-                      <td className="px-6 py-4">
-                        {
-                          crypto.quantity
-                        }
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {
-                          `U$D ${crypto.balance}`
-                        }
-                      </td>
-                      <td className="px-6 py-4">
-                        {
-                          `${crypto.percentage}%`
-                        }
-                      </td>
-                      <td className="px-6 py-4">
-                        {
-                          crypto.platform
-                        }
-                      </td>
+                    <tr key={crypto.coin_id}
+                        className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
+                      <TableColumnContent content={crypto.coin_info.name}
+                                          rowScope={true}/>
+                      <TableColumnContent content={crypto.coin_info.symbol.toUpperCase()}/>
+                      <TableColumnContent content={`U$D ${crypto.coin_info.market_data.current_price.usd}`}/>
+                      <TableColumnContent content={crypto.coin_info.market_data.circulating_supply.toString()}/>
+                      <TableColumnContent content={crypto.coin_info.market_data.max_supply?.toString() ?? "∞"}/>
+                      <TableColumnContent content={crypto.quantity.toString()}/>
+                      <TableColumnContent content={`U$D ${crypto.balance}`}/>
+                      <TableColumnContent content={`${crypto.percentage}%`}/>
+                      <TableColumnContent content={crypto.platform}/>
                     </tr>
                   );
                 })
