@@ -53,12 +53,12 @@ const PlatformBalancesChart = () => {
       }
 
       {
-        !error && !loading && platformsBalances?.platforms?.length > 0 &&
+        !error && !loading && platformsBalances.platforms.length > 0 &&
         <Chart
           chartType="PieChart"
           data={[
             ["Cryptos", "Balances"],
-            ...platformsBalances?.platforms?.map(platform => [platform.platformName, platform.balance || 0])
+            ...platformsBalances.platforms.map(platform => [platform.platformName, platform.balance || 0])
           ]}
           options={options}
           width={"100%"}
