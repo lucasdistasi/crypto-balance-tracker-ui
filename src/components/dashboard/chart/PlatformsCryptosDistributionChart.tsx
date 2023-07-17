@@ -44,7 +44,7 @@ const PlatformsCryptosDistributionChart = () => {
       }
 
       {
-        !loading && !error && cryptoPlatformBalanceResponse?.length > 0 &&
+        !loading && !error && cryptoPlatformBalanceResponse.length > 0 &&
           cryptoPlatformBalanceResponse.map(platformCryptos => {
             return (
               <Chart
@@ -52,7 +52,7 @@ const PlatformsCryptosDistributionChart = () => {
                 chartType="PieChart"
                 data={[
                   ["Cryptos", "Balances"],
-                  ...platformCryptos?.coins?.map(coin => [coin.coin_info.name, coin.balance])
+                  ...platformCryptos.coins.map(coin => [coin.coin_info.name, coin.balance])
                 ]}
                 options={{
                   title: `${platformCryptos.platform}`,
