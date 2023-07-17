@@ -1,7 +1,5 @@
 import {useNavigate} from "react-router-dom";
 import {Form, Formik} from "formik";
-import {CRYPTOS_ENDPOINT} from "../../constants/Constants";
-import axios from "axios";
 import CryptoPlatformDropdown from "../form/CryptoPlatformDropdown";
 import EditableTextInput from "../form/EditableTextInput";
 import React, {useState} from "react";
@@ -9,6 +7,7 @@ import SubmitButton from "../form/SubmitButton";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {addCryptoValidationSchema} from "../../constants/ValidationSchemas";
+import {addCryptoService} from "../../services/cryptoService";
 
 const AddCryptoForm = () => {
 
@@ -17,13 +16,13 @@ const AddCryptoForm = () => {
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
 
   const addCrypto = async ({...values}) => {
-    const {cryptoName, quantity, platform} = values;
+    const {cryptoName: coinName, quantity, platform} = values;
 
     try {
-      await axios.post(CRYPTOS_ENDPOINT, {
-        coinName: cryptoName,
+      await addCryptoService({
+        coinName,
         quantity,
-        platform,
+        platform
       });
 
       navigate("/cryptos");

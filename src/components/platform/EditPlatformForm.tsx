@@ -1,5 +1,3 @@
-import {getPlatformsURL} from "../../constants/Constants";
-import axios from "axios";
 import React, {useEffect, useState} from "react";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import {useNavigate, useParams} from "react-router-dom";
@@ -9,13 +7,13 @@ import SubmitButton from "../form/SubmitButton";
 import ErrorListAlert from "../page/ErrorListAlert";
 import ErrorAlert from "../page/ErrorAlert";
 import {platformValidationsSchema} from "../../constants/ValidationSchemas";
+import {getPlatformService, updatePlatformService} from "../../services/platformServvice";
 
 const EditPlatformForm = () => {
 
   const navigate = useNavigate();
   const params = useParams();
   const platformName: string = params.id!!;
-  const platformsURL = getPlatformsURL(platformName.toUpperCase());
 
   const [platformNameResponse, setPlatformNameResponse] = useState({
     name: ""
@@ -27,9 +25,9 @@ const EditPlatformForm = () => {
   useEffect(() => {
     (async () => {
         try {
-          const {data} = await axios.get(platformsURL);
+          const response = await getPlatformService({platformName});
           setPlatformNameResponse({
-            name: data.name
+            name: response.name
           });
         } catch (err: any) {
           setFetchInfoError(true);
@@ -41,12 +39,10 @@ const EditPlatformForm = () => {
   }, []);
 
   const updatePlatform = async ({...values}) => {
-    const {platformName} = values;
+    const {platformName: platformNewName} = values;
 
     try {
-      await axios.put(platformsURL, {
-        name: platformName
-      });
+      await updatePlatformService({platformName, platformNewName});
 
       navigate("/platforms");
     } catch (error: any) {

@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {getCryptosURL, TRANSFER_CRYPTO_ENDPOINT} from "../../constants/Constants";
-import axios from "axios";
 import {Crypto} from "../../model/response/crypto/Crypto";
 import {Form, Formik} from "formik";
 import * as Yup from 'yup';
@@ -13,6 +11,7 @@ import ErrorAlert from "../page/ErrorAlert";
 import InfoFormSkeleton from "../skeletons/InfoFormSkeleton";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
+import {getCryptoService, transferCryptoService} from "../../services/cryptoService";
 
 const TransferCryptoForm = () => {
 
@@ -27,11 +26,9 @@ const TransferCryptoForm = () => {
 
   useEffect(() => {
     (async () => {
-      const cryptosURL = getCryptosURL(cryptoId);
-
       try {
-        const response = await axios.get(cryptosURL);
-        setCrypto(response.data);
+        const response = await getCryptoService({cryptoId});
+        setCrypto(response);
       } catch (error: any) {
         setHasError(true);
       } finally {
@@ -52,10 +49,10 @@ const TransferCryptoForm = () => {
     networkFee: Yup.number()
       .required("Network fee is required")
       .min(0, "Network fee cant be a negative number")
-      .max(crypto?.quantity, "Network fee cant be higher than quantity to transfer"),
+      .max(crypto?.quantity!, "Network fee cant be higher than quantity to transfer"),
     quantityToTransfer: Yup.number()
       .required("Quantity to transfer is required")
-      .max(crypto?.quantity, "Quantity to transfer can't be higher than current quantity")
+      .max(crypto?.quantity!, "Quantity to transfer can't be higher than current quantity")
       .moreThan(0, "Quantity to transfer can't be zero or a negative number"),
     toPlatform: Yup.string()
       .required("Select a valid To Platform")
@@ -66,7 +63,7 @@ const TransferCryptoForm = () => {
     const {quantityToTransfer, networkFee, toPlatform} = props
 
     try {
-      await axios.post(TRANSFER_CRYPTO_ENDPOINT, {
+      await transferCryptoService({
         cryptoId,
         quantityToTransfer,
         networkFee,

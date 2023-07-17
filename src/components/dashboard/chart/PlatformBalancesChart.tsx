@@ -1,10 +1,9 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {Chart} from "react-google-charts";
-import {DASHBOARDS_PLATFORMS_BALANCES_ENDPOINT} from "../../../constants/Constants";
 import {PlatformsBalancesResponse} from "../../../model/response/platform/PlatformsBalancesResponse";
-import axios from "axios";
 import ChartSkeleton from "../../skeletons/ChartSkeleton";
 import ErrorAlert from "../../page/ErrorAlert";
+import {getDashboardsPlatformsBalancesService} from "../../../services/platformServvice";
 
 const options = {
   titleTextStyle: {fontSize: 32, textAlign: "center"},
@@ -25,8 +24,8 @@ const PlatformBalancesChart = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await axios.get(DASHBOARDS_PLATFORMS_BALANCES_ENDPOINT);
-          setPlatformsBalances(response.data);
+          const response = await getDashboardsPlatformsBalancesService();
+          setPlatformsBalances(response);
         } catch (err) {
           setError(true);
         } finally {

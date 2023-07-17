@@ -1,5 +1,4 @@
-import {getGoalURL, MONGO_ID_REGEX} from "../../constants/Constants";
-import axios from "axios";
+import {MONGO_ID_REGEX} from "../../constants/Constants";
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import ErrorResponse from "../../model/response/ErrorResponse";
@@ -11,6 +10,7 @@ import SubmitButton from "../form/SubmitButton";
 import ErrorListAlert from "../page/ErrorListAlert";
 import ErrorAlert from "../page/ErrorAlert";
 import {updateGoalValidationSchema} from "../../constants/ValidationSchemas";
+import {getGoalService, updateGoalService} from "../../services/goalService";
 
 const EditGoalForm = () => {
 
@@ -27,12 +27,9 @@ const EditGoalForm = () => {
   useEffect(() => {
     (async () => {
         if (MONGO_ID_REGEX.test(goalId)) {
-          const goal = getGoalURL(goalId);
-
           try {
-            const {data} = await axios.get(goal);
-
-            setGoal(data);
+            const goal = await getGoalService({goalId});
+            setGoal(goal);
           } catch (error: any) {
             setFetchInfoError(true);
           } finally {
@@ -54,9 +51,7 @@ const EditGoalForm = () => {
     }
 
     try {
-      await axios.put(getGoalURL(goalId), {
-        quantityGoal: goalQuantity
-      });
+      await updateGoalService({goalId, quantityGoal: goalQuantity})
 
       navigate("/goals");
     } catch (error: any) {

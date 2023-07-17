@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {CryptosBalancesPlatformsResponse} from "../model/response/crypto/CryptosBalancesPlatformsResponse";
-import {DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT} from "../constants/Constants";
-import axios from "axios";
+import {getDashboardsCryptosPlatformsBalancesService} from "../services/platformServvice";
 
 export const useCryptosPlatformsBalances = () => {
 
@@ -14,8 +13,8 @@ export const useCryptosPlatformsBalances = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await axios.get(DASHBOARDS_CRYPTOS_PLATFORMS_BALANCES_ENDPOINT);
-          setResponse(response.data);
+          const response = await getDashboardsCryptosPlatformsBalancesService();
+          setResponse(response);
         } catch (err) {
           setError(true);
         } finally {

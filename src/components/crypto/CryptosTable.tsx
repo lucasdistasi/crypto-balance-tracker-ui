@@ -3,14 +3,16 @@ import DeleteButton from "../table/DeleteButton";
 import React, {Fragment, useEffect, useState} from "react";
 import ErrorAlert from "../page/ErrorAlert";
 import {Crypto} from "../../model/response/crypto/Crypto";
-import {getCryptosURL, getPageCryptosURL} from "../../constants/Constants";
-import axios from "axios";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import {PageCryptoResponse} from "../../model/response/crypto/PageCryptoResponse";
 import TransferButton from "../table/TransferButton";
+import {deleteCryptoService, getCryptosByPageService} from "../../services/cryptoService";
+import {TableColumnTitle} from "../table/TableColumnTitle";
+import {TableColumnContent} from "../table/TableColumnContent";
 
 const CryptosTable = () => {
 
+  // TODO - maybe use useRef ? => https://youtu.be/mNJOWXc83Y4?t=3461
   const [pageCryptoResponse, setPageCryptoResponse] = useState<PageCryptoResponse>({
     cryptos: [],
     hasNextPage: false,
@@ -26,12 +28,11 @@ const CryptosTable = () => {
 
   useEffect(() => {
     (async () => {
-        const cryptosURL = getPageCryptosURL(page);
-
         try {
-          const {data} = await axios.get(cryptosURL);
-          setPageCryptoResponse(data);
-          setFilteredCryptos(data.cryptos);
+          const response = await getCryptosByPageService({page});
+
+          setPageCryptoResponse(response);
+          setFilteredCryptos(response.cryptos);
         } catch (err) {
           setError(true);
         } finally {
@@ -42,10 +43,9 @@ const CryptosTable = () => {
   }, []);
 
   const deleteCrypto = async (cryptoId: string) => {
-    const cryptosUrl = getCryptosURL(cryptoId);
-
     try {
-      await axios.delete(cryptosUrl);
+      await deleteCryptoService({cryptoId});
+
       const updatedFilteredCryptos = filteredCryptos.filter(crypto => crypto.coinId !== cryptoId);
       const updatedCryptos = pageCryptoResponse.cryptos.filter(crypto => crypto.coinId !== cryptoId);
       const {hasNextPage, page, totalPages} = pageCryptoResponse;
@@ -74,18 +74,17 @@ const CryptosTable = () => {
     setIsLoadingMore(true);
     const nextPage = page + 1;
     setPage(nextPage);
-    const cryptosURL = getPageCryptosURL(nextPage);
 
     try {
-      const {data}: { data: PageCryptoResponse } = await axios.get(cryptosURL);
-      const allFiltered = [...filteredCryptos, ...data.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))]
+      const response: PageCryptoResponse = await getCryptosByPageService({page: nextPage});
+      const allFiltered = [...filteredCryptos, ...response.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))]
 
       setFilteredCryptos(allFiltered);
       setPageCryptoResponse({
-        cryptos: [...pageCryptoResponse.cryptos, ...data.cryptos],
-        hasNextPage: data.hasNextPage,
-        page: data.page,
-        totalPages: data.totalPages
+        cryptos: [...pageCryptoResponse.cryptos, ...response.cryptos],
+        hasNextPage: response.hasNextPage,
+        page: response.page,
+        totalPages: response.totalPages
       });
     } catch (err) {
       setError(true);
@@ -141,22 +140,14 @@ const CryptosTable = () => {
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col"
-                  className="px-6 py-4 text-center">
-                Crypto
-              </th>
-              <th scope="col"
-                  className="px-6 py-4 text-center">
-                Quantity
-              </th>
-              <th scope="col"
-                  className="px-6 py-4 text-center">
-                Platform
-              </th>
-              <th scope="col"
-                  className="px-6 py-4 text-center">
-                Action
-              </th>
+              <TableColumnTitle title="Crypto"
+                                additionalClasses="text-center"/>
+              <TableColumnTitle title="Quantity"
+                                additionalClasses="text-center"/>
+              <TableColumnTitle title="Platform"
+                                additionalClasses="text-center"/>
+              <TableColumnTitle title="Action"
+                                additionalClasses="text-center"/>
             </tr>
             </thead>
             <tbody>
@@ -167,22 +158,13 @@ const CryptosTable = () => {
                 return (
                   <tr key={coinId}
                       className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
-                    <th scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                      {
-                        coinName
-                      }
-                    </th>
-                    <td className="px-6 py-4 text-center">
-                      {
-                        quantity.toString()
-                      }
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      {
-                        platform
-                      }
-                    </td>
+                    <TableColumnContent content={coinName}
+                                        rowScope={true}
+                                        additionalClasses="text-center"/>
+                    <TableColumnContent content={quantity.toString()}
+                                        additionalClasses="text-center"/>
+                    <TableColumnContent content={platform}
+                                        additionalClasses="text-center"/>
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                       <EditButton editLink={`/crypto/${coinId}`}/>
