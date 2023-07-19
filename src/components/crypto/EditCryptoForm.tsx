@@ -1,7 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import {Crypto} from "../../model/request/crypto/Crypto";
-import {MONGO_ID_REGEX} from "../../constants/Constants";
+import React, {useState} from "react";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import {Form, Formik} from "formik";
 import EditableTextInput from "../form/EditableTextInput";
@@ -11,7 +9,8 @@ import ErrorAlert from "../page/ErrorAlert";
 import ErrorListAlert from "../page/ErrorListAlert";
 import DisabledTextInput from "../form/DisabledTextInput";
 import {updateCryptoValidationSchema} from "../../constants/ValidationSchemas";
-import {getCryptoService, updateCryptoService} from "../../services/cryptoService";
+import {updateCryptoService} from "../../services/cryptoService";
+import {useGetCrypto} from "../../hooks/useGetCrypto";
 
 const EditCryptoForm = () => {
 
@@ -19,30 +18,9 @@ const EditCryptoForm = () => {
   const params = useParams();
   const cryptoId: string = params.id!!;
 
-  const [crypto, setCrypto] = useState<Crypto>();
-  const [isLoading, setIsLoading] = useState(true);
+  const {crypto, isLoading, fetchInfoError} = useGetCrypto();
   const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
-  const [fetchInfoError, setFetchInfoError] = useState(false);
   const [noChangesError, setNoChangesError] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-        if (MONGO_ID_REGEX.test(cryptoId)) {
-          try {
-            const response = await getCryptoService({cryptoId});
-
-            setCrypto(response);
-          } catch (error: any) {
-            setFetchInfoError(true);
-          } finally {
-            setIsLoading(false);
-          }
-        } else {
-          navigate("/404");
-        }
-      }
-    )();
-  }, []);
 
   const updateCrypto = async ({...values}) => {
     const {quantity, platform} = values;

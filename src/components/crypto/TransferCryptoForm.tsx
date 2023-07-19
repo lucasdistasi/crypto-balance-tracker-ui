@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {Crypto} from "../../model/response/crypto/Crypto";
 import {Form, Formik} from "formik";
 import * as Yup from 'yup';
 import EditableTextInput from "../form/EditableTextInput";
@@ -11,31 +10,17 @@ import ErrorAlert from "../page/ErrorAlert";
 import InfoFormSkeleton from "../skeletons/InfoFormSkeleton";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
-import {getCryptoService, transferCryptoService} from "../../services/cryptoService";
+import {transferCryptoService} from "../../services/cryptoService";
+import {useGetCrypto} from "../../hooks/useGetCrypto";
 
 const TransferCryptoForm = () => {
 
   const navigate = useNavigate();
   const params = useParams();
   const cryptoId: string = params.id!!;
+  const {crypto, isLoading, fetchInfoError} = useGetCrypto();
 
-  const [crypto, setCrypto] = useState<Crypto>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await getCryptoService({cryptoId});
-        setCrypto(response);
-      } catch (error: any) {
-        setHasError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    })()
-  }, []);
 
   const initialValues = {
     cryptoName: crypto?.coinName ?? '',
@@ -96,7 +81,7 @@ const TransferCryptoForm = () => {
       }
 
       {
-        hasError && <ErrorAlert message="Error retrieving crypto information"/>
+        fetchInfoError && <ErrorAlert message="Error retrieving crypto information"/>
       }
 
       {
@@ -107,7 +92,7 @@ const TransferCryptoForm = () => {
       }
 
       {
-        !isLoading && !hasError &&
+        !isLoading && !fetchInfoError &&
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
