@@ -106,7 +106,7 @@ const CryptosTable = () => {
       }
 
       {
-        !error && !loading && pageCryptoResponse.cryptos.length > 0 &&
+        !error && !loading && pageCryptoResponse?.cryptos?.length > 0 &&
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-10 w-11/12">
           <div className="bg-white mb-2">
             <label htmlFor="table-search" className="sr-only">
