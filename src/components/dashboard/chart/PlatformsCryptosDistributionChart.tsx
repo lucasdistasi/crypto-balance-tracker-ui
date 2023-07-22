@@ -28,9 +28,35 @@ const PlatformsCryptosDistributionChart = () => {
 
   return (
     <Fragment>
-      <h1 className="text-4xl">
-        Platform Distribution
-      </h1>
+      {
+        !loading && !error && cryptoPlatformBalanceResponse?.length > 0 &&
+        <Fragment>
+          <h1 className="text-4xl">
+            Platform Distribution
+          </h1>
+
+          {
+            cryptoPlatformBalanceResponse.map(platformCryptos => {
+              return (
+                <Chart
+                  key={platformCryptos.platform}
+                  chartType="PieChart"
+                  data={[
+                    ["Cryptos", "Balances"],
+                    ...platformCryptos.coins.map(coin => [coin.coin_info.name, coin.balance])
+                  ]}
+                  options={{
+                    title: `${platformCryptos.platform}`,
+                    titleTextStyle: {fontSize: 32, textAlign: "center"},
+                  }}
+                  width={"100%"}
+                  height={"650px"}
+                />
+              );
+            })
+          }
+        </Fragment>
+      }
 
       {
         loading && !error &&
@@ -43,29 +69,7 @@ const PlatformsCryptosDistributionChart = () => {
       }
 
       {
-        !loading && !error && cryptoPlatformBalanceResponse.length > 0 &&
-          cryptoPlatformBalanceResponse.map(platformCryptos => {
-            return (
-              <Chart
-                key={platformCryptos.platform}
-                chartType="PieChart"
-                data={[
-                  ["Cryptos", "Balances"],
-                  ...platformCryptos.coins.map(coin => [coin.coin_info.name, coin.balance])
-                ]}
-                options={{
-                  title: `${platformCryptos.platform}`,
-                  titleTextStyle: {fontSize: 32, textAlign: "center"},
-                }}
-                width={"100%"}
-                height={"650px"}
-              />
-            );
-          })
-      }
-
-      {
-        !loading && !error && cryptoPlatformBalanceResponse?.length == 0 &&
+        !loading && !error && (!cryptoPlatformBalanceResponse || cryptoPlatformBalanceResponse?.length == 0) &&
         <div className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 px-4 py-3 my-8 w-11/12" role="alert">
           <p className="font-bold">No cryptos found</p>
           <p className="text-sm">

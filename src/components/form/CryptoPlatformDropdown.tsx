@@ -3,6 +3,7 @@ import {usePlatforms} from "../../hooks/usePlatforms";
 import React, {Fragment} from "react";
 import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
+import {Link} from "react-router-dom";
 
 const CryptoPlatformDropdown = ({label, ...props}) => {
   const [field, meta] = useField(props);
@@ -23,7 +24,18 @@ const CryptoPlatformDropdown = ({label, ...props}) => {
       }
 
       {
-        !loading && !error &&
+        !loading && !error && (!platforms || platforms?.length == 0) &&
+        <div className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 px-4 py-3 my-8 w-11/12" role="alert">
+          <p className="font-bold">No Platforms found</p>
+          <p className="text-sm">
+            Looks like you've no platforms added. Go to <Link to="/platform"><span className="font-bold italic">this link</span></Link> to add a platform before adding a crypto.
+          </p>
+        </div>
+
+      }
+
+      {
+        !loading && !error && platforms?.length > 0 &&
         <Fragment>
           <label htmlFor={props.id || props.name}
                  className="text-gray-900 block mb-2 text-sm font-medium">

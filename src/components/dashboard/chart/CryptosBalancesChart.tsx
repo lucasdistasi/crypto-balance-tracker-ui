@@ -28,9 +28,22 @@ const CryptosBalancesChart = () => {
 
   return (
     <Fragment>
-      <h1 className="text-4xl text-center">
-        All Cryptos Distribution
-      </h1>
+      {
+        !error && !loading && coinInfoResponse?.length > 0 &&
+        <Fragment>
+          <h1 className="text-4xl text-center">
+            All Cryptos Distribution
+          </h1>
+
+          <Chart
+            chartType="PieChart"
+            data={getCryptosDistribution()}
+            options={options}
+            width={"100%"}
+            height={"650px"}
+          />
+        </Fragment>
+      }
 
       {
         loading && !error &&
@@ -40,19 +53,6 @@ const CryptosBalancesChart = () => {
       {
         error && !loading &&
         <ErrorAlert/>
-      }
-
-      {
-        !error && !loading && coinInfoResponse.length > 0 &&
-        <Fragment>
-          <Chart
-            chartType="PieChart"
-            data={getCryptosDistribution()}
-            options={options}
-            width={"100%"}
-            height={"650px"}
-          />
-        </Fragment>
       }
     </Fragment>
   );

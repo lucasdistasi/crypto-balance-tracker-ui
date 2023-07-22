@@ -27,9 +27,36 @@ const CryptoPlatformsDistributionChart = () => {
 
   return (
     <Fragment>
-      <h1 className="text-4xl">
-        Crypto Distribution
-      </h1>
+      {
+        !error && !loading && response?.length > 0 &&
+        <Fragment>
+          <h1 className="text-4xl">
+            Crypto Distribution
+          </h1>
+
+          {
+            response.map(crypto => {
+              return (
+                <Chart
+                  key={crypto.crypto}
+                  chartType="PieChart"
+                  data={[
+                    ["Cryptos", "Balances"],
+                    ...crypto.coins.map(coin => [coin.platform, coin.balance])
+                  ]}
+                  options={{
+                    title: `${crypto.crypto.toUpperCase()}`,
+                    titleTextStyle: {fontSize: 32, textAlign: "center"},
+                  }}
+                  width={"100%"}
+                  height={"650px"}
+                />
+              );
+            })
+          }
+        </Fragment>
+      }
+
       {
         loading && !error &&
         <ChartSkeleton/>
@@ -38,28 +65,6 @@ const CryptoPlatformsDistributionChart = () => {
       {
         error && !loading &&
         <ErrorAlert/>
-      }
-
-      {
-        !error && !loading && response?.length > 0 &&
-        response.map(crypto => {
-          return (
-            <Chart
-              key={crypto.crypto}
-              chartType="PieChart"
-              data={[
-                ["Cryptos", "Balances"],
-                ...crypto.coins.map(coin => [coin.platform, coin.balance])
-              ]}
-              options={{
-                title: `${crypto.crypto.toUpperCase()}`,
-                titleTextStyle: {fontSize: 32, textAlign: "center"},
-              }}
-              width={"100%"}
-              height={"650px"}
-            />
-          );
-        })
       }
     </Fragment>
   );
