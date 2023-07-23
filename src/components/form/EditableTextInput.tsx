@@ -1,6 +1,8 @@
-import {ErrorMessage, Field, useField} from "formik";
+import {ErrorMessage, Field, FieldHookConfig, useField} from "formik";
 
-const EditableTextInput = ({label, ...props}) => {
+const EditableTextInput = ({label, ...props}: {
+  label: string
+} & FieldHookConfig<string>) => {
   const [field, meta] = useField(props);
 
   const classes = meta.touched && meta.error ?
@@ -9,7 +11,7 @@ const EditableTextInput = ({label, ...props}) => {
 
   return (
     <div className="mb-6">
-      <label htmlFor={props.id || props.name}
+      <label htmlFor={props.id ?? props.name}
              className="text-gray-900 block mb-2 text-sm font-medium">
         {label}
       </label>
@@ -18,7 +20,7 @@ const EditableTextInput = ({label, ...props}) => {
              autoComplete="off"
              {...field}
              {...props} />
-      <ErrorMessage name={props.id || props.name}
+      <ErrorMessage name={props.id ?? props.name}
                     component="span"
                     className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium"/>
     </div>

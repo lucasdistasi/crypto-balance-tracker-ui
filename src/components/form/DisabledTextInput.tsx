@@ -1,11 +1,13 @@
-import {Field, useField} from "formik";
+import {Field, FieldHookConfig, useField} from "formik";
 
-const DisabledTextInput = ({label, ...props}) => {
+const DisabledTextInput = ({label, ...props}: {
+  label: string,
+} & FieldHookConfig<string>) => {
   const [field] = useField(props);
 
   return (
     <div className="mb-6">
-      <label htmlFor={props.id || props.name}
+      <label htmlFor={props.id ?? props.name}
              className="text-gray-900 block mb-2 text-sm font-medium">
         {label}
       </label>
