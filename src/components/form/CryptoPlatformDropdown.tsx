@@ -1,11 +1,13 @@
-import {ErrorMessage, useField} from "formik";
+import {ErrorMessage, Field, FieldHookConfig, useField} from "formik";
 import {usePlatforms} from "../../hooks/usePlatforms";
 import React, {Fragment} from "react";
 import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
 import {Link} from "react-router-dom";
 
-const CryptoPlatformDropdown = ({label, ...props}) => {
+const CryptoPlatformDropdown = ({label, ...props}:{
+  label: string
+} & FieldHookConfig<string>) => {
   const [field, meta] = useField(props);
   const {platforms, error, loading} = usePlatforms();
 
@@ -25,7 +27,7 @@ const CryptoPlatformDropdown = ({label, ...props}) => {
 
       {
         !loading && !error && (!platforms || platforms?.length == 0) &&
-        <div className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 px-4 py-3 my-8 w-11/12" role="alert">
+        <div className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 px-4 py-3 my-8 w-full" role="alert">
           <p className="font-bold">No Platforms found</p>
           <p className="text-sm">
             Looks like you've no platforms added. Go to <Link to="/platform"><span className="font-bold italic">this link</span></Link> to add a platform before adding a crypto.
@@ -37,12 +39,12 @@ const CryptoPlatformDropdown = ({label, ...props}) => {
       {
         !loading && !error && platforms?.length > 0 &&
         <Fragment>
-          <label htmlFor={props.id || props.name}
+          <label htmlFor={props.id ?? props.name}
                  className="text-gray-900 block mb-2 text-sm font-medium">
             {label}
           </label>
 
-          <select className={`${classes} border text-sm rounded-lg block w-full p-2.5`}
+          <Field as="select" className={`${classes} border text-sm rounded-lg block w-full p-2.5`}
                   {...field}
                   {...props}>
             <option value="">
@@ -62,8 +64,8 @@ const CryptoPlatformDropdown = ({label, ...props}) => {
                 );
               })
             }
-          </select>
-          <ErrorMessage name={props.id || props.name}
+          </Field>
+          <ErrorMessage name={props.id ?? props.name}
                         component="span"
                         className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium"/>
         </Fragment>
