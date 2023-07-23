@@ -40,3 +40,57 @@ Typescript-ReactJS application to consume endpoints from [crypto-balance-tracker
 [USDT-trc20]: https://imgur.com/ubUWdpI
 [USDT-bep20]: https://imgur.com/rrrYd9j
 [USDT-erc20]: https://imgur.com/G9DPKvU
+
+## App Screenshots
+
+### Home page
+
+![Imgur](https://i.imgur.com/Awnswol.png)
+
+### Cryptos page
+
+![Imgur](https://i.imgur.com/pRc8vPx.png)
+
+### Add crypto page
+
+![Imgur](https://i.imgur.com/4Bjmiyv.png)
+
+### Update crypto page
+
+![Imgur](https://i.imgur.com/f7FNpV6.png)
+
+### Transfer crypto page
+
+![Imgur](https://i.imgur.com/vyRM4n5.png)
+
+### Platforms page
+
+![Imgur](https://i.imgur.com/xiD4cEk.png)
+
+### Add platform page
+
+![Imgur](https://i.imgur.com/Xthe2f9.png)
+
+### Update platform page
+
+![Imgur](https://i.imgur.com/KRR9yiD.png)
+
+### Goals page
+
+![Imgur](https://i.imgur.com/ToQqymK.png)
+
+### Add goal page
+
+![Imgur](https://i.imgur.com/6AKO61y.png)
+
+### Update goal page
+
+![Imgur](https://i.imgur.com/dts2gWJ.png)
+
+### Frontend error example
+
+![Imgur](https://i.imgur.com/VDxmmjb.png)
+
+### Backend error example
+
+![Imgur](https://i.imgur.com/n6djCV6.png)
