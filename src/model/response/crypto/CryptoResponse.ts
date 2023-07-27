@@ -1,7 +1,7 @@
 import {CoinInfoResponse} from "./CoinInfoResponse";
 
 export interface CryptoResponse {
-  coin_id: string,
+  crypto_id: string,
   coin_info: CoinInfoResponse,
   quantity: number,
   balance: number,

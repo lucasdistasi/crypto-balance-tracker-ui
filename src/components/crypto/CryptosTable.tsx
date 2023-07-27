@@ -45,8 +45,8 @@ const CryptosTable = () => {
     try {
       await deleteCryptoService({cryptoId});
 
-      const updatedFilteredCryptos = filteredCryptos.current.filter(crypto => crypto.coinId !== cryptoId);
-      const updatedCryptos = pageCryptoResponse.cryptos.filter(crypto => crypto.coinId !== cryptoId);
+      const updatedFilteredCryptos = filteredCryptos.current.filter(crypto => crypto.id !== cryptoId);
+      const updatedCryptos = pageCryptoResponse.cryptos.filter(crypto => crypto.id !== cryptoId);
       const {hasNextPage, page, totalPages} = pageCryptoResponse;
 
       setPageCryptoResponse({
@@ -89,7 +89,7 @@ const CryptosTable = () => {
   }
 
   const doesMatchFilter = (crypto: Crypto, value: string) => {
-    return crypto.coinName.toUpperCase().startsWith(value.toUpperCase()) ||
+    return crypto.cryptoName.toUpperCase().startsWith(value.toUpperCase()) ||
       crypto.platform.toUpperCase().startsWith(value.toUpperCase());
   }
 
@@ -148,12 +148,12 @@ const CryptosTable = () => {
             <tbody>
             {
               filteredCryptos.current.map(crypto => {
-                const {coinId, coinName, platform, quantity} = crypto;
+                const {id, cryptoName, platform, quantity} = crypto;
 
                 return (
-                  <tr key={coinId}
+                  <tr key={id}
                       className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
-                    <TableColumnContent content={coinName}
+                    <TableColumnContent content={cryptoName}
                                         rowScope={true}
                                         additionalClasses="text-center"/>
                     <TableColumnContent content={quantity.toString()}
@@ -162,11 +162,11 @@ const CryptosTable = () => {
                                         additionalClasses="text-center"/>
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
-                      <EditButton editLink={`/crypto/${coinId}`}/>
-                      <TransferButton transferLink={`/transfer/${coinId}`}/>
-                      <DeleteButton deleteFunction={() => deleteCrypto(coinId)}
-                                    deleteId={coinId}
-                                    deleteMessage={`Are you sure you want to delete ${coinName.toUpperCase()} in ${platform}?`}/>
+                      <EditButton editLink={`/crypto/${id}`}/>
+                      <TransferButton transferLink={`/transfer/${id}`}/>
+                      <DeleteButton deleteFunction={() => deleteCrypto(id)}
+                                    deleteId={id}
+                                    deleteMessage={`Are you sure you want to delete ${cryptoName.toUpperCase()} in ${platform}?`}/>
                     </td>
                   </tr>
                 );

@@ -1,5 +1,5 @@
 export interface Crypto {
-  coinName: string,
+  cryptoName: string,
   platform: string,
   quantity: string
 }
