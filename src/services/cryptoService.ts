@@ -32,13 +32,13 @@ export const deleteCryptoService = async ({cryptoId}:{
     .then(response => response);
 }
 
-export const addCryptoService = async ({coinName, quantity, platform}:{
-  coinName: string,
+export const addCryptoService = async ({cryptoName, quantity, platform}:{
+  cryptoName: string,
   quantity: bigint,
   platform: string
 }) => {
   return await axios.post(CRYPTOS_ENDPOINT, {
-    coinName,
+    cryptoName,
     quantity,
     platform,
   });

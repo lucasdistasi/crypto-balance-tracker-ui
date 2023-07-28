@@ -93,7 +93,7 @@ const GoalsTable = () => {
                     <TableColumnContent content={goal.remainingQuantity.toString()}
                                         additionalClasses="text-center"/>
                     <TableColumnContent content={`U$D ${goal.moneyNeeded.toString()}`}
-                                        additionalClasses="text-center"/>
+                                        additionalClasses="whitespace-nowrap text-center"/>
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                       <EditButton editLink={`/goal/${goal.goalId}`}/>

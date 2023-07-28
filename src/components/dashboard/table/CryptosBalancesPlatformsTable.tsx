@@ -22,19 +22,19 @@ const CryptosBalancesPlatformsTable = () => {
       }
 
       {
-        !error && !loading && response?.coinInfoResponse?.length == 0 &&
+        !error && !loading && response?.cryptoInfoResponse?.length == 0 &&
         <h1>
           No cryptos ...
         </h1>
       }
 
       {
-        !error && !loading && response?.coinInfoResponse?.length > 0 &&
+        !error && !loading && response?.cryptoInfoResponse?.length > 0 &&
         <div className="relative overflow-x-auto sm:rounded-lg w-11/12 mb-8">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <TableColumnTitle title="Name"/>
+              <TableColumnTitle title="Crypto"/>
               <TableColumnTitle title="Total Quantity"/>
               <TableColumnTitle title="Total Balance"/>
               <TableColumnTitle title="Total Percentage"/>
@@ -43,17 +43,19 @@ const CryptosBalancesPlatformsTable = () => {
             </thead>
             <tbody>
             {
-              response.coinInfoResponse.map(crypto => {
+              response.cryptoInfoResponse.map(crypto => {
                 return (
                   <tr key={crypto.name}
                       className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
                     <TableColumnContent content={crypto.name}
                                         rowScope={true}/>
                     <TableColumnContent content={crypto.quantity.toString()}/>
-                    <TableColumnContent content={`U$D ${crypto.balance.toString()}`}/>
+                    <TableColumnContent content={`U$D ${crypto.balance.toString()}`}
+                                        additionalClasses="whitespace-nowrap"/>
                     <TableColumnContent content={`${crypto.percentage}%`}
                                         additionalClasses="font-medium text-gray-900 whitespace-nowrap dark:text-white"/>
-                    <TableColumnContent content={crypto.platforms.join(" - ")}/>
+                    <TableColumnContent content={crypto.platforms.join(" - ")}
+                                        additionalClasses="whitespace-nowrap"/>
                   </tr>
                 );
               })

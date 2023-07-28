@@ -5,7 +5,7 @@ import {getDashboardsCryptosPlatformsBalancesService} from "../services/platform
 export const useCryptosPlatformsBalances = () => {
 
   const [response, setResponse] = useState<CryptosBalancesPlatformsResponse>({
-    coinInfoResponse: []
+    cryptoInfoResponse: []
   });
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);

@@ -11,12 +11,12 @@ const options = {
 const CryptosBalancesChart = () => {
 
   const {response, error, loading} = useCryptosPlatformsBalances();
-  const {coinInfoResponse} = response;
+  const {cryptoInfoResponse} = response;
 
   const getCryptosDistribution = () => {
-    const cryptos = coinInfoResponse.slice(0, 12)
+    const cryptos = cryptoInfoResponse.slice(0, 12)
       .map(crypto => [crypto.name, crypto.balance]);
-    const othersTotalValue = coinInfoResponse.slice(12)
+    const othersTotalValue = cryptoInfoResponse.slice(12)
       .reduce((total, crypto) => total + Number(crypto.balance), 0);
     cryptos.push(["Others", othersTotalValue]);
 
@@ -29,7 +29,7 @@ const CryptosBalancesChart = () => {
   return (
     <Fragment>
       {
-        !error && !loading && coinInfoResponse?.length > 0 &&
+        !error && !loading && cryptoInfoResponse?.length > 0 &&
         <Fragment>
           <h1 className="text-4xl text-center">
             All Cryptos Distribution

@@ -43,7 +43,7 @@ const PlatformsCryptosDistributionChart = () => {
                   chartType="PieChart"
                   data={[
                     ["Cryptos", "Balances"],
-                    ...platformCryptos.coins.map(coin => [coin.coin_info.name, coin.balance])
+                    ...platformCryptos.cryptos.map(crypto => [crypto.coin_info.name, crypto.balance])
                   ]}
                   options={{
                     title: `${platformCryptos.platform}`,

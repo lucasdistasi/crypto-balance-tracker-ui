@@ -45,7 +45,7 @@ const EditGoalForm = () => {
   const updateGoal = async ({...values}) => {
     const {goalQuantity} = values;
 
-    if (BigInt(goal?.goalQuantity!) === BigInt(goalQuantity)) {
+    if (String(goal?.goalQuantity!) === String(goalQuantity)) {
       setNoChangesError(true);
       return;
     }

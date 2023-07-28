@@ -1,4 +1,4 @@
-export interface DashboardCoinInfoResponse {
+export interface DashboardCryptoInfoResponse {
   name: string,
   quantity: bigint,
   balance: bigint,

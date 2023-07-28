@@ -23,7 +23,7 @@ const TransferCryptoForm = () => {
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
 
   const initialValues = {
-    cryptoName: crypto?.coinName ?? '',
+    cryptoName: crypto?.cryptoName ?? '',
     quantityToTransfer: crypto?.quantity ?? 0,
     networkFee: 0,
     fromPlatform: crypto?.platform ?? '',
@@ -72,7 +72,7 @@ const TransferCryptoForm = () => {
     <div className="flex flex-col items-center min-h-screen">
       <h1 className="text-4xl text-gray-900 text-center my-10">
         {
-          `Transfer ${crypto?.coinName}`
+          `Transfer ${crypto?.cryptoName}`
         }
       </h1>
 
@@ -117,7 +117,7 @@ const TransferCryptoForm = () => {
             <CryptoPlatformDropdown label="To platform"
                                     name="toPlatform"/>
 
-            <SubmitButton text={`Transfer ${crypto?.coinName}`}/>
+            <SubmitButton text={`Transfer ${crypto?.cryptoName}`}/>
           </Form>
         </Formik>
       }

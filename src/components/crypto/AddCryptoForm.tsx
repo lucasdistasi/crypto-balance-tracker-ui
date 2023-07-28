@@ -16,11 +16,11 @@ const AddCryptoForm = () => {
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
 
   const addCrypto = async ({...values}) => {
-    const {cryptoName: coinName, quantity, platform} = values;
+    const {cryptoName, quantity, platform} = values;
 
     try {
       await addCryptoService({
-        coinName,
+        cryptoName,
         quantity,
         platform
       });
