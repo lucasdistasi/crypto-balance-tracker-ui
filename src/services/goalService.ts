@@ -7,8 +7,11 @@ const getGoalURL = (goalId: string) => {
   return `${GOALS_ENDPOINT}/${goalId}`
 }
 
-export const getAllGoalsService = async () => {
-  return await axios.get(GOALS_ENDPOINT).then(response => response.data);
+export const getGoalsByPageService = async (page: number) => {
+  const pageGoalsEndpoint = `${GOALS_ENDPOINT}?page=${page}`
+
+  return await axios.get(pageGoalsEndpoint)
+    .then(response => response.data);
 }
 
 export const getGoalService = async ({goalId}: {
