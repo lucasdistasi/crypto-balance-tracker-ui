@@ -78,13 +78,13 @@ const DashboardCryptosTable = () => {
                   return (
                     <tr key={crypto.crypto_id}
                         className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
-                      <TableColumnContent content={crypto.coin_info.name}
+                      <TableColumnContent content={crypto.crypto_info.name}
                                           rowScope={true}/>
-                      <TableColumnContent content={crypto.coin_info.symbol.toUpperCase()}/>
-                      <TableColumnContent content={`U$D ${crypto.coin_info.market_data.current_price.usd}`}
+                      <TableColumnContent content={crypto.crypto_info.symbol.toUpperCase()}/>
+                      <TableColumnContent content={`U$D ${crypto.crypto_info.market_data.current_price.usd}`}
                                           additionalClasses="whitespace-nowrap"/>
-                      <TableColumnContent content={crypto.coin_info.market_data.circulating_supply.toString()}/>
-                      <TableColumnContent content={crypto.coin_info.market_data.max_supply?.toString() ?? "∞"}/>
+                      <TableColumnContent content={crypto.crypto_info.market_data.circulating_supply.toString()}/>
+                      <TableColumnContent content={crypto.crypto_info.market_data.max_supply?.toString() ?? "∞"}/>
                       <TableColumnContent content={crypto.quantity.toString()}/>
                       <TableColumnContent content={`U$D ${crypto.balance}`}
                                           additionalClasses="whitespace-nowrap"/>
