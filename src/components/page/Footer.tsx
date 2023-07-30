@@ -14,7 +14,7 @@ const Footer = () => {
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-8 md:gap-6 lg:grid-cols-4">
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Cryptos
@@ -45,6 +45,23 @@ const Footer = () => {
                 <li>
                   <Link to="/platform" className="hover:underline">
                     Add Platform
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                Goals
+              </h2>
+              <ul className="text-gray-600 dark:text-gray-400 font-medium">
+                <li className="mb-4">
+                  <Link to="/platforms" className="hover:underline ">
+                    Goals
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/platform" className="hover:underline">
+                    Add Goal
                   </Link>
                 </li>
               </ul>

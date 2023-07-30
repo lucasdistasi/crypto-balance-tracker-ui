@@ -3,6 +3,7 @@ import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
 import AddNewButton from "../../components/buttons/AddNewButton";
 import GoalsTable from "../../components/goal/GoalsTable";
+import withScrollToTop from "../../hoc/withScrollToTop";
 
 const GoalsPage = () => {
 
@@ -18,4 +19,4 @@ const GoalsPage = () => {
   )
 }
 
-export default GoalsPage
+export default withScrollToTop(GoalsPage)
