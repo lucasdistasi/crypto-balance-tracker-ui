@@ -1,8 +1,8 @@
-import {CoinInfoResponse} from "./CoinInfoResponse";
+import {CoingeckoCryptoInfo} from "./CoingeckoCryptoInfo";
 
 export interface CryptoResponse {
   crypto_id: string,
-  coin_info: CoinInfoResponse,
+  crypto_info: CoingeckoCryptoInfo,
   quantity: number,
   balance: number,
   percentage: number,
