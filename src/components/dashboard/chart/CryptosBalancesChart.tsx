@@ -15,7 +15,7 @@ const CryptosBalancesChart = () => {
 
   const getCryptosDistribution = () => {
     const cryptos = cryptoInfoResponse.slice(0, 12)
-      .map(crypto => [crypto.name, crypto.balance]);
+      .map(crypto => [crypto.name, Number(crypto.balance)]);
     const othersTotalValue = cryptoInfoResponse.slice(12)
       .reduce((total, crypto) => total + Number(crypto.balance), 0);
     cryptos.push(["Others", othersTotalValue]);

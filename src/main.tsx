@@ -4,9 +4,16 @@ import './index.css'
 import {RouterProvider} from "react-router-dom";
 import router from "./routes/Router";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-  .render(
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>,
-  )
+const htmlElement = document.getElementById('root');
+
+if (process.env.NODE_ENV === 'PRODUCTION') {
+  ReactDOM.createRoot(htmlElement as HTMLElement)
+    .render(<RouterProvider router={router} />)
+} else {
+  ReactDOM.createRoot(htmlElement as HTMLElement)
+    .render(
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>,
+    )
+}

@@ -34,10 +34,10 @@ const TransferCryptoForm = () => {
     networkFee: Yup.number()
       .required("Network fee is required")
       .min(0, "Network fee cant be a negative number")
-      .max(crypto?.quantity!, "Network fee cant be higher than quantity to transfer"),
+      .max(Number(crypto?.quantity!), "Network fee cant be higher than quantity to transfer"),
     quantityToTransfer: Yup.number()
       .required("Quantity to transfer is required")
-      .max(crypto?.quantity!, "Quantity to transfer can't be higher than current quantity")
+      .max(Number(crypto?.quantity!), "Quantity to transfer can't be higher than current quantity")
       .moreThan(0, "Quantity to transfer can't be zero or a negative number"),
     toPlatform: Yup.string()
       .required("Select a valid To Platform")
