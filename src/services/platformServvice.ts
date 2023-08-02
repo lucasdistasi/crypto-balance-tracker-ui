@@ -61,10 +61,10 @@ export const updatePlatformService = async ({platformName, platformNewName}: {
   }).then(response => response);
 }
 
-export const addPlatformService = async ({platformName}: {
-  platformName: string
+export const addPlatformService = async ({platform_name}: {
+  platform_name: string
 }) => {
   return await axios.post(PLATFORMS_ENDPOINT, {
-    name: platformName
+    name: platform_name
   });
 }

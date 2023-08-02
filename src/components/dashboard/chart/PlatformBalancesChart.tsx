@@ -42,7 +42,7 @@ const PlatformBalancesChart = () => {
             chartType="PieChart"
             data={[
               ["Cryptos", "Balances"],
-              ...platformsBalances.map(platform => [platform.platformName, platform.balance || 0])
+              ...platformsBalances.map(platform => [platform.platform_name, platform.balance || 0])
             ]}
             options={options}
             width={"100%"}

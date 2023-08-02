@@ -16,11 +16,11 @@ const AddCryptoForm = () => {
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
 
   const addCrypto = async ({...values}) => {
-    const {cryptoName, quantity, platform} = values;
+    const {crypto_name, quantity, platform} = values;
 
     try {
       await addCryptoService({
-        cryptoName,
+        crypto_name,
         quantity,
         platform
       });
@@ -53,7 +53,7 @@ const AddCryptoForm = () => {
 
       <Formik
         initialValues={{
-          cryptoName: '',
+          crypto_name: '',
           quantity: 0,
           platform: ''
         }}
@@ -65,7 +65,7 @@ const AddCryptoForm = () => {
         <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
           <EditableTextInput label="Crypto Name"
                              type="text"
-                             name="cryptoName"
+                             name="crypto_name"
                              placeholder="Bitcoin"
                              maxLength={64}/>
           <EditableTextInput label="Quantity"

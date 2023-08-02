@@ -2,7 +2,7 @@ import {GoalResponse} from "./GoalResponse";
 
 export interface PageGoalResponse {
   goals: Array<GoalResponse>,
-  hasNextPage: boolean,
+  has_next_page: boolean,
   page: number,
-  totalPages: number
+  total_pages: number
 }

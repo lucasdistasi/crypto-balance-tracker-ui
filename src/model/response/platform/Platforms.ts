@@ -1,5 +1,5 @@
 export interface Platforms {
-  platformName: string,
+  platform_name: string,
   percentage: number,
   balance: bigint
 }

@@ -2,7 +2,7 @@ import {Crypto} from "./Crypto";
 
 export interface PageCryptoResponse {
   page: number,
-  totalPages: number,
-  hasNextPage: boolean,
+  total_pages: number,
+  has_next_page: boolean,
   cryptos: Array<Crypto>
 }

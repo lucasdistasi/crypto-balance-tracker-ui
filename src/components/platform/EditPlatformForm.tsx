@@ -39,7 +39,7 @@ const EditPlatformForm = () => {
   }, []);
 
   const updatePlatform = async ({...values}) => {
-    const {platformName: platformNewName} = values;
+    const {platform_name: platformNewName} = values;
 
     try {
       await updatePlatformService({platformName, platformNewName});
@@ -81,7 +81,7 @@ const EditPlatformForm = () => {
         !fetchInfoError && !isLoading &&
         <Formik
           initialValues={{
-            platformName: platformNameResponse.name ?? ''
+            platform_name: platformNameResponse.name ?? ''
           }}
           validationSchema={platformValidationsSchema}
           onSubmit={(values, {setSubmitting}) => {
@@ -89,7 +89,7 @@ const EditPlatformForm = () => {
           }}>
           <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
             <EditableTextInput label="Platform Name"
-                               name="platformName"
+                               name="platform_name"
                                type="text"/>
             <SubmitButton text="Update platform"/>
           </Form>

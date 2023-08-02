@@ -15,9 +15,9 @@ const CryptosTable = () => {
   const filteredCryptos = useRef<Array<Crypto>>([]);
   const [pageCryptoResponse, setPageCryptoResponse] = useState<PageCryptoResponse>({
     cryptos: [],
-    hasNextPage: false,
+    has_next_page: false,
     page: 0,
-    totalPages: 0
+    total_pages: 0
   });
   const [filterValue, setFilterValue] = useState("");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -47,13 +47,13 @@ const CryptosTable = () => {
 
       const updatedFilteredCryptos = filteredCryptos.current.filter(crypto => crypto.id !== cryptoId);
       const updatedCryptos = pageCryptoResponse.cryptos.filter(crypto => crypto.id !== cryptoId);
-      const {hasNextPage, page, totalPages} = pageCryptoResponse;
+      const {has_next_page, page, total_pages} = pageCryptoResponse;
 
       setPageCryptoResponse({
         cryptos: updatedCryptos,
-        hasNextPage,
+        has_next_page,
         page,
-        totalPages
+        total_pages
       });
       filteredCryptos.current = updatedFilteredCryptos;
     } catch (err) {
@@ -77,9 +77,9 @@ const CryptosTable = () => {
       filteredCryptos.current = [...filteredCryptos.current, ...response.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))];
       setPageCryptoResponse({
         cryptos: [...pageCryptoResponse.cryptos, ...response.cryptos],
-        hasNextPage: response.hasNextPage,
+        has_next_page: response.has_next_page,
         page: response.page,
-        totalPages: response.totalPages
+        total_pages: response.total_pages
       });
     } catch (err) {
       setError(true);
@@ -89,7 +89,7 @@ const CryptosTable = () => {
   }
 
   const doesMatchFilter = (crypto: Crypto, value: string) => {
-    return crypto.cryptoName.toUpperCase().startsWith(value.toUpperCase()) ||
+    return crypto.crypto_name.toUpperCase().startsWith(value.toUpperCase()) ||
       crypto.platform.toUpperCase().startsWith(value.toUpperCase());
   }
 
@@ -148,12 +148,12 @@ const CryptosTable = () => {
             <tbody>
             {
               filteredCryptos.current.map(crypto => {
-                const {id, cryptoName, platform, quantity} = crypto;
+                const {id, crypto_name, platform, quantity} = crypto;
 
                 return (
                   <tr key={id}
                       className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
-                    <TableColumnContent content={cryptoName}
+                    <TableColumnContent content={crypto_name}
                                         rowScope={true}
                                         additionalClasses="text-center"/>
                     <TableColumnContent content={quantity.toString()}
@@ -166,7 +166,7 @@ const CryptosTable = () => {
                       <TransferButton transferLink={`/transfer/${id}`}/>
                       <DeleteButton deleteFunction={() => deleteCrypto(id)}
                                     deleteId={id}
-                                    deleteMessage={`Are you sure you want to delete ${cryptoName.toUpperCase()} in ${platform}?`}/>
+                                    deleteMessage={`Are you sure you want to delete ${crypto_name.toUpperCase()} in ${platform}?`}/>
                     </td>
                   </tr>
                 );
@@ -178,7 +178,7 @@ const CryptosTable = () => {
       }
 
       {
-        !error && !loading && pageCryptoResponse.hasNextPage &&
+        !error && !loading && pageCryptoResponse.has_next_page &&
         <button type="button"
                 className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center mb-10 w-1/2"
                 onClick={loadMore}>

@@ -43,15 +43,15 @@ const EditGoalForm = () => {
   }, []);
 
   const updateGoal = async ({...values}) => {
-    const {goalQuantity} = values;
+    const {goal_quantity} = values;
 
-    if (String(goal?.goalQuantity!) === String(goalQuantity)) {
+    if (String(goal?.goal_quantity!) === String(goal_quantity)) {
       setNoChangesError(true);
       return;
     }
 
     try {
-      await updateGoalService({goalId, quantityGoal: goalQuantity})
+      await updateGoalService({goalId, goal_quantity})
 
       navigate("/goals");
     } catch (error: any) {
@@ -70,7 +70,7 @@ const EditGoalForm = () => {
     <div className="flex flex-col items-center min-h-screen">
       <h1 className="text-4xl text-gray-900 text-center my-10">
         {
-          `Update ${goal?.cryptoName} Goal`
+          `Update ${goal?.crypto_name} Goal`
         }
       </h1>
 
@@ -95,8 +95,8 @@ const EditGoalForm = () => {
         !fetchInfoError && !isLoading &&
         <Formik
           initialValues={{
-            cryptoName: goal?.cryptoName ?? '',
-            goalQuantity: goal?.goalQuantity ?? 0
+            crypto_name: goal?.crypto_name ?? '',
+            goal_quantity: goal?.goal_quantity ?? 0
           }}
           validationSchema={updateGoalValidationSchema}
           onSubmit={(values, {setSubmitting}) => {
@@ -104,10 +104,10 @@ const EditGoalForm = () => {
           }}>
           <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
             <DisabledTextInput label="Crypto Name"
-                               name="cryptoName"
+                               name="crypto_name"
                                type="text"/>
             <EditableTextInput label="Goal Quantity"
-                               name="goalQuantity"
+                               name="goal_quantity"
                                type="number"/>
             <SubmitButton text="Update Goal"/>
           </Form>

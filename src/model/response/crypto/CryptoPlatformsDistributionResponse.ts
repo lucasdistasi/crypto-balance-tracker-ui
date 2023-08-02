@@ -1,6 +1,6 @@
 import {CryptoResponse} from "./CryptoResponse";
 
 export interface CryptoPlatformsDistributionResponse {
-  cryptoId: string,
+  crypto_id: string,
   cryptos: CryptoResponse[],
 }

@@ -32,13 +32,13 @@ export const deleteCryptoService = async ({cryptoId}:{
     .then(response => response);
 }
 
-export const addCryptoService = async ({cryptoName, quantity, platform}:{
-  cryptoName: string,
+export const addCryptoService = async ({crypto_name, quantity, platform}:{
+  crypto_name: string,
   quantity: bigint,
   platform: string
 }) => {
   return await axios.post(CRYPTOS_ENDPOINT, {
-    cryptoName,
+    crypto_name,
     quantity,
     platform,
   });
@@ -68,16 +68,16 @@ export const getAllCryptosDashboardService = async () => {
     .then(response => response.data);
 }
 
-export const transferCryptoService = async ({cryptoId, quantityToTransfer, networkFee, toPlatform}: {
-  cryptoId: string,
-  quantityToTransfer: bigint,
-  networkFee: bigint,
-  toPlatform: string
+export const transferCryptoService = async ({crypto_id, quantity_to_transfer, network_fee, to_platform}: {
+  crypto_id: string,
+  quantity_to_transfer: bigint,
+  network_fee: bigint,
+  to_platform: string
 }) => {
   return await axios.post(TRANSFER_CRYPTO_ENDPOINT, {
-    cryptoId,
-    quantityToTransfer,
-    networkFee,
-    toPlatform
+    crypto_id,
+    quantity_to_transfer,
+    network_fee,
+    to_platform
   });
 }

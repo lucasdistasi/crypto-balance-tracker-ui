@@ -20,22 +20,22 @@ export const getGoalService = async ({goalId}: {
   return await axios.get(getGoalURL(goalId)).then(response => response.data);
 }
 
-export const updateGoalService = async ({goalId, quantityGoal}: {
+export const updateGoalService = async ({goalId, goal_quantity}: {
   goalId: string,
-  quantityGoal: bigint
+  goal_quantity: bigint
 }) => {
   return await axios.put(getGoalURL(goalId), {
-    quantityGoal
+    quantity_goal: goal_quantity
   }).then(response => response.data);
 }
 
-export const addGoalService = async ({cryptoName, quantityGoal}: {
-  cryptoName: string,
-  quantityGoal: bigint
+export const addGoalService = async ({crypto_name, quantity_goal}: {
+  crypto_name: string,
+  quantity_goal: bigint
 }) => {
   return await axios.post(GOALS_ENDPOINT, {
-    cryptoName,
-    quantityGoal
+    crypto_name,
+    quantity_goal
   }).then(response => response.data)
 }
 
