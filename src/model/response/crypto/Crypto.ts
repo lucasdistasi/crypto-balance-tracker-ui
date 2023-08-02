@@ -1,6 +1,6 @@
 export interface Crypto {
   id: string,
-  cryptoName: string,
+  crypto_name: string,
   platform: string,
   quantity: string
 }

@@ -50,7 +50,7 @@ const EditCryptoForm = () => {
     <div className="flex flex-col items-center min-h-screen">
       <h1 className="text-4xl text-gray-900 text-center my-10">
         {
-          `Update ${crypto?.cryptoName}`
+          `Update ${crypto?.crypto_name}`
         }
       </h1>
 
@@ -75,7 +75,7 @@ const EditCryptoForm = () => {
         !fetchInfoError && !isLoading &&
         <Formik
           initialValues={{
-            cryptoName: crypto?.cryptoName ?? '',
+            crypto_name: crypto?.crypto_name ?? '',
             quantity: crypto?.quantity ?? 0,
             platform: crypto?.platform ?? ''
           }}
@@ -87,7 +87,7 @@ const EditCryptoForm = () => {
           <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
             <DisabledTextInput label="Crypto Name"
                                type="text"
-                               name="cryptoName"/>
+                               name="crypto_name"/>
             <EditableTextInput label="Quantity"
                                type="number"
                                name="quantity"/>

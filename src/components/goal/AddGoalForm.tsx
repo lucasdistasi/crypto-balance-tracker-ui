@@ -15,12 +15,12 @@ const AddGoalForm = () => {
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
 
   const addGoal = async ({...values}) => {
-    const {cryptoName, goalQuantity} = values;
+    const {crypto_name, goal_quantity} = values;
 
     try {
       await addGoalService({
-        cryptoName,
-        quantityGoal: goalQuantity
+        crypto_name,
+        quantity_goal: goal_quantity
       });
 
       navigate("/goals");
@@ -51,8 +51,8 @@ const AddGoalForm = () => {
 
       <Formik
         initialValues={{
-          cryptoName: '',
-          goalQuantity: 0
+          crypto_name: '',
+          goal_quantity: 0
         }}
         validationSchema={addGoalValidationSchema}
         onSubmit={(values, {setSubmitting}) => {
@@ -62,12 +62,12 @@ const AddGoalForm = () => {
         <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
           <EditableTextInput label="Crypto Name"
                              type="text"
-                             name="cryptoName"
+                             name="crypto_name"
                              placeholder="Bitcoin"
                              maxLength={64}/>
           <EditableTextInput label="Goal Quantity"
                              type="text"
-                             name="goalQuantity"/>
+                             name="goal_quantity"/>
           <SubmitButton text="Add Goal"/>
         </Form>
       </Formik>

@@ -15,10 +15,10 @@ const AddPlatformForm = () => {
   const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
 
   const addPlatform = async ({...values}) => {
-    const {platformName} = values;
+    const {platform_name} = values;
 
     try {
-      await addPlatformService({platformName});
+      await addPlatformService({platform_name});
 
       navigate("/platforms");
     } catch (error: any) {
@@ -48,7 +48,7 @@ const AddPlatformForm = () => {
 
       <Formik
         initialValues={{
-          platformName: ''
+          platform_name: ''
         }}
         validationSchema={platformValidationsSchema}
         onSubmit={(values, {setSubmitting}) => {
@@ -56,9 +56,8 @@ const AddPlatformForm = () => {
         }}>
         <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
           <EditableTextInput label="Platform Name"
-                             name="platformName"
+                             name="platform_name"
                              type="text"/>
-
           <SubmitButton text="Add platform"/>
         </Form>
       </Formik>

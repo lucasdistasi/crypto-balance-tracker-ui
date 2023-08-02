@@ -10,9 +10,9 @@ import {TableColumnContent} from "../../table/TableColumnContent";
 const DashboardCryptosTable = () => {
 
   const [cryptosDashboard, setCryptosDashboard] = useState<CryptosBalancesResponse>({
-    totalBalance: 0n,
-    totalEURBalance: 0n,
-    totalBTCBalance: 0n,
+    total_balance: 0n,
+    total_EUR_balance: 0n,
+    total_BTC_balance: 0n,
     cryptos: [],
   });
   const [error, setError] = useState(false);
@@ -54,9 +54,9 @@ const DashboardCryptosTable = () => {
       {
         !error && !loading && cryptosDashboard?.cryptos?.length > 0 &&
         <Fragment>
-          <TotalBalanceCards totalUsdValue={cryptosDashboard.totalBalance}
-                             totalEurValue={cryptosDashboard.totalEURBalance}
-                             totalBtcValue={cryptosDashboard.totalBTCBalance}/>
+          <TotalBalanceCards totalUsdValue={cryptosDashboard.total_balance}
+                             totalEurValue={cryptosDashboard.total_EUR_balance}
+                             totalBtcValue={cryptosDashboard.total_BTC_balance}/>
           <div className="relative overflow-x-auto sm:rounded-lg w-11/12 mb-8">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -76,7 +76,7 @@ const DashboardCryptosTable = () => {
               {
                 cryptosDashboard?.cryptos?.map(crypto => {
                   return (
-                    <tr key={crypto.crypto_id}
+                    <tr key={crypto.id}
                         className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
                       <TableColumnContent content={crypto.crypto_info.name}
                                           rowScope={true}/>

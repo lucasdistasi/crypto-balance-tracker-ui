@@ -38,14 +38,14 @@ const CryptoPlatformsDistributionChart = () => {
             response.map(crypto => {
               return (
                 <Chart
-                  key={crypto.cryptoId}
+                  key={crypto.crypto_id}
                   chartType="PieChart"
                   data={[
                     ["Cryptos", "Balances"],
                     ...crypto.cryptos.map(crypto => [crypto.platform, crypto.balance])
                   ]}
                   options={{
-                    title: `${crypto.cryptoId.toUpperCase()}`,
+                    title: `${crypto.crypto_id.toUpperCase()}`,
                     titleTextStyle: {fontSize: 32, textAlign: "center"},
                   }}
                   width={"100%"}

@@ -1,7 +1,7 @@
 import {CoingeckoCryptoInfo} from "./CoingeckoCryptoInfo";
 
 export interface CryptoResponse {
-  crypto_id: string,
+  id: string,
   crypto_info: CoingeckoCryptoInfo,
   quantity: number,
   balance: number,

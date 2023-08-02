@@ -1,5 +1,5 @@
 import {DashboardCryptoInfoResponse} from "./DashboardCryptoInfoResponse";
 
 export interface CryptosBalancesPlatformsResponse {
-  cryptoInfoResponse: DashboardCryptoInfoResponse[]
+  crypto_info_response: DashboardCryptoInfoResponse[]
 }
