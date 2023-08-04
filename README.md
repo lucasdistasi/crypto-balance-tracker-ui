@@ -1,6 +1,13 @@
 # Crypto Balance Tracker UI :rocket:
 
-Typescript-ReactJS application to consume endpoints from [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker).
+Typescript-ReactJS application to consume endpoints
+from [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker).
+
+|               |                                                                                                               |
+|---------------|---------------------------------------------------------------------------------------------------------------|
+| License       | [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)       |
+| Project views | [![Project views](https://hits.dwyl.com/lucasdistasi/crypto-balance-tracker-login.svg)]()                     |
+| Snyk          | [![Known Vulnerabilities](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-login/badge.svg)]() |
 
 ## Technologies used :sparkles:
 
