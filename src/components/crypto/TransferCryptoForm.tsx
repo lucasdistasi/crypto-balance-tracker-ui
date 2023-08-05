@@ -12,6 +12,7 @@ import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {transferCryptoService} from "../../services/cryptoService";
 import {useGetCrypto} from "../../hooks/useGetCrypto";
+import CheckboxInput from "../form/CheckboxInput";
 
 const TransferCryptoForm = () => {
 
@@ -25,6 +26,7 @@ const TransferCryptoForm = () => {
   const initialValues = {
     crypto_name: crypto?.crypto_name ?? '',
     quantity_to_transfer: crypto?.quantity ?? 0,
+    send_full_quantity: false,
     network_fee: 0,
     from_platform: crypto?.platform ?? '',
     to_platform: ''
@@ -45,12 +47,13 @@ const TransferCryptoForm = () => {
   });
 
   const transferCrypto = async ({...props}) => {
-    const {quantity_to_transfer, network_fee, to_platform} = props
+    const {quantity_to_transfer, send_full_quantity, network_fee, to_platform} = props
 
     try {
       await transferCryptoService({
         crypto_id,
         quantity_to_transfer,
+        send_full_quantity,
         network_fee,
         to_platform
       });
@@ -107,6 +110,8 @@ const TransferCryptoForm = () => {
                                name="quantity_to_transfer"
                                type="number"
                                max={crypto?.quantity}/>
+            <CheckboxInput label="Send full quantity"
+                           name="send_full_quantity"/>
             <EditableTextInput label="Network fee"
                                name="network_fee"
                                type="number"
