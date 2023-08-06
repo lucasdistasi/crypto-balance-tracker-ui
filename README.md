@@ -3,11 +3,11 @@
 Typescript-ReactJS application to consume endpoints
 from [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker).
 
-|               |                                                                                                               |
-|---------------|---------------------------------------------------------------------------------------------------------------|
-| License       | [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)       |
-| Project views | [![Project views](https://hits.dwyl.com/lucasdistasi/crypto-balance-tracker-login.svg)]()                     |
-| Snyk          | [![Known Vulnerabilities](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-login/badge.svg)]() |
+|               |                                                                                                                                                                                 |
+|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| License       | [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)                                                                         |
+| Project views | [![Project views](https://hits.dwyl.com/lucasdistasi/crypto-balance-tracker-login.svg)]()                                                                                       |
+| Snyk Analysis | [![Known Vulnerabilities](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-login/badge.svg)](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-ui) |
 
 ## Technologies used :sparkles:
 
@@ -41,11 +41,17 @@ from [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tra
 | USDT   | ERC20   | 0x304714FDA2060c570B1afb1BC231C0973abBEC23 | [USDT-erc20]  |
 
 [BTC-bitcoin]: https://imgur.com/Hs0DYDk
+
 [BTC-trc20]: https://imgur.com/kdROHrE
+
 [ETH-bep20]: https://imgur.com/DIOiJrL
+
 [ETH-erc20]: https://imgur.com/REXkDmu
+
 [USDT-trc20]: https://imgur.com/ubUWdpI
+
 [USDT-bep20]: https://imgur.com/rrrYd9j
+
 [USDT-erc20]: https://imgur.com/G9DPKvU
 
 ## App Screenshots
