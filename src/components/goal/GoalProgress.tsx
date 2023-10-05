@@ -6,11 +6,9 @@ const GoalProgress = ({progress, actualQuantity}: { progress: number, actualQuan
     <Fragment>
       {
         progress >= 100 ?
-          <Fragment>
-            <p>
-              &#11088; Achieved &#11088;
-            </p>
-          </Fragment>
+          <p>
+            &#11088; Achieved &#11088;
+          </p>
           :
           <Fragment>
             <div className="flex justify-between mb-1">

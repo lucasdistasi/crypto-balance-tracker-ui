@@ -6,28 +6,27 @@ import {useNavigate} from "react-router-dom";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {addGoalValidationSchema} from "../../constants/ValidationSchemas";
-import {addGoalService} from "../../services/goalService";
+import {saveGoal} from "../../services/goalService";
 
 const AddGoalForm = () => {
 
   const navigate = useNavigate();
-
-  const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
+  const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
 
   const addGoal = async ({...values}) => {
-    const {crypto_name, goal_quantity} = values;
+    const {cryptoName, goalQuantity} = values;
 
     try {
-      await addGoalService({
-        crypto_name,
-        quantity_goal: goal_quantity
+      await saveGoal({
+        cryptoName,
+        goalQuantity
       });
 
       navigate("/goals");
     } catch (error: any) {
       const {status} = error.response;
       if (status >= 400 && status < 500) {
-        setApiErrors(error.response.data.errors);
+        setApiErrors(error.response.data);
       }
 
       if (status >= 500) {
@@ -45,14 +44,14 @@ const AddGoalForm = () => {
       {
         apiErrors && apiErrors.length >= 1 &&
         <ErrorListAlert
-          title="Error adding crypto"
+          title="Error adding goal"
           errors={apiErrors}/>
       }
 
       <Formik
         initialValues={{
-          crypto_name: '',
-          goal_quantity: 0
+          cryptoName: '',
+          goalQuantity: 0
         }}
         validationSchema={addGoalValidationSchema}
         onSubmit={(values, {setSubmitting}) => {
@@ -62,12 +61,12 @@ const AddGoalForm = () => {
         <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
           <EditableTextInput label="Crypto Name"
                              type="text"
-                             name="crypto_name"
+                             name="cryptoName"
                              placeholder="Bitcoin"
                              maxLength={64}/>
           <EditableTextInput label="Goal Quantity"
                              type="text"
-                             name="goal_quantity"/>
+                             name="goalQuantity"/>
           <SubmitButton text="Add Goal"/>
         </Form>
       </Formik>

@@ -6,25 +6,25 @@ import {useNavigate} from "react-router-dom";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import ErrorListAlert from "../page/ErrorListAlert";
 import {platformValidationsSchema} from "../../constants/ValidationSchemas";
-import {addPlatformService} from "../../services/platformServvice";
+import {addPlatformService} from "../../services/platformService";
 
 const AddPlatformForm = () => {
 
   const navigate = useNavigate();
 
-  const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
+  const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
   const addPlatform = async ({...values}) => {
-    const {platform_name} = values;
+    const {platformName} = values;
 
     try {
-      await addPlatformService({platform_name});
+      await addPlatformService({platformName});
 
       navigate("/platforms");
     } catch (error: any) {
       const {status} = error.response;
       if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data.errors);
+        setApiResponseError(error.response.data);
       }
 
       if (status >= 500) {
@@ -48,7 +48,7 @@ const AddPlatformForm = () => {
 
       <Formik
         initialValues={{
-          platform_name: ''
+          platformName: ''
         }}
         validationSchema={platformValidationsSchema}
         onSubmit={(values, {setSubmitting}) => {
@@ -56,7 +56,7 @@ const AddPlatformForm = () => {
         }}>
         <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
           <EditableTextInput label="Platform Name"
-                             name="platform_name"
+                             name="platformName"
                              type="text"/>
           <SubmitButton text="Add platform"/>
         </Form>

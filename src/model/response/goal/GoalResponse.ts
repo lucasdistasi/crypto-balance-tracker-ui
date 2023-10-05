@@ -1,9 +1,9 @@
 export interface GoalResponse {
   id: string
-  crypto_name: string
-  actual_quantity: string
+  cryptoName: string
+  actualQuantity: string
   progress: number
-  remaining_quantity: string
-  goal_quantity: string
-  money_needed: string
+  remainingQuantity: string
+  goalQuantity: string
+  moneyNeeded: string
 }

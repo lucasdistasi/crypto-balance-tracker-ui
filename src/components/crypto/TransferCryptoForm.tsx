@@ -13,56 +13,59 @@ import ErrorListAlert from "../page/ErrorListAlert";
 import {transferCryptoService} from "../../services/cryptoService";
 import {useGetCrypto} from "../../hooks/useGetCrypto";
 import CheckboxInput from "../form/CheckboxInput";
+import {usePlatforms} from "../../hooks/usePlatforms";
 
 const TransferCryptoForm = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const crypto_id: string = params.id!!;
-  const {crypto, isLoading, fetchInfoError} = useGetCrypto();
+  const userCryptoId: string = params.id!!;
+  const {userCrypto, isLoading, fetchInfoError} = useGetCrypto();
+  const {platforms} = usePlatforms()
 
-  const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
+  const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
 
   const initialValues = {
-    crypto_name: crypto?.crypto_name ?? '',
-    quantity_to_transfer: crypto?.quantity ?? 0,
-    send_full_quantity: false,
-    network_fee: 0,
-    from_platform: crypto?.platform ?? '',
-    to_platform: ''
+    cryptoName: userCrypto?.cryptoName ?? '',
+    quantityToTransfer: userCrypto?.quantity ?? 0,
+    sendFullQuantity: false,
+    networkFee: 0,
+    fromPlatform: userCrypto?.platform ?? '',
+    toPlatform: ''
   };
 
   const validationSchema = Yup.object({
-    network_fee: Yup.number()
+    networkFee: Yup.number()
       .required("Network fee is required")
       .min(0, "Network fee cant be a negative number")
-      .max(Number(crypto?.quantity!), "Network fee cant be higher than quantity to transfer"),
-    quantity_to_transfer: Yup.number()
+      .max(Number(userCrypto?.quantity!), "Network fee cant be higher than quantity to transfer"),
+    quantityToTransfer: Yup.number()
       .required("Quantity to transfer is required")
-      .max(Number(crypto?.quantity!), "Quantity to transfer can't be higher than current quantity")
+      .max(Number(userCrypto?.quantity!), "Quantity to transfer can't be higher than current quantity")
       .moreThan(0, "Quantity to transfer can't be zero or a negative number"),
-    to_platform: Yup.string()
+    toPlatform: Yup.string()
       .required("Select a valid To Platform")
-      .notOneOf([crypto?.platform], "Can't be same as from platform")
+      .notOneOf([userCrypto?.platform], "Can't be same as from platform")
   });
 
   const transferCrypto = async ({...props}) => {
-    const {quantity_to_transfer, send_full_quantity, network_fee, to_platform} = props
+    const {quantityToTransfer, sendFullQuantity, networkFee, toPlatform} = props;
+    const toPlatformId = platforms.find(platform => platform.name == toPlatform)?.id ?? '';
 
     try {
       await transferCryptoService({
-        crypto_id,
-        quantity_to_transfer,
-        send_full_quantity,
-        network_fee,
-        to_platform
+        userCryptoId,
+        quantityToTransfer,
+        sendFullQuantity,
+        networkFee,
+        toPlatformId
       });
 
       navigate("/cryptos");
     } catch (error: any) {
       const {status} = error.response;
       if (status >= 400 && status < 500) {
-        setApiErrors(error.response.data.errors);
+        setApiErrors(error.response.data);
       }
 
       if (status >= 500) {
@@ -75,7 +78,7 @@ const TransferCryptoForm = () => {
     <div className="flex flex-col items-center min-h-screen">
       <h1 className="text-4xl text-gray-900 text-center my-10">
         {
-          `Transfer ${crypto?.crypto_name}`
+          `Transfer ${userCrypto?.cryptoName}`
         }
       </h1>
 
@@ -105,24 +108,24 @@ const TransferCryptoForm = () => {
           <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
             <DisabledTextInput label="Crypto Name"
                                type="text"
-                               name="crypto_name"/>
+                               name="cryptoName"/>
             <EditableTextInput label="Quantity to transfer"
-                               name="quantity_to_transfer"
+                               name="quantityToTransfer"
                                type="number"
-                               max={crypto?.quantity}/>
+                               max={userCrypto?.quantity}/>
             <CheckboxInput label="Send full quantity"
-                           name="send_full_quantity"/>
+                           name="sendFullQuantity"/>
             <EditableTextInput label="Network fee"
-                               name="network_fee"
+                               name="networkFee"
                                type="number"
-                               max={crypto?.quantity}/>
+                               max={userCrypto?.quantity}/>
             <DisabledTextInput label="From platform"
                                type="text"
-                               name="from_platform"/>
+                               name="fromPlatform"/>
             <CryptoPlatformDropdown label="To platform"
-                                    name="to_platform"/>
+                                    name="toPlatform"/>
 
-            <SubmitButton text={`Transfer ${crypto?.crypto_name}`}/>
+            <SubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/>
           </Form>
         </Formik>
       }

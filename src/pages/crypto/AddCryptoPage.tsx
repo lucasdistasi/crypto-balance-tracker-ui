@@ -9,7 +9,9 @@ const AddCryptoPage = () => {
   return (
     <Fragment>
       <Navbar/>
-      <AddCryptoForm/>
+      <div className="min-h-screen">
+        <AddCryptoForm/>
+      </div>
       <Footer/>
     </Fragment>
   );

@@ -2,22 +2,22 @@ import EditButton from "../table/EditButton";
 import DeleteButton from "../table/DeleteButton";
 import React, {Fragment, useEffect, useRef, useState} from "react";
 import ErrorAlert from "../page/ErrorAlert";
-import {Crypto} from "../../model/response/crypto/Crypto";
 import TableSkeleton from "../skeletons/TableSkeleton";
-import {PageCryptoResponse} from "../../model/response/crypto/PageCryptoResponse";
 import TransferButton from "../table/TransferButton";
 import {deleteCryptoService, getCryptosByPageService} from "../../services/cryptoService";
 import {TableColumnTitle} from "../table/TableColumnTitle";
 import {TableColumnContent} from "../table/TableColumnContent";
+import {PageUserCryptoResponse} from "../../model/response/usercrypto/PageUserCryptoResponse";
+import {UserCryptoResponse} from "../../model/response/usercrypto/UserCryptoResponse";
 
 const CryptosTable = () => {
 
-  const filteredCryptos = useRef<Array<Crypto>>([]);
-  const [pageCryptoResponse, setPageCryptoResponse] = useState<PageCryptoResponse>({
-    cryptos: [],
-    has_next_page: false,
+  const filteredCryptos = useRef<Array<UserCryptoResponse>>([]);
+  const [pageUserCryptoResponse, setPageUserCryptoResponse] = useState<PageUserCryptoResponse>({
     page: 0,
-    total_pages: 0
+    totalPages: 0,
+    hasNextPage: false,
+    cryptos: []
   });
   const [filterValue, setFilterValue] = useState("");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -28,9 +28,9 @@ const CryptosTable = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await getCryptosByPageService({page});
+          const response = await getCryptosByPageService(page);
 
-          setPageCryptoResponse(response);
+          setPageUserCryptoResponse(response);
           filteredCryptos.current = response.cryptos;
         } catch (err) {
           setError(true);
@@ -43,17 +43,17 @@ const CryptosTable = () => {
 
   const deleteCrypto = async (cryptoId: string) => {
     try {
-      await deleteCryptoService({cryptoId});
+      await deleteCryptoService(cryptoId);
 
       const updatedFilteredCryptos = filteredCryptos.current.filter(crypto => crypto.id !== cryptoId);
-      const updatedCryptos = pageCryptoResponse.cryptos.filter(crypto => crypto.id !== cryptoId);
-      const {has_next_page, page, total_pages} = pageCryptoResponse;
+      const updatedCryptos = pageUserCryptoResponse.cryptos.filter(crypto => crypto.id !== cryptoId);
+      const {hasNextPage, page, totalPages} = pageUserCryptoResponse;
 
-      setPageCryptoResponse({
+      setPageUserCryptoResponse({
         cryptos: updatedCryptos,
-        has_next_page,
+        hasNextPage,
         page,
-        total_pages
+        totalPages
       });
       filteredCryptos.current = updatedFilteredCryptos;
     } catch (err) {
@@ -63,7 +63,7 @@ const CryptosTable = () => {
 
   const filterTable = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    filteredCryptos.current = pageCryptoResponse.cryptos.filter(crypto => doesMatchFilter(crypto, value));
+    filteredCryptos.current = pageUserCryptoResponse.cryptos.filter(crypto => doesMatchFilter(crypto, value));
     setFilterValue(value);
   }
 
@@ -73,13 +73,14 @@ const CryptosTable = () => {
     setPage(nextPage);
 
     try {
-      const response: PageCryptoResponse = await getCryptosByPageService({page: nextPage});
+      const response: PageUserCryptoResponse = await getCryptosByPageService(nextPage);
       filteredCryptos.current = [...filteredCryptos.current, ...response.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))];
-      setPageCryptoResponse({
-        cryptos: [...pageCryptoResponse.cryptos, ...response.cryptos],
-        has_next_page: response.has_next_page,
+
+      setPageUserCryptoResponse({
+        cryptos: [...pageUserCryptoResponse.cryptos, ...response.cryptos],
+        hasNextPage: response.hasNextPage,
         page: response.page,
-        total_pages: response.total_pages
+        totalPages: response.totalPages
       });
     } catch (err) {
       setError(true);
@@ -88,9 +89,9 @@ const CryptosTable = () => {
     }
   }
 
-  const doesMatchFilter = (crypto: Crypto, value: string) => {
-    return crypto.crypto_name.toUpperCase().startsWith(value.toUpperCase()) ||
-      crypto.platform.toUpperCase().startsWith(value.toUpperCase());
+  const doesMatchFilter = (userCrypto: UserCryptoResponse, value: string) => {
+    return userCrypto.cryptoName.toUpperCase().startsWith(value.toUpperCase()) ||
+      userCrypto.platform.toUpperCase().startsWith(value.toUpperCase());
   }
 
   return (
@@ -106,7 +107,7 @@ const CryptosTable = () => {
       }
 
       {
-        !error && !loading && pageCryptoResponse?.cryptos?.length > 0 &&
+        !error && !loading && pageUserCryptoResponse?.cryptos?.length > 0 &&
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-10 w-11/12">
           <div className="bg-white mb-2">
             <label htmlFor="table-search" className="sr-only">
@@ -148,12 +149,12 @@ const CryptosTable = () => {
             <tbody>
             {
               filteredCryptos.current.map(crypto => {
-                const {id, crypto_name, platform, quantity} = crypto;
+                const {id, cryptoName, platform, quantity} = crypto;
 
                 return (
                   <tr key={id}
                       className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
-                    <TableColumnContent content={crypto_name}
+                    <TableColumnContent content={cryptoName}
                                         rowScope={true}
                                         additionalClasses="text-center"/>
                     <TableColumnContent content={quantity.toString()}
@@ -166,7 +167,7 @@ const CryptosTable = () => {
                       <TransferButton transferLink={`/transfer/${id}`}/>
                       <DeleteButton deleteFunction={() => deleteCrypto(id)}
                                     deleteId={id}
-                                    deleteMessage={`Are you sure you want to delete ${crypto_name.toUpperCase()} in ${platform}?`}/>
+                                    deleteMessage={`Are you sure you want to delete ${cryptoName.toUpperCase()} in ${platform}?`}/>
                     </td>
                   </tr>
                 );
@@ -178,7 +179,7 @@ const CryptosTable = () => {
       }
 
       {
-        !error && !loading && pageCryptoResponse.has_next_page &&
+        !error && !loading && pageUserCryptoResponse.hasNextPage &&
         <button type="button"
                 className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center mb-10 w-1/2"
                 onClick={loadMore}>

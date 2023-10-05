@@ -2,7 +2,6 @@ import {createBrowserRouter, Outlet} from "react-router-dom";
 import NotFoundPage from "../pages/error/NotFoundPage";
 import PlatformsPage from "../pages/platform/PlatformsPage";
 import CryptosPage from "../pages/crypto/CryptosPage";
-import DashboardsPage from "../pages/dashboard/DashboardsPage";
 import AddPlatformPage from "../pages/platform/AddPlatformPage";
 import AddCryptoPage from "../pages/crypto/AddCryptoPage";
 import EditCryptoPage from "../pages/crypto/EditCryptoPage";
@@ -13,6 +12,11 @@ import EditGoalPage from "../pages/goal/EditGoalPage";
 import AddGoalPage from "../pages/goal/AddGoalPage";
 import TransferCryptoPage from "../pages/crypto/TransferCryptoPage";
 import ErrorBoundary from "../ErrorBoundary";
+import PlatformInsightsPage from "../pages/insights/PlatformInsightsPage";
+import CryptosPlatformsInsightsPage from "../pages/insights/CryptosPlatformsInsightsPage";
+import CryptosInsightsPage from "../pages/insights/CryptosInsightsPage";
+import HomePage from "../pages/home/HomePage";
+import CryptoInsightsPage from "../pages/insights/CryptoInsightsPage";
 
 const ErrorBoundaryLayout = () => (
   <ErrorBoundary fallback={<InternalErrorPage/>}>
@@ -24,12 +28,16 @@ const router = createBrowserRouter([{
   element: <ErrorBoundaryLayout/>,
   children: [
     {
+      path: '*',
+      element: <NotFoundPage/>
+    },
+    {
       path: '/',
-      element: <DashboardsPage/>,
+      element: <HomePage/>,
     },
     {
       path: '/home',
-      element: <DashboardsPage/>,
+      element: <HomePage/>,
     },
     {
       path: '/platforms',
@@ -72,13 +80,30 @@ const router = createBrowserRouter([{
       element: <TransferCryptoPage/>
     },
     {
+      path: '/insights/cryptos',
+      element: <CryptosInsightsPage/>
+    },
+    {
+      path: '/insights/cryptos-platforms',
+      element: <CryptosPlatformsInsightsPage/>
+    },
+    {
+      path: '/insights/platform/:platformId',
+      element: <PlatformInsightsPage/>
+    },
+    {
+      path: '/insights/cryptos/:coingeckoCryptoId',
+      element: <CryptoInsightsPage/>
+    },
+    {
       path: '/404',
       element: <NotFoundPage/>
     },
     {
       path: '/error',
       element: <InternalErrorPage/>
-    }]
+    }
+  ]
 }]);
 
 export default router

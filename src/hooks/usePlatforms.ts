@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import {Platform} from "../model/Platform";
 import ErrorResponse from "../model/response/ErrorResponse";
 import {useNavigate} from "react-router-dom";
-import {deletePlatformService, getAllPlatformsService} from "../services/platformServvice";
+import {deletePlatformService, retrieveAllPlatforms} from "../services/platformService";
+import {PlatformResponse} from "../model/response/platform/PlatformResponse";
 
 export function usePlatforms() {
 
@@ -10,12 +10,12 @@ export function usePlatforms() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<ErrorResponse[]>([]);
-  const [platforms, setPlatforms] = useState<Platform[]>([]);
+  const [platforms, setPlatforms] = useState<Array<PlatformResponse>>([]);
 
   useEffect(() => {
     (async () => {
         try {
-          const response = await getAllPlatformsService();
+          const response = await retrieveAllPlatforms();
           setPlatforms(response);
         } catch (err) {
           setError(true);
@@ -28,10 +28,10 @@ export function usePlatforms() {
 
   const deletePlatform = async (platformId: string) => {
     try {
-      const {status} = await deletePlatformService({platformId});
+      const {status} = await deletePlatformService(platformId);
 
-      if (status === 204) {
-        const updatedPlatforms = platforms.filter(platform => platform.name !== platformId);
+      if (status === 200) {
+        const updatedPlatforms = platforms.filter(platform => platform.id !== platformId);
         setPlatforms(updatedPlatforms);
       }
     } catch (err: any) {
