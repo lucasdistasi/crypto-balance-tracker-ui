@@ -1,13 +1,14 @@
 # Crypto Balance Tracker UI :rocket:
 
-Typescript-ReactJS application to consume endpoints
-from [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker).
+|               |                                                                                                                                                                         |
+|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| License       | [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)                                                                 |
+| Project views | [![Project views](https://hits.dwyl.com/lucasdistasi/crypto-balance-tracker-login.svg)]()                                                                               |
+| Snyk Analysis | [![Snyk Analysis](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-login/badge.svg)](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-ui) |
 
-|               |                                                                                                                                                                                 |
-|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| License       | [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)                                                                         |
-| Project views | [![Project views](https://hits.dwyl.com/lucasdistasi/crypto-balance-tracker-login.svg)]()                                                                                       |
-| Snyk Analysis | [![Known Vulnerabilities](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-login/badge.svg)](https://snyk.io/test/github/lucasdistasi/crypto-balance-tracker-ui) |
+TypeScript-ReactJS application to consume endpoints from one of the following backends
+- Kotlin: [crypto-balance-tracker-kt](https://github.com/lucasdistasi/crypto-balance-tracker-kt) 
+- Java: [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker) (TODO).
 
 ## Technologies used :sparkles:
 
@@ -26,7 +27,9 @@ from [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tra
 
 ---
 
-- Simply run `npm run dev` in the root directory from this project.
+This app requires a backend one, you can check instructions on how to run it in one of the followings:
+- Kotlin: [crypto-balance-tracker-kt](https://github.com/lucasdistasi/crypto-balance-tracker-kt)
+- Java: [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker) (TODO).
 
 ### If you found this project useful or you learnt something from it, you can consider gifting me a coup of coffee :coffee:
 
@@ -58,52 +61,76 @@ from [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tra
 
 ### Home page
 
-![Imgur](https://i.imgur.com/Awnswol.png)
+![Imgur](https://i.imgur.com/Qg9TTmQ.png)
+
+### Insights pages
+
+#### Cryptos Insights
+
+![Imgur](https://i.imgur.com/ZGiJUW5.png)
+
+#### Cryptos Platforms Insights
+
+![Imgur](https://i.imgur.com/lAyYyoN.png)
+
+#### Crypto Insights
+
+![Imgur](https://i.imgur.com/1kJIUz0.png)
+
+#### Platform Insights
+
+![Imgur](https://i.imgur.com/ol6Q0Qh.png)
 
 ### Cryptos page
 
-![Imgur](https://i.imgur.com/pRc8vPx.png)
+#### Cryptos
 
-### Add crypto page
+![Imgur](https://i.imgur.com/35v64ho.png)
 
-![Imgur](https://i.imgur.com/4Bjmiyv.png)
+#### Add Crypto
 
-### Update crypto page
+![Imgur](https://i.imgur.com/2xmc0iG.png)
 
-![Imgur](https://i.imgur.com/f7FNpV6.png)
+#### Transfer Crypto
 
-### Transfer crypto page
+![Imgur](https://i.imgur.com/fC1kuvk.png)
 
-![Imgur](https://i.imgur.com/vyRM4n5.png)
+#### Update Crypto
 
-### Platforms page
-
-![Imgur](https://i.imgur.com/xiD4cEk.png)
-
-### Add platform page
-
-![Imgur](https://i.imgur.com/Xthe2f9.png)
-
-### Update platform page
-
-![Imgur](https://i.imgur.com/KRR9yiD.png)
+![Imgur](https://i.imgur.com/BzOrwS1.png)
 
 ### Goals page
 
-![Imgur](https://i.imgur.com/ToQqymK.png)
+#### Goals
 
-### Add goal page
+![Imgur](https://i.imgur.com/xLkZA98.png)
 
-![Imgur](https://i.imgur.com/6AKO61y.png)
+#### Add Goal
 
-### Update goal page
+![Imgur](https://i.imgur.com/fCILvC6.png)
 
-![Imgur](https://i.imgur.com/dts2gWJ.png)
+#### Update Goal
+
+![Imgur](https://i.imgur.com/ShKWRmi.png)
+
+### Platforms page
+
+#### Platforms
+
+![Imgur](https://i.imgur.com/zLO9EQX.png)
+
+#### Add Platform
+
+![Imgur](https://i.imgur.com/GeMnXzq.png)
+
+#### Update Platform
+
+![Imgur](https://i.imgur.com/kLe3dQl.png)
 
 ### Frontend error example
 
-![Imgur](https://i.imgur.com/VDxmmjb.png)
+![Imgur](https://i.imgur.com/TafVBKm.png)
 
 ### Backend error example
 
-![Imgur](https://i.imgur.com/n6djCV6.png)
+![Imgur](https://i.imgur.com/IgFzamP.png)
