@@ -2,14 +2,14 @@ import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
 import withScrollToTop from "../../hoc/withScrollToTop";
 import React, {Fragment} from "react";
-import EditCryptoForm from "../../components/crypto/EditCryptoForm";
+import UpdateCryptoForm from "../../components/crypto/UpdateCryptoForm";
 
 const EditCryptoPage = () => {
 
   return (
     <Fragment>
       <Navbar/>
-      <EditCryptoForm/>
+      <UpdateCryptoForm/>
       <Footer/>
     </Fragment>
   );

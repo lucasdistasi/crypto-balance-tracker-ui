@@ -3,7 +3,6 @@ import {usePlatforms} from "../../hooks/usePlatforms";
 import React, {Fragment} from "react";
 import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
-import {Link} from "react-router-dom";
 
 const CryptoPlatformDropdown = ({label, ...props}:{
   label: string
@@ -26,17 +25,6 @@ const CryptoPlatformDropdown = ({label, ...props}:{
       }
 
       {
-        !loading && !error && (!platforms || platforms?.length == 0) &&
-        <div className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 px-4 py-3 my-8 w-full" role="alert">
-          <p className="font-bold">No Platforms found</p>
-          <p className="text-sm">
-            Looks like you've no platforms added. Go to <Link to="/platform"><span className="font-bold italic">this link</span></Link> to add a platform before adding a crypto.
-          </p>
-        </div>
-
-      }
-
-      {
         !loading && !error && platforms?.length > 0 &&
         <Fragment>
           <label htmlFor={props.id ?? props.name}
@@ -52,10 +40,10 @@ const CryptoPlatformDropdown = ({label, ...props}:{
             </option>
             {
               platforms.map(platform => {
-                const {name: platformName} = platform;
+                const {id: platformId, name: platformName} = platform;
 
                 return (
-                  <option key={platformName} value={platformName}>
+                  <option key={platformId} value={platformName}>
                     {
                       platformName
                     }

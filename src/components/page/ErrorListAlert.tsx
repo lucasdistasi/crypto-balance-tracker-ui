@@ -27,9 +27,9 @@ const ErrorListAlert = ({...props}) => {
           {
             errors.map((error: ErrorResponse) => {
               return(
-                <li key={error.errorMessage}>
+                <li key={error.detail}>
                   {
-                    error.errorMessage
+                    error.detail
                   }
                 </li>
               );

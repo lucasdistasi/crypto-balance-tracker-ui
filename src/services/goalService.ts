@@ -4,39 +4,39 @@ import {CRYPTO_BALANCE_TRACKER_URL} from "../constants/Constants";
 const GOALS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/goals");
 
 const getGoalURL = (goalId: string) => {
-  return `${GOALS_ENDPOINT}/${goalId}`
+  return `${GOALS_ENDPOINT}/${goalId}`;
 }
 
 export const getGoalsByPageService = async (page: number) => {
-  const pageGoalsEndpoint = `${GOALS_ENDPOINT}?page=${page}`
+  const pageGoalsEndpoint = `${GOALS_ENDPOINT}?page=${page}`;
 
   return await axios.get(pageGoalsEndpoint)
     .then(response => response.data);
 }
 
-export const getGoalService = async ({goalId}: {
-  goalId: string
-}) => {
+export const retrieveGoal = async (goalId: string) => {
   return await axios.get(getGoalURL(goalId)).then(response => response.data);
 }
 
-export const updateGoalService = async ({goalId, goal_quantity}: {
+export const updateGoal = async ({goalId, cryptoName, goalQuantity}: {
   goalId: string,
-  goal_quantity: bigint
+  cryptoName: string,
+  goalQuantity: bigint
 }) => {
   return await axios.put(getGoalURL(goalId), {
-    quantity_goal: goal_quantity
+    cryptoName,
+    goalQuantity
   }).then(response => response.data);
 }
 
-export const addGoalService = async ({crypto_name, quantity_goal}: {
-  crypto_name: string,
-  quantity_goal: bigint
+export const saveGoal = async ({cryptoName, goalQuantity}: {
+  cryptoName: string,
+  goalQuantity: bigint
 }) => {
   return await axios.post(GOALS_ENDPOINT, {
-    crypto_name,
-    quantity_goal
-  }).then(response => response.data)
+    cryptoName,
+    goalQuantity
+  }).then(response => response.data);
 }
 
 export const deleteGoalService = async ({goalId}: {

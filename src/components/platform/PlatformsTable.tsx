@@ -6,6 +6,7 @@ import ErrorAlert from "../page/ErrorAlert";
 import {usePlatforms} from "../../hooks/usePlatforms";
 import {TableColumnTitle} from "../table/TableColumnTitle";
 import {TableColumnContent} from "../table/TableColumnContent";
+import {ViewInsightsButton} from "../table/ViewInsightsButton";
 
 const PlatformsTable = () => {
 
@@ -38,7 +39,7 @@ const PlatformsTable = () => {
             <tbody>
             {
               platforms.map(platform => {
-                const {name: platformName} = platform;
+                const {id: platformId, name: platformName} = platform;
 
                 return (
                   <tr
@@ -49,9 +50,10 @@ const PlatformsTable = () => {
                                         additionalClasses="text-center"/>
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
-                      <EditButton editLink={`/platform/${platformName}`}/>
-                      <DeleteButton deleteFunction={() => deletePlatform(platformName)}
-                                    deleteId={platformName}
+                      <EditButton editLink={`/platform/${platformId}`}/>
+                      <ViewInsightsButton viewInsightsLink={`/insights/platform/${platformId}`}/>
+                      <DeleteButton deleteFunction={() => deletePlatform(platformId)}
+                                    deleteId={platformId}
                                     deleteMessage={`Are you sure you want to delete ${platformName}? All cryptos in ${platformName} will be deleted too!`}/>
                     </td>
                   </tr>

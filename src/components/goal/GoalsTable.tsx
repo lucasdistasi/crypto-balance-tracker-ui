@@ -18,9 +18,9 @@ const GoalsTable = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [pageGoals, setPageGoals] = useState<PageGoalResponse>({
     goals: [],
-    has_next_page: false,
+    hasNextPage: false,
     page: 0,
-    total_pages: 0
+    totalPages: 0
 
   });
   const [loading, setLoading] = useState(true);
@@ -44,13 +44,13 @@ const GoalsTable = () => {
     try {
       await deleteGoalService({goalId})
       const updatedGoals = pageGoals.goals.filter(goal => goal.id !== goalId);
-      const {has_next_page, page, total_pages} = pageGoals;
+      const {hasNextPage, page, totalPages} = pageGoals;
 
       setPageGoals({
         goals: updatedGoals,
         page,
-        has_next_page,
-        total_pages
+        hasNextPage,
+        totalPages
       });
     } catch (error: any) {
       navigate("/error");
@@ -66,9 +66,9 @@ const GoalsTable = () => {
       const response: PageGoalResponse = await getGoalsByPageService(nextPage);
       setPageGoals({
         goals: [...pageGoals.goals, ...response.goals],
-        has_next_page: response.has_next_page,
+        hasNextPage: response.hasNextPage,
         page: response.page,
-        total_pages: response.total_pages
+        totalPages: response.totalPages
       });
     } catch (err) {
       setError(true);
@@ -117,24 +117,24 @@ const GoalsTable = () => {
                     className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700"
                     key={goal.id}>
 
-                    <TableColumnContent content={goal.crypto_name}
+                    <TableColumnContent content={goal.cryptoName}
                                         rowScope={true}
                                         additionalClasses="text-center"/>
-                    <TableColumnContent content={goal.goal_quantity.toString()}
+                    <TableColumnContent content={goal.goalQuantity.toString()}
                                         additionalClasses="text-center"/>
                     <td className="text-center">
-                      <GoalProgress progress={goal.progress} actualQuantity={goal.actual_quantity}/>
+                      <GoalProgress progress={goal.progress} actualQuantity={goal.actualQuantity}/>
                     </td>
-                    <TableColumnContent content={goal.remaining_quantity.toString()}
+                    <TableColumnContent content={goal.remainingQuantity.toString()}
                                         additionalClasses="text-center"/>
-                    <TableColumnContent content={`U$D ${goal.money_needed.toString()}`}
+                    <TableColumnContent content={`U$D ${goal.moneyNeeded.toString()}`}
                                         additionalClasses="whitespace-nowrap text-center"/>
                     <td
                       className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                       <EditButton editLink={`/goal/${goal.id}`}/>
                       <DeleteButton deleteFunction={() => deleteGoal(goal.id)}
                                     deleteId={goal.id}
-                                    deleteMessage={`Are you sure you want to delete your ${goal.crypto_name} goal?`}/>
+                                    deleteMessage={`Are you sure you want to delete your ${goal.cryptoName} goal?`}/>
                     </td>
                   </tr>
                 );
@@ -146,7 +146,7 @@ const GoalsTable = () => {
       }
 
       {
-        !error && !loading && pageGoals.has_next_page &&
+        !error && !loading && pageGoals.hasNextPage &&
         <button type="button"
                 className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center mb-10 w-1/2"
                 onClick={loadMoreGoals}>

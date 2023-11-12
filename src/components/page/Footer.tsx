@@ -55,12 +55,12 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-600 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <Link to="/platforms" className="hover:underline ">
+                  <Link to="/goals" className="hover:underline ">
                     Goals
                   </Link>
                 </li>
                 <li>
-                  <Link to="/platform" className="hover:underline">
+                  <Link to="/goal" className="hover:underline">
                     Add Goal
                   </Link>
                 </li>
@@ -68,12 +68,12 @@ const Footer = () => {
             </div>
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                Dashboards
+                Home
               </h2>
               <ul className="text-gray-600 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <Link to="/" className="hover:underline">
-                    Dashboards
+                    Home
                   </Link>
                 </li>
               </ul>
@@ -90,8 +90,7 @@ const Footer = () => {
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             Made by <a href="https://www.linkedin.com/in/lucas-david-distasi/" target="_blank" className="hover:underline">Lucas Di Stasi</a> using <a href="https://www.coingecko.com/en/api" target="_blank" className="hover:underline">
               CoinGecko API
-            </a>.
-            <img src="/coingecko.svg" className="inline-block h-8 ml-1" alt="Coingecko Logo"/>
+            </a>. <img src="/coingecko.svg" className="inline-block h-8 ml-1" alt="Coingecko Logo"/>
           </span>
         </div>
       </div>

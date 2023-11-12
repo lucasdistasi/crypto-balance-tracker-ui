@@ -12,19 +12,19 @@ const addUpdateCryptoCommonValidationSchema = {
 };
 
 const cryptoNameValidationSchema = {
-  crypto_name: Yup.string()
+  cryptoName: Yup.string()
     .required("Crypto name is required")
     .matches(/^(?! )(?!.* {2})[a-zA-Z0-9]+(?:[ {2}][a-zA-Z0-9]+)*$(?<! )/, "Crypto name must be 1-64 characters, using only letters, numbers, and whitespaces"),
 };
 
 const addUpdateGoalCommonValidationSchema = {
-  goal_quantity: Yup.string()
+  goalQuantity: Yup.string()
     .required("Goal quantity is required")
     .matches(QUANTITY_REGEX, INVALID_QUANTITY_MESSAGE)
 };
 
 export const platformValidationsSchema = Yup.object({
-  platform_name: Yup.string()
+  platformName: Yup.string()
     .required("Platform name is required")
     .matches(/^[a-zA-Z]{1,24}$/, "Platform name must be 1-24 characters long, no numbers, special characters or whitespace allowed")
 });
