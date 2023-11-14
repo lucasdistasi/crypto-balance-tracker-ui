@@ -1,76 +1,21 @@
-import React, {Fragment, useEffect, useRef, useState} from "react";
-import {PageUserCryptosInsightsResponse} from "../../model/response/insight/PageUserCryptosInsightsResponse";
+import React, {Fragment} from "react";
 import {Link} from "react-router-dom";
-import {UserCryptosInsights} from "../../model/response/insight/UserCryptosInsights";
 import {retrieveCryptosInsightsByPage} from "../../services/insightsService";
+import {usePageUserCryptosInsightsResponse} from "../../hooks/usePageUserCryptosInsightsResponse";
+import CryptoInsightsCard from "./CryptoInsightsCard";
 
 const CryptosInsightsCards = () => {
 
-  const [pageUserCryptosInsightsResponse, setPageUserCryptosInsightsResponse] = useState<PageUserCryptosInsightsResponse>({
-    page: 0,
-    totalPages: 0,
-    hasNextPage: false,
-    balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
-    },
-    cryptos: []
-  });
-  const [cryptosFilterValue, setCryptosFilterValue] = useState("");
-  const filteredCryptos = useRef<Array<UserCryptosInsights>>([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response: PageUserCryptosInsightsResponse = await retrieveCryptosInsightsByPage(0);
-
-        setPageUserCryptosInsightsResponse(response);
-        filteredCryptos.current = response.cryptos;
-      } catch (err) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    })()
-  }, []);
-
-  function filterTable(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value.toLowerCase();
-    filteredCryptos.current = pageUserCryptosInsightsResponse.cryptos.filter(crypto => crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(value) || crypto.cryptoInfo.symbol.startsWith(value));
-    setCryptosFilterValue(value);
-  }
-
-  const loadMoreCryptos = async () => {
-    setIsLoadingMore(true);
-    const nextPage = page + 1;
-    setPage(nextPage);
-
-    try {
-      const response: PageUserCryptosInsightsResponse = await retrieveCryptosInsightsByPage(nextPage);
-
-      filteredCryptos.current = [...filteredCryptos.current, ...response.cryptos.filter(crypto => crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(cryptosFilterValue) || crypto.cryptoInfo.symbol.startsWith(cryptosFilterValue))];
-      setPageUserCryptosInsightsResponse({
-        page: response.page,
-        totalPages: response.totalPages,
-        hasNextPage: response.hasNextPage,
-        balances: {
-          totalUSDBalance: response.balances.totalUSDBalance,
-          totalEURBalance: response.balances.totalEURBalance,
-          totalBTCBalance: response.balances.totalBTCBalance
-        },
-        cryptos: [...pageUserCryptosInsightsResponse.cryptos, ...response.cryptos]
-      });
-    } catch (err) {
-      setError(true);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  }
+  const {
+    pageUserCryptosInsightsResponse,
+    filteredCryptos,
+    page,
+    error,
+    loading,
+    isLoadingMore,
+    loadMoreCryptos,
+    filterTable
+  } = usePageUserCryptosInsightsResponse(retrieveCryptosInsightsByPage(0))
 
   return (
     <Fragment>
@@ -121,137 +66,7 @@ const CryptosInsightsCards = () => {
               filteredCryptos.current.map((crypto) => (
                 <div key={crypto.cryptoInfo.id}
                      className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 pt-5">
-                  <div className="flex flex-col items-center pb-10">
-                    <img className="w-24 h-24 mb-3 rounded-full shadow-lg"
-                         src={crypto.cryptoInfo.image}
-                         alt={`${crypto.cryptoInfo.cryptoName} image`}/>
-                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                      {
-                        crypto.cryptoInfo.cryptoName
-                      }
-                    </h5>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {
-                        crypto.cryptoInfo.symbol.toUpperCase()
-                      }
-                    </span>
-
-                    <div className="flow-root mt-5">
-                      <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                        <li className="py-3 sm:py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Quantity
-                              </p>
-                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                {
-                                  crypto.quantity
-                                }
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-3 sm:py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Percentage
-                              </p>
-                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                {
-                                  `${crypto.percentage}%`
-                                }
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-3 sm:py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Balance
-                              </p>
-                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                {
-                                  `U$D ${crypto.balances.totalUSDBalance}`
-                                }
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-3 sm:py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Current Price
-                              </p>
-                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                {
-                                  `$${crypto.marketData.currentPrice.usd}`
-                                }
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-3 sm:py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Circulating Supply
-                              </p>
-                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                {
-                                  crypto.marketData.circulatingSupply
-                                }
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-3 sm:py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Max Supply
-                              </p>
-                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                {
-                                  crypto.marketData.maxSupply === "0" ? "∞" : crypto.marketData.maxSupply
-                                }
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-3 sm:py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Platforms
-                              </p>
-                              <ul className="text-gray-500 list-disc list-inside">
-                                {
-                                  crypto.platforms.map(cryptoPlatform => (
-                                    <li key={cryptoPlatform}
-                                        className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                      {
-                                        cryptoPlatform
-                                      }
-                                    </li>
-                                  ))
-                                }
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <Link to={`/insights/cryptos/${crypto.cryptoInfo.cryptoId}`}>
-                      <button type="button"
-                              className="w-full whitespace-nowrap text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-500 dark:focus:ring-green-800">
-                        View Insights
-                      </button>
-                    </Link>
-                  </div>
+                  <CryptoInsightsCard crypto={crypto}/>
                 </div>
               ))
             }
@@ -265,7 +80,7 @@ const CryptosInsightsCards = () => {
             <button
               type="button"
               className="w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center"
-              onClick={loadMoreCryptos}
+              onClick={() => loadMoreCryptos(retrieveCryptosInsightsByPage(page + 1))}
             >
               Load more
 
