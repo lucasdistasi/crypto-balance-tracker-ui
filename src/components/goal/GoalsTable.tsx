@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {TableColumnTitle} from "../table/TableColumnTitle";
 import {TableColumnContent} from "../table/TableColumnContent";
 import {PageGoalResponse} from "../../model/response/goal/PageGoalResponse";
+import {SortedTableColumnTitle} from "../table/SortedTableColumnTitle";
 
 const GoalsTable = () => {
 
@@ -21,10 +22,10 @@ const GoalsTable = () => {
     hasNextPage: false,
     page: 0,
     totalPages: 0
-
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [sortAscending, setSortAscending] = useState(true)
 
   useEffect(() => {
     (async () => {
@@ -77,6 +78,47 @@ const GoalsTable = () => {
     }
   }
 
+  const sortByProgress = () => {
+    let sortedGoals = sortAscending ?
+      pageGoals.goals.toSorted((a, b) => b.progress - a.progress) :
+      pageGoals.goals.toSorted((a, b) => a.progress - b.progress)
+    setPageGoals({
+      ...pageGoals,
+      goals: sortedGoals
+    })
+    setSortAscending(!sortAscending)
+  }
+
+  const sortByMoneyNeeded = () => {
+    const sortedGoals = sortAscending ?
+      pageGoals.goals.toSorted((a, b) => Number(b.moneyNeeded) - Number(a.moneyNeeded)) :
+      pageGoals.goals.toSorted((a, b) => Number(a.moneyNeeded) - Number(b.moneyNeeded))
+    setPageGoals({
+      ...pageGoals,
+      goals: sortedGoals
+    })
+    setSortAscending(!sortAscending)
+  }
+
+  const sortByCryptoName = () => {
+    let sortedGoals = pageGoals.goals.toSorted((a, b) => {
+      if (a.cryptoName > b.cryptoName) {
+        return sortAscending ? 1 : -1;
+      }
+
+      if (b.cryptoName > a.cryptoName) {
+        return sortAscending ? -1 : 1;
+      }
+
+      return 0;
+    });
+    setPageGoals({
+      ...pageGoals,
+      goals: sortedGoals
+    });
+    setSortAscending(!sortAscending)
+  }
+
   return (
     <Fragment>
       {
@@ -95,16 +137,19 @@ const GoalsTable = () => {
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <TableColumnTitle title="Crypto"
-                                additionalClasses="text-center"/>
+              <SortedTableColumnTitle title="Crypto"
+                                      additionalClasses="text-center"
+                                      sortFunction={sortByCryptoName}/>
               <TableColumnTitle title="Goal Quantity"
                                 additionalClasses="text-center"/>
-              <TableColumnTitle title="Progress"
-                                additionalClasses="text-center"/>
+              <SortedTableColumnTitle title="Progress"
+                                      additionalClasses="text-center"
+                                      sortFunction={sortByProgress}/>
               <TableColumnTitle title="Remaining Quantity"
                                 additionalClasses="text-center"/>
-              <TableColumnTitle title="Money Needed"
-                                additionalClasses="text-center"/>
+              <SortedTableColumnTitle title="Money Needed"
+                                      additionalClasses="text-center"
+                                      sortFunction={sortByMoneyNeeded}/>
               <TableColumnTitle title="Action"
                                 additionalClasses="text-center"/>
             </tr>

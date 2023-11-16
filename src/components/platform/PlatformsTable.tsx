@@ -1,16 +1,34 @@
 import EditButton from "../table/EditButton";
 import DeleteButton from "../table/DeleteButton";
-import React, {Fragment} from "react";
+import React, {Fragment, useState} from "react";
 import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
 import {usePlatforms} from "../../hooks/usePlatforms";
 import {TableColumnTitle} from "../table/TableColumnTitle";
 import {TableColumnContent} from "../table/TableColumnContent";
 import {ViewInsightsButton} from "../table/ViewInsightsButton";
+import {SortedTableColumnTitle} from "../table/SortedTableColumnTitle";
 
 const PlatformsTable = () => {
 
-  const {platforms, error, loading, deletePlatform} = usePlatforms();
+  const {platforms, setPlatforms, error, loading, deletePlatform} = usePlatforms();
+  const [sortAscending, setSortAscending] = useState(true);
+
+  const sortByPlatformName = () => {
+    let sortedPlatforms = platforms.toSorted((a, b) => {
+      if (a.name > b.name) {
+        return sortAscending ? 1 : -1;
+      }
+
+      if (b.name > a.name) {
+        return sortAscending ? -1 : 1;
+      }
+
+      return 0;
+    });
+    setPlatforms(sortedPlatforms)
+    setSortAscending(!sortAscending);
+  }
 
   return (
     <Fragment>
@@ -30,8 +48,9 @@ const PlatformsTable = () => {
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <TableColumnTitle title="Name"
-                                additionalClasses="text-center"/>
+              <SortedTableColumnTitle title="Name"
+                                      additionalClasses="text-center"
+                                      sortFunction={sortByPlatformName}/>
               <TableColumnTitle title="Action"
                                 additionalClasses="text-center"/>
             </tr>

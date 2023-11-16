@@ -48,6 +48,7 @@ export function usePlatforms() {
 
   return {
     platforms,
+    setPlatforms,
     error,
     loading,
     errors,
