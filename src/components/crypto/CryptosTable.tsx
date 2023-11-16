@@ -9,6 +9,7 @@ import {TableColumnTitle} from "../table/TableColumnTitle";
 import {TableColumnContent} from "../table/TableColumnContent";
 import {PageUserCryptoResponse} from "../../model/response/usercrypto/PageUserCryptoResponse";
 import {UserCryptoResponse} from "../../model/response/usercrypto/UserCryptoResponse";
+import {SortedTableColumnTitle} from "../table/SortedTableColumnTitle";
 
 const CryptosTable = () => {
 
@@ -24,6 +25,7 @@ const CryptosTable = () => {
   const [page, setPage] = useState(0);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [sortAscending, setSortAscending] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -94,6 +96,36 @@ const CryptosTable = () => {
       userCrypto.platform.toUpperCase().startsWith(value.toUpperCase());
   }
 
+  const sortByCryptoName = () => {
+    filteredCryptos.current = filteredCryptos.current.toSorted((a, b) => {
+      if (a.cryptoName > b.cryptoName) {
+        return sortAscending ? 1 : -1;
+      }
+
+      if (b.cryptoName > a.cryptoName) {
+        return sortAscending ? -1 : 1;
+      }
+
+      return 0;
+    });
+    setSortAscending(!sortAscending);
+  }
+
+  const sortByPlatformName = () => {
+    filteredCryptos.current = filteredCryptos.current.toSorted((a, b) => {
+      if (a.platform > b.platform) {
+        return sortAscending ? 1 : -1;
+      }
+
+      if (b.platform > a.platform) {
+        return sortAscending ? -1 : 1;
+      }
+
+      return 0;
+    });
+    setSortAscending(!sortAscending);
+  }
+
   return (
     <Fragment>
       {
@@ -136,12 +168,14 @@ const CryptosTable = () => {
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <TableColumnTitle title="Crypto"
-                                additionalClasses="text-center"/>
+              <SortedTableColumnTitle title="Crypto"
+                                      additionalClasses="text-center"
+                                      sortFunction={sortByCryptoName}/>
               <TableColumnTitle title="Quantity"
                                 additionalClasses="text-center"/>
-              <TableColumnTitle title="Platform"
-                                additionalClasses="text-center"/>
+              <SortedTableColumnTitle title="Platform"
+                                      additionalClasses="text-center"
+                                      sortFunction={sortByPlatformName}/>
               <TableColumnTitle title="Action"
                                 additionalClasses="text-center"/>
             </tr>
