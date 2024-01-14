@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useRef, useState} from "react";
 import Spinner from "../page/Spinner";
 import ErrorAlert from "../page/ErrorAlert";
 import EditButton from "../table/EditButton";
@@ -10,6 +10,7 @@ import {TableColumnTitle} from "../table/TableColumnTitle";
 import {TableColumnContent} from "../table/TableColumnContent";
 import {PageGoalResponse} from "../../model/response/goal/PageGoalResponse";
 import {SortedTableColumnTitle} from "../table/SortedTableColumnTitle";
+import {GoalResponse} from "../../model/response/goal/GoalResponse";
 
 const GoalsTable = () => {
 
@@ -23,15 +24,21 @@ const GoalsTable = () => {
     page: 0,
     totalPages: 0
   });
+  const filteredGoals = useRef<Array<GoalResponse>>([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [sortAscending, setSortAscending] = useState(true)
+  const [sortAscending, setSortAscending] = useState(true);
+  const [hideAchieved, setHideAchieved] = useState(false);
 
   useEffect(() => {
     (async () => {
         try {
           const allGoals = await getGoalsByPageService(page);
           setPageGoals(allGoals);
+
+          filteredGoals.current = hideAchieved
+            ? allGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
+            : allGoals.goals;
         } catch (err) {
           setError(true);
         } finally {
@@ -53,6 +60,10 @@ const GoalsTable = () => {
         hasNextPage,
         totalPages
       });
+
+      filteredGoals.current = hideAchieved ?
+        updatedGoals.filter(goal => goal.progress < 100) :
+        updatedGoals;
     } catch (error: any) {
       navigate("/error");
     }
@@ -71,6 +82,9 @@ const GoalsTable = () => {
         page: response.page,
         totalPages: response.totalPages
       });
+
+      const moreGoals = hideAchieved ? response.goals.filter(goal => goal.progress < 100) : response.goals;
+      filteredGoals.current = [...filteredGoals.current, ...moreGoals]
     } catch (err) {
       setError(true);
     } finally {
@@ -79,29 +93,21 @@ const GoalsTable = () => {
   }
 
   const sortByProgress = () => {
-    let sortedGoals = sortAscending ?
-      pageGoals.goals.toSorted((a, b) => b.progress - a.progress) :
-      pageGoals.goals.toSorted((a, b) => a.progress - b.progress)
-    setPageGoals({
-      ...pageGoals,
-      goals: sortedGoals
-    })
+    filteredGoals.current = sortAscending ?
+      filteredGoals.current.toSorted((a, b) => b.progress - a.progress) :
+      filteredGoals.current.toSorted((a, b) => a.progress - b.progress);
     setSortAscending(!sortAscending)
   }
 
   const sortByMoneyNeeded = () => {
-    const sortedGoals = sortAscending ?
-      pageGoals.goals.toSorted((a, b) => Number(b.moneyNeeded) - Number(a.moneyNeeded)) :
-      pageGoals.goals.toSorted((a, b) => Number(a.moneyNeeded) - Number(b.moneyNeeded))
-    setPageGoals({
-      ...pageGoals,
-      goals: sortedGoals
-    })
+    filteredGoals.current = sortAscending ?
+      filteredGoals.current.toSorted((a, b) => Number(b.moneyNeeded) - Number(a.moneyNeeded)) :
+      filteredGoals.current.toSorted((a, b) => Number(a.moneyNeeded) - Number(b.moneyNeeded));
     setSortAscending(!sortAscending)
   }
 
   const sortByCryptoName = () => {
-    let sortedGoals = pageGoals.goals.toSorted((a, b) => {
+    filteredGoals.current = filteredGoals.current.toSorted((a, b) => {
       if (a.cryptoName > b.cryptoName) {
         return sortAscending ? 1 : -1;
       }
@@ -112,11 +118,17 @@ const GoalsTable = () => {
 
       return 0;
     });
-    setPageGoals({
-      ...pageGoals,
-      goals: sortedGoals
-    });
     setSortAscending(!sortAscending)
+  }
+
+  const handleHideAchieved = () => {
+    const allGoals = pageGoals.goals;
+    const newHideAchievedValue = !hideAchieved;
+    setHideAchieved(newHideAchievedValue);
+
+    filteredGoals.current = newHideAchievedValue
+      ? allGoals.filter(goal => goal.progress < 100)
+      : allGoals;
   }
 
   return (
@@ -132,9 +144,22 @@ const GoalsTable = () => {
       }
 
       {
-        !error && !loading && pageGoals?.goals?.length > 0 &&
-        <div className="relative overflow-x-auto sm:rounded-lg m-10 w-11/12">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        !error && !loading && filteredGoals.current.length > 0 &&
+        <div className="relative overflow-x-auto sm:rounded-lg w-11/12">
+          <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 my-10 w-full lg:w-56">
+            <input id="hide-achieved-goals-checkbox"
+                   type="checkbox"
+                   value=""
+                   name="bordered-checkbox"
+                   onChange={() => handleHideAchieved()}
+                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+            <label htmlFor="hide-achieved-goals-checkbox"
+                   className="w-full py-4 pr-4 ms-2 text-gray-900 text-sm font-medium">
+              Hide Achieved
+            </label>
+          </div>
+
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-10">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <SortedTableColumnTitle title="Crypto"
@@ -156,7 +181,7 @@ const GoalsTable = () => {
             </thead>
             <tbody className="w-full">
             {
-              pageGoals?.goals?.map(goal => {
+              filteredGoals.current.map(goal => {
                 return (
                   <tr
                     className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700"
