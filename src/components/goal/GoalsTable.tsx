@@ -11,6 +11,7 @@ import {TableColumnContent} from "../table/TableColumnContent";
 import {PageGoalResponse} from "../../model/response/goal/PageGoalResponse";
 import {SortedTableColumnTitle} from "../table/SortedTableColumnTitle";
 import {GoalResponse} from "../../model/response/goal/GoalResponse";
+import {GoalsOrderBy, sortGoals} from "../enums/GoalsOrderBy";
 
 const GoalsTable = () => {
 
@@ -27,8 +28,9 @@ const GoalsTable = () => {
   const filteredGoals = useRef<Array<GoalResponse>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [sortAscending, setSortAscending] = useState(true);
+  const [sortAscending, setSortAscending] = useState(false);
   const [hideAchieved, setHideAchieved] = useState(false);
+  const [lastOrderBy, setLastOrderBy] = useState(GoalsOrderBy.DEFAULT);
 
   useEffect(() => {
     (async () => {
@@ -84,7 +86,7 @@ const GoalsTable = () => {
       });
 
       const moreGoals = hideAchieved ? response.goals.filter(goal => goal.progress < 100) : response.goals;
-      filteredGoals.current = [...filteredGoals.current, ...moreGoals]
+      filteredGoals.current = sortGoals(lastOrderBy, [...filteredGoals.current, ...moreGoals], sortAscending);
     } catch (err) {
       setError(true);
     } finally {
@@ -92,43 +94,37 @@ const GoalsTable = () => {
     }
   }
 
-  const sortByProgress = () => {
-    filteredGoals.current = sortAscending ?
-      filteredGoals.current.toSorted((a, b) => b.progress - a.progress) :
-      filteredGoals.current.toSorted((a, b) => a.progress - b.progress);
-    setSortAscending(!sortAscending)
-  }
-
-  const sortByMoneyNeeded = () => {
-    filteredGoals.current = sortAscending ?
-      filteredGoals.current.toSorted((a, b) => Number(b.moneyNeeded) - Number(a.moneyNeeded)) :
-      filteredGoals.current.toSorted((a, b) => Number(a.moneyNeeded) - Number(b.moneyNeeded));
-    setSortAscending(!sortAscending)
-  }
-
-  const sortByCryptoName = () => {
-    filteredGoals.current = filteredGoals.current.toSorted((a, b) => {
-      if (a.cryptoName > b.cryptoName) {
-        return sortAscending ? 1 : -1;
-      }
-
-      if (b.cryptoName > a.cryptoName) {
-        return sortAscending ? -1 : 1;
-      }
-
-      return 0;
-    });
-    setSortAscending(!sortAscending)
-  }
-
   const handleHideAchieved = () => {
     const allGoals = pageGoals.goals;
     const newHideAchievedValue = !hideAchieved;
     setHideAchieved(newHideAchievedValue);
 
-    filteredGoals.current = newHideAchievedValue
+    const goals = newHideAchievedValue
       ? allGoals.filter(goal => goal.progress < 100)
       : allGoals;
+
+    filteredGoals.current = sortGoals(lastOrderBy, goals, sortAscending);
+  }
+
+  const sortByProgress = () => {
+    const newSortAscendingValue = !sortAscending
+    filteredGoals.current = sortGoals(GoalsOrderBy.SORT_BY_PROGRESS, filteredGoals.current, newSortAscendingValue);
+    setSortAscending(newSortAscendingValue);
+    setLastOrderBy(GoalsOrderBy.SORT_BY_PROGRESS);
+  }
+
+  const sortByMoneyNeeded = () => {
+    const newSortAscendingValue = !sortAscending
+    filteredGoals.current = sortGoals(GoalsOrderBy.SORT_BY_MONEY_NEEDED, filteredGoals.current, newSortAscendingValue);
+    setSortAscending(newSortAscendingValue);
+    setLastOrderBy(GoalsOrderBy.SORT_BY_MONEY_NEEDED);
+  }
+
+  const sortByCryptoName = () => {
+    const newSortAscendingValue = !sortAscending
+    filteredGoals.current = sortGoals(GoalsOrderBy.SORT_BY_CRYPTO_NAME, filteredGoals.current, newSortAscendingValue);
+    setSortAscending(newSortAscendingValue);
+    setLastOrderBy(GoalsOrderBy.SORT_BY_CRYPTO_NAME);
   }
 
   return (
