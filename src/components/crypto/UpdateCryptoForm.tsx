@@ -18,6 +18,8 @@ const UpdateCryptoForm = () => {
   const navigate = useNavigate();
   const params = useParams();
   const cryptoId: string = params.id!!;
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const redirectTo = urlSearchParams.get('redirectTo') ?? "/cryptos";
 
   const {platforms} = usePlatforms()
   const {userCrypto, isLoading, fetchInfoError} = useGetCrypto();
@@ -42,7 +44,7 @@ const UpdateCryptoForm = () => {
         platformId
       });
 
-      navigate("/cryptos");
+      navigate(redirectTo);
     } catch (error: any) {
       const {status} = error.response;
       if (status >= 400 && status < 500) {
