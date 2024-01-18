@@ -4,7 +4,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import Chart from "react-google-charts";
 import ChartSkeleton from "../skeletons/ChartSkeleton";
 import ErrorAlert from "../page/ErrorAlert";
-import {usePlatforms} from "../../hooks/usePlatforms";
 import TotalBalanceCards from "./TotalBalanceCards";
 import PlatformInsightsTable from "./PlatformInsightsTable";
 import {retrievePlatformInsights} from "../../services/insightsService";
@@ -14,7 +13,6 @@ const PlatformInsightsChart = () => {
   const params = useParams();
   const navigate = useNavigate();
   const platformId: string = params.platformId!!;
-  const {platforms} = usePlatforms();
 
   const [response, setResponse] = useState<PlatformInsightsResponse>({
     balances: {
@@ -27,6 +25,8 @@ const PlatformInsightsChart = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const platformName = `${response.platformName} DISTRIBUTION`;
 
   useEffect(() => {
     (async () => {
@@ -60,9 +60,7 @@ const PlatformInsightsChart = () => {
         <Fragment>
           <div className="flex flex-col items-center">
             <h1 className="text-4xl text-center my-12">
-              {
-                platforms.find(platform => platform.id == platformId)?.name
-              } DISTRIBUTION
+              { platformName }
             </h1>
 
             <TotalBalanceCards totalUsdValue={Number(response.balances.totalUSDBalance)}

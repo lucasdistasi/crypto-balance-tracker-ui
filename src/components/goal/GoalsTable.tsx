@@ -24,7 +24,7 @@ const GoalsTable = () => {
     page: 0,
     totalPages: 0
   });
-  const filteredGoals = useRef<Array<GoalResponse>>([])
+  const filteredGoals = useRef<Array<GoalResponse>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [sortAscending, setSortAscending] = useState(true);

@@ -4,7 +4,7 @@ import withScrollToTop from "../../hoc/withScrollToTop";
 import React, {Fragment} from "react";
 import UpdateCryptoForm from "../../components/crypto/UpdateCryptoForm";
 
-const EditCryptoPage = () => {
+const UpdateCryptoPage = () => {
 
   return (
     <Fragment>
@@ -15,4 +15,4 @@ const EditCryptoPage = () => {
   );
 }
 
-export default withScrollToTop(EditCryptoPage)
+export default withScrollToTop(UpdateCryptoPage)

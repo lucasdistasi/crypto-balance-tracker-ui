@@ -21,7 +21,9 @@ const TransferCryptoForm = () => {
   const params = useParams();
   const userCryptoId: string = params.id!!;
   const {userCrypto, isLoading, fetchInfoError} = useGetCrypto();
-  const {platforms} = usePlatforms()
+  const {platforms} = usePlatforms();
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const redirectTo = urlSearchParams.get('redirectTo') ?? "/cryptos";
 
   const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
 
@@ -61,7 +63,7 @@ const TransferCryptoForm = () => {
         toPlatformId
       });
 
-      navigate("/cryptos");
+      navigate(redirectTo);
     } catch (error: any) {
       const {status} = error.response;
       if (status >= 400 && status < 500) {

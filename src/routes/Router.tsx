@@ -4,7 +4,7 @@ import PlatformsPage from "../pages/platform/PlatformsPage";
 import CryptosPage from "../pages/crypto/CryptosPage";
 import AddPlatformPage from "../pages/platform/AddPlatformPage";
 import AddCryptoPage from "../pages/crypto/AddCryptoPage";
-import EditCryptoPage from "../pages/crypto/EditCryptoPage";
+import EditCryptoPage from "../pages/crypto/UpdateCryptoPage";
 import EditPlatformPage from "../pages/platform/EditPlatformPage";
 import InternalErrorPage from "../pages/error/InternalErrorPage";
 import GoalsPage from "../pages/goal/GoalsPage";
