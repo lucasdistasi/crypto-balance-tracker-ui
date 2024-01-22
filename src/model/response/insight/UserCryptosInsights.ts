@@ -7,6 +7,7 @@ export interface UserCryptosInsights {
   quantity: string
   percentage: number
   balances: BalancesResponse
-  marketData: MarketData,
+  marketCapRank: number
+  marketData: MarketData
   platforms: Array<string>
 }
