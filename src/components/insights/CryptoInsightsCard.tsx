@@ -67,6 +67,76 @@ const CryptoInsightsCard = ({crypto}: { crypto: UserCryptosInsights }) => {
             <div className="flex items-center space-x-4">
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  Market Cap Rank
+                </p>
+                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                  {
+                    crypto.marketCapRank
+                  }
+                </p>
+              </div>
+            </div>
+          </li>
+          <li className="py-3 sm:py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  Market Cap
+                </p>
+                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                  {
+                    crypto.marketData.marketCap
+                  }
+                </p>
+              </div>
+            </div>
+          </li>
+          <li className="py-3 sm:py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  24 hours change
+                </p>
+                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                  {
+                    `${crypto.marketData.priceChange.changePercentageIn24h}%`
+                  }
+                </p>
+              </div>
+            </div>
+          </li>
+          <li className="py-3 sm:py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  7 days change
+                </p>
+                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                  {
+                    `${crypto.marketData.priceChange.changePercentageIn7d}%`
+                  }
+                </p>
+              </div>
+            </div>
+          </li>
+          <li className="py-3 sm:py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  30 days change
+                </p>
+                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                  {
+                    `${crypto.marketData.priceChange.changePercentageIn30d}%`
+                  }
+                </p>
+              </div>
+            </div>
+          </li>
+          <li className="py-3 sm:py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                   Current Price
                 </p>
                 <p className="text-sm text-gray-500 truncate dark:text-gray-400">
