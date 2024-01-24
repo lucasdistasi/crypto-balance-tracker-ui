@@ -1,5 +1,5 @@
 FROM node:20-alpine
-ENV NODE_ENV=production
+ENV NODE_ENV=PRODUCTION
 WORKDIR /crypto-balance-tracker-ui
 COPY package.json .
 COPY package-lock.json .
