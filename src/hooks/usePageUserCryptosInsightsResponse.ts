@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {PageUserCryptosInsightsResponse} from "../model/response/insight/PageUserCryptosInsightsResponse";
 import {UserCryptosInsights} from "../model/response/insight/UserCryptosInsights";
 
-export function usePageUserCryptosInsightsResponse(insightsMethod: Promise<any>) {
+export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>) {
 
   const [pageUserCryptosInsightsResponse, setPageUserCryptosInsightsResponse] = useState<PageUserCryptosInsightsResponse>({
     page: 0,
@@ -25,8 +25,7 @@ export function usePageUserCryptosInsightsResponse(insightsMethod: Promise<any>)
   useEffect(() => {
     (async () => {
       try {
-        const response: PageUserCryptosInsightsResponse = await insightsMethod;
-
+        const response = await callback();
         setPageUserCryptosInsightsResponse(response);
         filteredCryptos.current = response.cryptos;
       } catch (err) {
@@ -45,7 +44,10 @@ export function usePageUserCryptosInsightsResponse(insightsMethod: Promise<any>)
     try {
       const response: PageUserCryptosInsightsResponse = await insightsMethod;
 
-      filteredCryptos.current = [...filteredCryptos.current, ...response.cryptos.filter(crypto => crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(cryptosFilterValue) || crypto.cryptoInfo.symbol.startsWith(cryptosFilterValue))];
+      filteredCryptos.current = [...filteredCryptos.current,
+        ...response.cryptos.filter(crypto =>
+          crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(cryptosFilterValue) || crypto.cryptoInfo.symbol.startsWith(cryptosFilterValue))
+      ];
       setPageUserCryptosInsightsResponse({
         page: response.page,
         totalPages: response.totalPages,

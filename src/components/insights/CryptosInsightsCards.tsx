@@ -15,7 +15,7 @@ const CryptosInsightsCards = () => {
     isLoadingMore,
     loadMoreCryptos,
     filterTable
-  } = usePageUserCryptosInsightsResponse(retrieveCryptosInsightsByPage(0))
+  } = usePageUserCryptosInsightsResponse(() => retrieveCryptosInsightsByPage(0))
 
   return (
     <Fragment>
