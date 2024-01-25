@@ -1,4 +1,4 @@
-import {GoalResponse} from "../../model/response/goal/GoalResponse";
+import {GoalResponse} from "../model/response/goal/GoalResponse";
 
 export enum GoalsOrderBy {
   DEFAULT,
