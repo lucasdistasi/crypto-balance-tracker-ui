@@ -11,7 +11,7 @@ import {TableColumnContent} from "../table/TableColumnContent";
 import {PageGoalResponse} from "../../model/response/goal/PageGoalResponse";
 import {SortedTableColumnTitle} from "../table/SortedTableColumnTitle";
 import {GoalResponse} from "../../model/response/goal/GoalResponse";
-import {GoalsOrderBy, sortGoals} from "../enums/GoalsOrderBy";
+import {GoalsOrderBy, sortGoals} from "../../enums/GoalsOrderBy";
 
 const GoalsTable = () => {
 

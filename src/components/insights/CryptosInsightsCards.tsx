@@ -3,19 +3,32 @@ import {Link} from "react-router-dom";
 import {retrieveCryptosInsightsByPage} from "../../services/insightsService";
 import {usePageUserCryptosInsightsResponse} from "../../hooks/usePageUserCryptosInsightsResponse";
 import CryptoInsightsCard from "./CryptoInsightsCard";
+import {PageUserCryptosInsightsResponse} from "../../model/response/insight/PageUserCryptosInsightsResponse";
+import SortCryptosInsights from "./SortCryptosInsights";
+import {useSortParams} from "../../hooks/useSortParams";
 
 const CryptosInsightsCards = () => {
 
+  const {sortParams, updateSortBy, updateSortType} = useSortParams();
   const {
     pageUserCryptosInsightsResponse,
+    setPageUserCryptosInsightsResponse,
     filteredCryptos,
     page,
+    setPage,
     error,
     loading,
     isLoadingMore,
     loadMoreCryptos,
     filterTable
-  } = usePageUserCryptosInsightsResponse(() => retrieveCryptosInsightsByPage(0))
+  } = usePageUserCryptosInsightsResponse(() => retrieveCryptosInsightsByPage(0, sortParams));
+
+  const retrieveSortedResults = async () => {
+    const response: PageUserCryptosInsightsResponse = await retrieveCryptosInsightsByPage(0, sortParams);
+    setPage(0);
+    setPageUserCryptosInsightsResponse(response);
+    filteredCryptos.current = response.cryptos;
+  }
 
   return (
     <Fragment>
@@ -61,6 +74,10 @@ const CryptosInsightsCards = () => {
             </div>
           </div>
 
+          <SortCryptosInsights updateSortBy={updateSortBy}
+                               updateSortType={updateSortType}
+                               retrieveSortedResults={retrieveSortedResults}/>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {
               filteredCryptos.current.map((crypto) => (
@@ -80,7 +97,7 @@ const CryptosInsightsCards = () => {
             <button
               type="button"
               className="w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center"
-              onClick={() => loadMoreCryptos(retrieveCryptosInsightsByPage(page + 1))}
+              onClick={() => loadMoreCryptos(retrieveCryptosInsightsByPage(page + 1, sortParams))}
             >
               Load more
 

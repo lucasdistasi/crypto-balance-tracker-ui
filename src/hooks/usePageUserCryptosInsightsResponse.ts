@@ -74,11 +74,13 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>)
 
   return {
     pageUserCryptosInsightsResponse,
+    setPageUserCryptosInsightsResponse,
     filteredCryptos,
     error,
     loading,
     setLoading,
     page,
+    setPage,
     isLoadingMore,
     loadMoreCryptos,
     filterTable
