@@ -22,8 +22,7 @@ export const getCryptosByPageService = async (page: number) => {
 
 export const deleteCryptoService = async (cryptoId: string) => {
   const cryptosUrl = getCryptosURL(cryptoId);
-  return await axios.delete(cryptosUrl)
-    .then(response => response);
+  return await axios.delete(cryptosUrl);
 }
 
 export const addCryptoService = async ({cryptoName, quantity, platformId}:{

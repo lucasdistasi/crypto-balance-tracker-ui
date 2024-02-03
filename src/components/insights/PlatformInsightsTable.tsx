@@ -2,48 +2,20 @@ import {PlatformInsightsResponse} from "../../model/response/insight/PlatformIns
 import EditButton from "../table/EditButton";
 import TransferButton from "../table/TransferButton";
 import DeleteButton from "../table/DeleteButton";
-import React, {Fragment, useEffect, useRef, useState} from "react";
-import {CryptoInsights} from "../../model/response/insight/CryptoInsights";
-import {deleteCryptoService} from "../../services/cryptoService";
+import {Fragment} from "react";
 
-const PlatformInsightsTable = ({platformInsightsResponse}: {
-  platformInsightsResponse: PlatformInsightsResponse
+const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}: {
+  platformInsightsResponse: PlatformInsightsResponse,
+  deleteCryptoFunction: (cryptoId: string) => Promise<void>
 }) => {
 
-  const cryptos = useRef<Array<CryptoInsights>>([]);
-  const [loading, setLoading] = useState(true);
-  const [deleteError, setDeleteError] = useState(false);
-
   const platformName = platformInsightsResponse.platformName;
-
-  useEffect(() => {
-    cryptos.current = platformInsightsResponse.cryptos;
-    setLoading(false);
-  }, []);
-
-  const deleteCrypto = async (cryptoId: string) => {
-    try {
-      setLoading(true);
-      await deleteCryptoService(cryptoId);
-      cryptos.current = cryptos.current.filter(crypto => crypto.id !== cryptoId);
-    } catch (ex: any) {
-      setDeleteError(true);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const cryptos = platformInsightsResponse.cryptos;
 
   return (
     <Fragment>
       {
-        deleteError &&
-        <>
-          Error deleting crypto
-        </>
-      }
-
-      {
-        !loading && cryptos.current.length > 0 &&
+        cryptos.length > 0 &&
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-auto mb-20 w-11/12">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -73,8 +45,8 @@ const PlatformInsightsTable = ({platformInsightsResponse}: {
             </thead>
             <tbody>
             {
-              cryptos.current.map(crypto => (
-                <tr key={crypto.cryptoName} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+              cryptos.map(crypto => (
+                <tr key={crypto.cryptoName} className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
                   <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {
                       crypto.cryptoName
@@ -110,7 +82,7 @@ const PlatformInsightsTable = ({platformInsightsResponse}: {
                     className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                     <EditButton editLink={`/crypto/${crypto.id}?redirectTo=${window.location.pathname}`}/>
                     <TransferButton transferLink={`/transfer/${crypto.id}?redirectTo=${window.location.pathname}`}/>
-                    <DeleteButton deleteFunction={() => deleteCrypto(crypto.id!!)}
+                    <DeleteButton deleteFunction={() => deleteCryptoFunction(crypto.id!!)}
                                   deleteId={crypto.id}
                                   deleteMessage={`Are you sure you want to delete ${crypto.cryptoName.toUpperCase()} in ${platformName}?`}/>
                   </td>
