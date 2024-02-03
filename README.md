@@ -8,7 +8,7 @@
 
 TypeScript-ReactJS application to consume endpoints from one of the following backends
 - Kotlin: [crypto-balance-tracker-kt](https://github.com/lucasdistasi/crypto-balance-tracker-kt) 
-- Java: [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker) (TODO).
+- Java: [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker)
 
 ## Technologies used :sparkles:
 
@@ -29,7 +29,7 @@ TypeScript-ReactJS application to consume endpoints from one of the following ba
 
 This app requires a backend one, you can check instructions on how to run it in one of the followings:
 - Kotlin: [crypto-balance-tracker-kt](https://github.com/lucasdistasi/crypto-balance-tracker-kt)
-- Java: [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker) (TODO).
+- Java: [crypto-balance-tracker](https://github.com/lucasdistasi/crypto-balance-tracker)
 
 ### If you found this project useful or you learnt something from it, you can consider gifting me a coup of coffee :coffee:
 
@@ -67,11 +67,11 @@ This app requires a backend one, you can check instructions on how to run it in 
 
 #### Cryptos Insights
 
-![Imgur](https://i.imgur.com/ZGiJUW5.png)
+![Imgur](https://i.imgur.com/Fq97uYh.png)
 
 #### Cryptos Platforms Insights
 
-![Imgur](https://i.imgur.com/lAyYyoN.png)
+![Imgur](https://i.imgur.com/awQdmkU.png)
 
 #### Crypto Insights
 
@@ -79,7 +79,7 @@ This app requires a backend one, you can check instructions on how to run it in 
 
 #### Platform Insights
 
-![Imgur](https://i.imgur.com/ol6Q0Qh.png)
+![Imgur](https://i.imgur.com/ySK40aV.png)
 
 ### Cryptos page
 
@@ -103,7 +103,7 @@ This app requires a backend one, you can check instructions on how to run it in 
 
 #### Goals
 
-![Imgur](https://i.imgur.com/xLkZA98.png)
+![Imgur](https://i.imgur.com/wkmV4Ai.png)
 
 #### Add Goal
 
