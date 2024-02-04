@@ -1,10 +1,11 @@
 import React, {Fragment, useEffect, useState} from "react";
 import Chart from 'react-google-charts'
 import ErrorAlert from "../page/ErrorAlert";
-import ChartSkeleton from "../skeletons/ChartSkeleton";
 import {CryptosBalancesInsightsResponse} from "../../model/response/insight/CryptosBalancesInsightsResponse";
 import {retrieveCryptosBalancesInsights} from "../../services/insightsService";
 import {Link} from "react-router-dom";
+import RadialChartSkeleton from "../skeletons/RadialChartSkeleton";
+import NoCryptosFoundAlert from "../crypto/NoCryptosFoundAlert";
 
 const options = {
   titleTextStyle: {fontSize: 32, textAlign: "center"},
@@ -21,18 +22,17 @@ const CryptosBalancesChart = () => {
     cryptos: []
   });
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoadingCryptosBalancesInsights, setIsLoadingCryptosBalancesInsights] = useState(true);
 
   useEffect(() => {
-    (
-      async () => {
+    (async () => {
         try {
           const response = await retrieveCryptosBalancesInsights();
           setCryptosBalances(response);
         } catch (err) {
           setError(true);
         } finally {
-          setLoading(false);
+          setIsLoadingCryptosBalancesInsights(false);
         }
       }
     )()
@@ -47,19 +47,12 @@ const CryptosBalancesChart = () => {
   return (
     <Fragment>
       {
-        (cryptosBalances.cryptos === undefined || cryptosBalances.cryptos?.length === 0) &&
-        <div className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 px-4 py-3 my-8 w-9/12"
-             role="alert">
-          <p className="font-bold">No Cryptos found</p>
-          <p className="text-sm">
-            Looks like you've no cryptos added. Go to <Link to="/crypto"><span className="font-bold italic">this link</span></Link> to
-            add a crypto and start viewing insights.
-          </p>
-        </div>
+        !isLoadingCryptosBalancesInsights && (cryptosBalances.cryptos === undefined || cryptosBalances.cryptos?.length === 0) &&
+        <NoCryptosFoundAlert/>
       }
 
       {
-        !error && !loading && cryptosBalances.cryptos?.length > 0 &&
+        !error && !isLoadingCryptosBalancesInsights && cryptosBalances.cryptos?.length > 0 &&
         <Fragment>
           <h1 className="text-4xl text-center mt-10">
             All Cryptos Distribution
@@ -76,12 +69,12 @@ const CryptosBalancesChart = () => {
       }
 
       {
-        loading && !error &&
-        <ChartSkeleton/>
+        isLoadingCryptosBalancesInsights && !error &&
+        <RadialChartSkeleton/>
       }
 
       {
-        error && !loading &&
+        error && !isLoadingCryptosBalancesInsights &&
         <ErrorAlert/>
       }
     </Fragment>

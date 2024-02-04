@@ -18,25 +18,12 @@ export const retrieveGoal = async (goalId: string) => {
   return await axios.get(getGoalURL(goalId)).then(response => response.data);
 }
 
-export const updateGoal = async ({goalId, cryptoName, goalQuantity}: {
-  goalId: string,
-  cryptoName: string,
-  goalQuantity: bigint
-}) => {
-  return await axios.put(getGoalURL(goalId), {
-    cryptoName,
-    goalQuantity
-  }).then(response => response.data);
+export const updateGoal = async (goalId: string, goalRequest: GoalRequest) => {
+  return await axios.put(getGoalURL(goalId), goalRequest).then(response => response.data);
 }
 
-export const saveGoal = async ({cryptoName, goalQuantity}: {
-  cryptoName: string,
-  goalQuantity: bigint
-}) => {
-  return await axios.post(GOALS_ENDPOINT, {
-    cryptoName,
-    goalQuantity
-  }).then(response => response.data);
+export const saveGoal = async (goalRequest: GoalRequest) => {
+  return await axios.post(GOALS_ENDPOINT, goalRequest).then(response => response.data);
 }
 
 export const deleteGoalService = async ({goalId}: {

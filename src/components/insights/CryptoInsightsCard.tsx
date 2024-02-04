@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import {UserCryptosInsights} from "../../model/response/insight/UserCryptosInsights";
+import CryptoInsightsCardRow from "./CryptoInsightsCardRow";
 
 const CryptoInsightsCard = ({crypto}: { crypto: UserCryptosInsights }) => {
 
@@ -7,174 +8,38 @@ const CryptoInsightsCard = ({crypto}: { crypto: UserCryptosInsights }) => {
     <div className="flex flex-col items-center pb-10">
       <img className="w-24 h-24 mb-3 rounded-full shadow-lg"
            src={crypto.cryptoInfo.image}
-           alt={`${crypto.cryptoInfo.cryptoName} image`}/>
+           alt={`${crypto.cryptoInfo.cryptoName}`}/>
       <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-        {
-          crypto.cryptoInfo.cryptoName
-        }
+        {crypto.cryptoInfo.cryptoName}
       </h5>
       <span className="text-sm text-gray-500 dark:text-gray-400">
-        {
-          crypto.cryptoInfo.symbol.toUpperCase()
-        }
+        {crypto.cryptoInfo.symbol.toUpperCase()}
       </span>
 
       <div className="flow-root mt-5">
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Quantity
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    crypto.quantity
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Percentage
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    `${crypto.percentage}%`
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Balance
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    `U$D ${crypto.balances.totalUSDBalance}`
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Market Cap Rank
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    crypto.marketCapRank
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Market Cap
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    crypto.marketData.marketCap
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  24 hours change
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    `${crypto.marketData.priceChange.changePercentageIn24h}%`
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  7 days change
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    `${crypto.marketData.priceChange.changePercentageIn7d}%`
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  30 days change
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    `${crypto.marketData.priceChange.changePercentageIn30d}%`
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Current Price
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    `$${crypto.marketData.currentPrice.usd}`
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Circulating Supply
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    crypto.marketData.circulatingSupply
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Max Supply
-                </p>
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  {
-                    crypto.marketData.maxSupply === "0" ? "∞" : crypto.marketData.maxSupply
-                  }
-                </p>
-              </div>
-            </div>
-          </li>
+          <CryptoInsightsCardRow title="Quantity"
+                                 value={crypto.quantity}/>
+          <CryptoInsightsCardRow title="Percentage"
+                                 value={`${crypto.percentage}%`}/>
+          <CryptoInsightsCardRow title="Balance"
+                                 value={`U$D ${crypto.balances.totalUSDBalance}`}/>
+          <CryptoInsightsCardRow title="Market Cap Rank"
+                                 value={crypto.marketCapRank}/>
+          <CryptoInsightsCardRow title="Current Price"
+                                 value={`$${crypto.marketData.currentPrice.usd}`}/>
+          <CryptoInsightsCardRow title="Market Cap"
+                                 value={crypto.marketData.marketCap}/>
+          <CryptoInsightsCardRow title="24 hours change"
+                                 value={`${crypto.marketData.priceChange.changePercentageIn24h}%`}/>
+          <CryptoInsightsCardRow title="7 days change"
+                                 value={`${crypto.marketData.priceChange.changePercentageIn7d}%`}/>
+          <CryptoInsightsCardRow title="30 days change"
+                                 value={`${crypto.marketData.priceChange.changePercentageIn30d}%`}/>
+          <CryptoInsightsCardRow title="Circulating Supply"
+                                 value={crypto.marketData.circulatingSupply}/>
+          <CryptoInsightsCardRow title="Max Supply"
+                                 value={crypto.marketData.maxSupply === "0" ? "∞" : crypto.marketData.maxSupply}/>
           <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
               <div className="flex-1 min-w-0">

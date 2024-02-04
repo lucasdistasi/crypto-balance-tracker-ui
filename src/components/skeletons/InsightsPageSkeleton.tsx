@@ -1,18 +1,17 @@
 import TotalBalancesCardsSkeleton from "./TotalBalancesCardsSkeleton";
 import RadialChartSkeleton from "./RadialChartSkeleton";
 import TableSkeleton from "./TableSkeleton";
-import React, {Fragment} from "react";
 import InsightsTitleSkeleton from "./InsightsTitleSkeleton";
 
 const InsightsPageSkeleton = () => {
 
   return(
-    <Fragment>
+    <div className="container flex flex-col mx-auto">
       <InsightsTitleSkeleton/>
       <TotalBalancesCardsSkeleton/>
       <RadialChartSkeleton/>
       <TableSkeleton/>
-    </Fragment>
+    </div>
   );
 }
 

@@ -1,9 +1,9 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {Chart} from "react-google-charts";
-import ChartSkeleton from "../skeletons/ChartSkeleton";
 import ErrorAlert from "../page/ErrorAlert";
 import {retrievePlatformsBalancesInsights} from "../../services/insightsService";
 import {PlatformsBalancesInsightsResponse} from "../../model/response/insight/PlatformsBalancesInsightsResponse";
+import RadialChartSkeleton from "../skeletons/RadialChartSkeleton";
 
 const options = {
   titleTextStyle: {fontSize: 32, textAlign: "center"},
@@ -20,7 +20,7 @@ const PlatformsBalancesChart = () => {
     platforms: []
   });
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoadingPlatformsBalances, setIsLoadingPlatformsBalances] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -30,7 +30,7 @@ const PlatformsBalancesChart = () => {
         } catch (err) {
           setError(true);
         } finally {
-          setLoading(false);
+          setIsLoadingPlatformsBalances(false);
         }
       }
     )();
@@ -45,7 +45,7 @@ const PlatformsBalancesChart = () => {
   return (
     <Fragment>
       {
-        !error && !loading && platformsBalances.platforms?.length > 0 &&
+        !error && !isLoadingPlatformsBalances && platformsBalances.platforms?.length > 0 &&
         <Fragment>
           <h1 className="text-4xl text-center">
             All Platforms Distributions
@@ -62,12 +62,12 @@ const PlatformsBalancesChart = () => {
       }
 
       {
-        loading && !error &&
-        <ChartSkeleton/>
+        isLoadingPlatformsBalances && !error &&
+        <RadialChartSkeleton/>
       }
 
       {
-        error && !loading &&
+        error && !isLoadingPlatformsBalances &&
         <ErrorAlert/>
       }
     </Fragment>

@@ -8,7 +8,7 @@ export function usePlatforms() {
 
   const navigate = useNavigate();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoadingPlatforms, setIsLoadingPlatforms] = useState(true);
   const [errors, setErrors] = useState<ErrorResponse[]>([]);
   const [platforms, setPlatforms] = useState<Array<PlatformResponse>>([]);
 
@@ -20,7 +20,7 @@ export function usePlatforms() {
         } catch (err) {
           setError(true);
         } finally {
-          setLoading(false);
+          setIsLoadingPlatforms(false);
         }
       }
     )();
@@ -50,7 +50,7 @@ export function usePlatforms() {
     platforms,
     setPlatforms,
     error,
-    loading,
+    isLoadingPlatforms,
     errors,
     deletePlatform,
   };

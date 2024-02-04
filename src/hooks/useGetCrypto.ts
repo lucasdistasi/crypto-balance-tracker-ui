@@ -11,7 +11,7 @@ export function useGetCrypto() {
   const cryptoId: string = params.id!!;
 
   const [userCrypto, setUserCrypto] = useState<UserCryptoResponse>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingUserCrypto, setIsLoadingUserCrypto] = useState(true);
   const [fetchInfoError, setFetchInfoError] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function useGetCrypto() {
           } catch (error: any) {
             setFetchInfoError(true);
           } finally {
-            setIsLoading(false);
+            setIsLoadingUserCrypto(false);
           }
         } else {
           navigate("/404");
@@ -35,7 +35,7 @@ export function useGetCrypto() {
 
   return {
     userCrypto,
-    isLoading,
+    isLoadingUserCrypto,
     fetchInfoError
   }
 }

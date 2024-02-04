@@ -3,7 +3,7 @@ import ErrorAlert from "../page/ErrorAlert";
 import TotalBalanceCards from "./TotalBalanceCards";
 import {BalancesResponse} from "../../model/response/BalancesResponse";
 import {retrieveTotalBalancesInsights} from "../../services/insightsService";
-import ChartSkeleton from "../skeletons/ChartSkeleton";
+import TotalBalancesCardsSkeleton from "../skeletons/TotalBalancesCardsSkeleton";
 
 const TotalBalancesCards = () => {
 
@@ -13,7 +13,7 @@ const TotalBalancesCards = () => {
     totalUSDBalance: "0"
   });
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoadingTotalBalances, setIsLoadingTotalBalances] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -23,7 +23,7 @@ const TotalBalancesCards = () => {
       } catch (err) {
         setError(true);
       } finally {
-        setLoading(false);
+        setIsLoadingTotalBalances(false);
       }
     })()
   }, []);
@@ -31,17 +31,17 @@ const TotalBalancesCards = () => {
   return (
     <Fragment>
       {
-        loading && !error &&
-        <ChartSkeleton/>
+        isLoadingTotalBalances && !error &&
+        <TotalBalancesCardsSkeleton/>
       }
 
       {
-        error && !loading &&
+        error && !isLoadingTotalBalances &&
         <ErrorAlert/>
       }
 
       {
-        !error && !loading &&
+        !error && !isLoadingTotalBalances &&
         <TotalBalanceCards totalUsdValue={Number(totalBalances.totalUSDBalance)}
                            totalEurValue={Number(totalBalances.totalEURBalance)}
                            totalBtcValue={Number(totalBalances.totalBTCBalance)}/>
