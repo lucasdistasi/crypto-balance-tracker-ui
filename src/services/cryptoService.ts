@@ -25,16 +25,8 @@ export const deleteCryptoService = async (cryptoId: string) => {
   return await axios.delete(cryptosUrl);
 }
 
-export const addCryptoService = async ({cryptoName, quantity, platformId}:{
-  cryptoName: string,
-  quantity: bigint,
-  platformId: string
-}) => {
-  return await axios.post(CRYPTOS_ENDPOINT, {
-    cryptoName,
-    quantity,
-    platformId,
-  });
+export const addCryptoService = async (userCryptoRequest: UserCryptoRequest) => {
+  return await axios.post(CRYPTOS_ENDPOINT, userCryptoRequest);
 }
 
 export const getCryptoService = async (cryptoId: string) => {
@@ -43,31 +35,10 @@ export const getCryptoService = async (cryptoId: string) => {
     .then(response => response.data);
 }
 
-export const updateCryptoService = async ({cryptoId, cryptoName, quantity, platformId}:{
-  cryptoId: string,
-  cryptoName: string,
-  quantity: bigint,
-  platformId: string
-}) => {
-  return await axios.put(getCryptosURL(cryptoId), {
-    cryptoName,
-    quantity,
-    platformId
-  });
+export const updateCryptoService = async (cryptoId: string, userCryptoRequest: UserCryptoRequest) => {
+  return await axios.put(getCryptosURL(cryptoId), userCryptoRequest);
 }
 
-export const transferCryptoService = async ({userCryptoId, quantityToTransfer, sendFullQuantity, networkFee, toPlatformId}: {
-  userCryptoId: string,
-  quantityToTransfer: bigint,
-  sendFullQuantity: boolean,
-  networkFee: bigint,
-  toPlatformId: string
-}) => {
-  return await axios.post(TRANSFER_CRYPTO_ENDPOINT, {
-    userCryptoId,
-    quantityToTransfer,
-    sendFullQuantity,
-    networkFee,
-    toPlatformId
-  });
+export const transferCryptoService = async (transferCryptoRequest: TransferCryptoRequest) => {
+  return await axios.post(TRANSFER_CRYPTO_ENDPOINT, transferCryptoRequest);
 }

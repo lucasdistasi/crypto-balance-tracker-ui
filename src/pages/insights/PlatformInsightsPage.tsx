@@ -10,6 +10,7 @@ import PlatformInsightsTable from "../../components/insights/PlatformInsightsTab
 import PlatformInsightsChart from "../../components/insights/PlatformInsightsChart";
 import {deleteCryptoService} from "../../services/cryptoService";
 import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleton";
+import ErrorComponent from "../../components/page/ErrorComponent";
 
 const PlatformInsightsPage = () => {
 
@@ -25,7 +26,7 @@ const PlatformInsightsPage = () => {
     cryptos: [],
     platformName: ""
   });
-  const [loading, setLoading] = useState(true);
+  const [isLoadingPlatformInsightsResponse, setIsLoadingPlatformInsightsResponse] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const PlatformInsightsPage = () => {
         } catch (err) {
           setError(true);
         } finally {
-          setLoading(false);
+          setIsLoadingPlatformInsightsResponse(false);
         }
       }
     )()
@@ -66,7 +67,7 @@ const PlatformInsightsPage = () => {
       <Navbar/>
       <div className="flex flex-col items-center min-h-screen">
         {
-          !error && !loading && platformInsightsResponse.cryptos?.length > 0 &&
+          !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse.cryptos?.length > 0 &&
           <Fragment>
             <h1 className="text-4xl text-center my-12">
               {`${platformInsightsResponse.platformName} DISTRIBUTION`}
@@ -84,13 +85,13 @@ const PlatformInsightsPage = () => {
         }
 
         {
-          loading && !error &&
+          isLoadingPlatformInsightsResponse && !error &&
           <InsightsPageSkeleton/>
         }
 
         {
-          error && !loading &&
-          <p>Some error has occurred</p>
+          error && !isLoadingPlatformInsightsResponse &&
+          <ErrorComponent text="Error retrieving platform insights"/>
         }
       </div>
       <Footer/>

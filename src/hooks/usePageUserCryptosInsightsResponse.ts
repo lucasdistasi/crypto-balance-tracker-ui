@@ -18,7 +18,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>)
   const [cryptosFilterValue, setCryptosFilterValue] = useState("");
   const filteredCryptos = useRef<Array<UserCryptosInsights>>([]);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoadingUserCryptosInsights, setIsLoadingUserCryptosInsights] = useState(true);
   const [page, setPage] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
@@ -31,7 +31,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>)
       } catch (err) {
         setError(true);
       } finally {
-        setLoading(false);
+        setIsLoadingUserCryptosInsights(false);
       }
     })()
   }, []);
@@ -77,8 +77,8 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>)
     setPageUserCryptosInsightsResponse,
     filteredCryptos,
     error,
-    loading,
-    setLoading,
+    isLoadingUserCryptosInsights,
+    setIsLoadingUserCryptosInsights,
     page,
     setPage,
     isLoadingMore,

@@ -23,20 +23,11 @@ export const getPlatformService = async (platformId: string) => {
     .then(response => response.data);
 }
 
-export const updatePlatformService = async ({platformId, platformName}: {
-  platformId: string,
-  platformName: string
-}) => {
+export const updatePlatformService = async (platformId: string, platformRequest: PlatformRequest) => {
   const platformURL = getPlatformsURL(platformId);
-  return await axios.put(platformURL, {
-    name: platformName
-  }).then(response => response);
+  return await axios.put(platformURL, platformRequest).then(response => response);
 }
 
-export const addPlatformService = async ({platformName}: {
-  platformName: string
-}) => {
-  return await axios.post(PLATFORMS_ENDPOINT, {
-    name: platformName
-  });
+export const addPlatformService = async (platformRequest: PlatformRequest) => {
+  return await axios.post(PLATFORMS_ENDPOINT, platformRequest);
 }
