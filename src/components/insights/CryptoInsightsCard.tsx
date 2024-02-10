@@ -4,6 +4,26 @@ import CryptoInsightsCardRow from "./CryptoInsightsCardRow";
 
 const CryptoInsightsCard = ({crypto}: { crypto: UserCryptosInsights }) => {
 
+  const getProgressColor = (percentage: number) => {
+    if (percentage >= 0 && percentage < 20) {
+      return "bg-pink-600";
+    }
+
+    if (percentage >= 20 && percentage < 50) {
+      return "bg-yellow-600"
+    }
+
+    if (percentage >= 50 && percentage < 80) {
+      return "bg-indigo-600"
+    }
+
+    if (percentage >= 80 && percentage < 100) {
+      return "bg-blue-600"
+    }
+
+    return "bg-green-600"
+  }
+
   return (
     <div className="flex flex-col items-center pb-10">
       <img className="w-24 h-24 mb-3 rounded-full shadow-lg"
@@ -36,8 +56,29 @@ const CryptoInsightsCard = ({crypto}: { crypto: UserCryptosInsights }) => {
                                  value={`${crypto.marketData.priceChange.changePercentageIn7d}%`}/>
           <CryptoInsightsCardRow title="30 days change"
                                  value={`${crypto.marketData.priceChange.changePercentageIn30d}%`}/>
-          <CryptoInsightsCardRow title="Circulating Supply"
-                                 value={crypto.marketData.circulatingSupply}/>
+          <li className="py-3 sm:py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  Circulating Supply
+                </p>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium text-blue-700 dark:text-white">
+                    {
+                      crypto.marketData.circulatingSupply.totalCirculatingSupply
+                    }
+                  </span>
+                </div>
+                {
+                  crypto.marketData.maxSupply !== "0" &&
+                  <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                    <div className={`${getProgressColor(crypto.marketData.circulatingSupply.percentage)} h-2.5 rounded-full`}
+                         style={{width: `${crypto.marketData.circulatingSupply.percentage}%`}}></div>
+                  </div>
+                }
+              </div>
+            </div>
+          </li>
           <CryptoInsightsCardRow title="Max Supply"
                                  value={crypto.marketData.maxSupply === "0" ? "∞" : crypto.marketData.maxSupply}/>
           <li className="py-3 sm:py-4">

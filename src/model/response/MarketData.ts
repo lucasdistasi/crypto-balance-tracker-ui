@@ -1,5 +1,5 @@
 export interface MarketData {
-  circulatingSupply: string
+  circulatingSupply: CirculatingSupply
   maxSupply: string
   currentPrice: CurrentPrice
   marketCap: string
@@ -16,4 +16,9 @@ export interface PriceChange {
   changePercentageIn24h: string
   changePercentageIn7d: string
   changePercentageIn30d: string
+}
+
+interface CirculatingSupply {
+  totalCirculatingSupply: string,
+  percentage: number
 }
