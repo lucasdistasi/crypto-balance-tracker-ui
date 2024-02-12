@@ -148,8 +148,8 @@ const GoalsPage = () => {
 
         {
           !error && !isLoadingGoals && filteredGoals.current?.length > 0 &&
-          <div className="relative overflow-x-auto sm:rounded-lg w-11/12">
-            <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 my-10 w-full lg:w-56">
+          <div className="relative overflow-x-auto rounded-lg w-11/12">
+            <div className="flex items-center ps-4 border border-gray-600 rounded dark:border-gray-700 my-10 w-full lg:w-56">
               <input id="hide-achieved-goals-checkbox"
                      type="checkbox"
                      value=""
@@ -163,7 +163,7 @@ const GoalsPage = () => {
             </div>
 
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-10">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <SortableTableColumnTitle title="Crypto"
                                           additionalClasses="text-center"
@@ -186,7 +186,7 @@ const GoalsPage = () => {
               {
                 filteredGoals.current.map(goal => {
                   return (
-                    <tr className="bg-white border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700"
+                    <tr className="bg-gray-100 border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700"
                       key={goal.id}>
                       <TableColumnContent content={goal.cryptoName}
                                           rowScope={true}

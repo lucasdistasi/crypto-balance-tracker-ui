@@ -6,13 +6,13 @@ const GoalProgress = ({progress, actualQuantity}: { progress: number, actualQuan
     <Fragment>
       {
         progress >= 100 ?
-          <p>
+          <p className="text-gray-900 dark:text-white">
             &#11088; Achieved &#11088;
           </p>
           :
           <Fragment>
             <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium text-blue-700 dark:text-white">
+              <span className="text-sm font-medium text-gray-900 dark:text-white">
                 {
                   `${progress}% (${actualQuantity})`
                 }

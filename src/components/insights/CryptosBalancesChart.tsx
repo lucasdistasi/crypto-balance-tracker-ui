@@ -75,7 +75,7 @@ const CryptosBalancesChart = () => {
 
       {
         error && !isLoadingCryptosBalancesInsights &&
-        <ErrorAlert/>
+        <ErrorAlert message="Error retrieving cryptos insights"/>
       }
     </Fragment>
   );

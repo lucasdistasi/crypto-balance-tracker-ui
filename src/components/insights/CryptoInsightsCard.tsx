@@ -32,12 +32,12 @@ const CryptoInsightsCard = ({crypto}: { crypto: UserCryptosInsights }) => {
       <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
         {crypto.cryptoInfo.cryptoName}
       </h5>
-      <span className="text-sm text-gray-500 dark:text-gray-400">
+      <span className="text-sm text-gray-800 dark:text-gray-400">
         {crypto.cryptoInfo.symbol.toUpperCase()}
       </span>
 
       <div className="flow-root mt-5">
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+        <ul className="divide-y divide-gray-500 dark:divide-gray-700">
           <CryptoInsightsCardRow title="Quantity"
                                  value={crypto.quantity}/>
           <CryptoInsightsCardRow title="Percentage"
@@ -63,7 +63,7 @@ const CryptoInsightsCard = ({crypto}: { crypto: UserCryptosInsights }) => {
                   Circulating Supply
                 </p>
                 <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-blue-700 dark:text-white">
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">
                     {
                       crypto.marketData.circulatingSupply.totalCirculatingSupply
                     }

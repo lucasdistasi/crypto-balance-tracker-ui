@@ -37,7 +37,7 @@ const TotalBalancesCards = () => {
 
       {
         error && !isLoadingTotalBalances &&
-        <ErrorAlert/>
+        <ErrorAlert message="Error retrieving total balances"/>
       }
 
       {
