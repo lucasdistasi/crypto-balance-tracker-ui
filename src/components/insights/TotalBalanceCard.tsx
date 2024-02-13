@@ -30,7 +30,7 @@ const TotalBalanceCard = ({title, value, decimals, symbol}: {
 
   return (
     <div
-      className="xl:max-w mb-8 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center">
+      className="xl:max-w mb-8 p-6 bg-gray-100 border border-gray-200 rounded-lg shadow text-center dark:bg-gray-800 dark:border-gray-700">
       <h5 className="w-full mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {
           title

@@ -68,7 +68,7 @@ const PlatformsBalancesChart = () => {
 
       {
         error && !isLoadingPlatformsBalances &&
-        <ErrorAlert/>
+        <ErrorAlert message="Error retrieving platforms insights"/>
       }
     </Fragment>
   );

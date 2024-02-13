@@ -11,7 +11,7 @@ const CryptoInsightsCards = ({cryptos}: {
         cryptos.map((crypto) => (
           <div id={crypto.cryptoInfo.id ?? crypto.cryptoInfo.cryptoId}
                key={crypto.cryptoInfo.id ?? crypto.cryptoInfo.cryptoId}
-               className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 pt-5">
+               className="bg-gray-100 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 pt-5">
             <CryptoInsightsCard crypto={crypto}/>
           </div>
         ))

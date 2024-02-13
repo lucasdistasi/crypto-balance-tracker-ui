@@ -13,7 +13,7 @@ export const TableColumnContent = ({content, rowScope, additionalClasses}: {
       {content}
     </th>
     :
-    <td className={additionalClasses ? `px-6 py-4 ${additionalClasses}` : 'px-6 py-4'}>
+    <td className={additionalClasses ? `px-6 py-4 text-gray-900 dark:text-gray-50 ${additionalClasses}` : 'px-6 py-4 text-gray-900 dark:text-gray-50'}>
       {content}
     </td>
 }

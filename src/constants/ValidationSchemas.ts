@@ -14,7 +14,7 @@ const addUpdateCryptoCommonValidationSchema = {
 const cryptoNameValidationSchema = {
   cryptoName: Yup.string()
     .required("Crypto name is required")
-    .matches(/^(?! )(?!.* {2})[a-zA-Z0-9]+(?:[ {2}][a-zA-Z0-9]+)*$(?<! )/, "Crypto name must be 1-64 characters, using only letters, numbers, and whitespaces"),
+    .matches(/^(?! )(?!.* {2})([a-zA-Z0-9]{1,63})(?:\.[a-zA-Z0-9]{1,63})?$/, "Crypto name must be 1-64 characters. No special characters allowed except for one dot"),
 };
 
 const addUpdateGoalCommonValidationSchema = {
