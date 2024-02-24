@@ -4,7 +4,7 @@ import React from "react";
 const NoCryptosFoundAlert = () => {
 
   return (
-    <div className="flex flex-col items-center min-h-screen w-full">
+    <div className="mx-auto flex flex-col items-center w-1/2">
       <div className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 px-4 py-3 my-8 w-10/12"
            role="alert">
         <p className="font-bold">No Cryptos found</p>

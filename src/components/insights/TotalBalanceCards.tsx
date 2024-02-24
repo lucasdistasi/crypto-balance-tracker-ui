@@ -6,7 +6,7 @@ const TotalBalanceCards = ({...props}) => {
   const btcDecimals = Number(String(totalBtcValue).split(".")[1]?.length) || 2;
 
   return (
-    <div className="xl:flex-row flex flex-col w-11/12 justify-around mt-10">
+    <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
       <TotalBalanceCard title={"Total value in USD"}
                         value={totalUsdValue}
                         decimals={2}

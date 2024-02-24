@@ -42,7 +42,9 @@ const CryptosPlatformsInsightsPage = () => {
       {
         (pageUserCryptosInsightsResponse.cryptos === undefined || pageUserCryptosInsightsResponse.cryptos?.length === 0)
         && !isLoadingUserCryptosInsights &&
-        <NoCryptosFoundAlert/>
+        <div className="min-h-screen">
+          <NoCryptosFoundAlert/>
+        </div>
       }
 
       {
@@ -52,7 +54,7 @@ const CryptosPlatformsInsightsPage = () => {
 
       {
         !error && !isLoadingUserCryptosInsights && pageUserCryptosInsightsResponse.cryptos?.length > 0 &&
-        <div className="container mx-auto mt-20 mb-10">
+        <div className="container mx-auto mt-20 mb-10 min-h-screen">
           <FilterField filterFunction={filterTable}
                        placeHolder="Search by crypto name or symbol/ticker"/>
 

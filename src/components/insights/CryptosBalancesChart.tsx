@@ -1,15 +1,10 @@
 import React, {Fragment, useEffect, useState} from "react";
-import Chart from 'react-google-charts'
 import ErrorAlert from "../page/ErrorAlert";
 import {CryptosBalancesInsightsResponse} from "../../model/response/insight/CryptosBalancesInsightsResponse";
 import {retrieveCryptosBalancesInsights} from "../../services/insightsService";
-import {Link} from "react-router-dom";
 import RadialChartSkeleton from "../skeletons/RadialChartSkeleton";
 import NoCryptosFoundAlert from "../crypto/NoCryptosFoundAlert";
-
-const options = {
-  titleTextStyle: {fontSize: 32, textAlign: "center"},
-};
+import BalancesPieChart from "./BalancesPieChart";
 
 const CryptosBalancesChart = () => {
 
@@ -27,7 +22,7 @@ const CryptosBalancesChart = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await retrieveCryptosBalancesInsights();
+          const response: CryptosBalancesInsightsResponse = await retrieveCryptosBalancesInsights();
           setCryptosBalances(response);
         } catch (err) {
           setError(true);
@@ -38,34 +33,19 @@ const CryptosBalancesChart = () => {
     )()
   }, []);
 
-  const getCryptosDistribution = () => {
-    const cryptos = cryptosBalances.cryptos?.map(crypto => [crypto.cryptoName, Number(crypto.balances.totalUSDBalance)]);
-
-    return [["Cryptos", "USD Balance"], ...cryptos];
-  }
-
   return (
     <Fragment>
       {
-        !isLoadingCryptosBalancesInsights && (cryptosBalances.cryptos === undefined || cryptosBalances.cryptos?.length === 0) &&
+        !isLoadingCryptosBalancesInsights && (cryptosBalances.cryptos?.length === 0) &&
         <NoCryptosFoundAlert/>
       }
 
       {
         !error && !isLoadingCryptosBalancesInsights && cryptosBalances.cryptos?.length > 0 &&
-        <Fragment>
-          <h1 className="text-4xl text-center mt-10">
-            All Cryptos Distribution
-          </h1>
-
-          <Chart
-            chartType="PieChart"
-            data={getCryptosDistribution()}
-            options={options}
-            width={"100%"}
-            height={"650px"}
-          />
-        </Fragment>
+        <BalancesPieChart chartId="cryptos-distribution-pie-chart"
+                          chartTitle="Cryptos Distribution"
+                          series={cryptosBalances.cryptos.map(crypto => Number(crypto.balances.totalUSDBalance))}
+                          labels={cryptosBalances.cryptos.map(crypto => `${crypto.cryptoName} (${crypto.percentage}%)`)}/>
       }
 
       {

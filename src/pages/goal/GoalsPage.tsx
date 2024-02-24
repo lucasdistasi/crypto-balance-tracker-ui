@@ -39,12 +39,12 @@ const GoalsPage = () => {
   useEffect(() => {
     (async () => {
         try {
-          const allGoals = await getGoalsByPageService(page);
-          setPageGoals(allGoals);
+          const pageGoals = await getGoalsByPageService(page);
+          setPageGoals(pageGoals);
 
           filteredGoals.current = hideAchieved
-            ? allGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
-            : allGoals.goals;
+            ? pageGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
+            : pageGoals.goals;
         } catch (err) {
           setError(true);
         } finally {
@@ -56,20 +56,13 @@ const GoalsPage = () => {
 
   const deleteGoal = async (goalId: string) => {
     try {
-      await deleteGoalService({goalId})
-      const updatedGoals = pageGoals.goals.filter(goal => goal.id !== goalId);
-      const {hasNextPage, page, totalPages} = pageGoals;
+      await deleteGoalService({goalId});
+      const pageGoals = await getGoalsByPageService(0);
+      setPageGoals(pageGoals);
 
-      setPageGoals({
-        goals: updatedGoals,
-        page,
-        hasNextPage,
-        totalPages
-      });
-
-      filteredGoals.current = hideAchieved ?
-        updatedGoals.filter(goal => goal.progress < 100) :
-        updatedGoals;
+      filteredGoals.current = hideAchieved
+        ? pageGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
+        : pageGoals.goals;
     } catch (error: any) {
       navigate("/error");
     }

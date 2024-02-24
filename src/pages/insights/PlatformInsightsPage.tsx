@@ -7,10 +7,10 @@ import {retrievePlatformInsights} from "../../services/insightsService";
 import {useNavigate, useParams} from "react-router-dom";
 import TotalBalanceCards from "../../components/insights/TotalBalanceCards";
 import PlatformInsightsTable from "../../components/insights/PlatformInsightsTable";
-import PlatformInsightsChart from "../../components/insights/PlatformInsightsChart";
 import {deleteCryptoService} from "../../services/cryptoService";
 import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleton";
 import ErrorComponent from "../../components/page/ErrorComponent";
+import BalancesPieChart from "../../components/insights/BalancesPieChart";
 
 const PlatformInsightsPage = () => {
 
@@ -50,15 +50,23 @@ const PlatformInsightsPage = () => {
 
   const deleteCrypto = async (cryptoId: string) => {
     try {
+      setIsLoadingPlatformInsightsResponse(true);
       await deleteCryptoService(cryptoId)
         .then(async (axiosResponse) => {
           if (axiosResponse.status === 200) {
+            const cryptosQuantity = platformInsightsResponse.cryptos.length;
             const response = await retrievePlatformInsights(platformId);
             setPlatformInsightsResponse(response);
+
+            if (cryptosQuantity == 1) {
+              navigate("/");
+            }
           }
         });
-    } catch (ex: any) {
+    } catch (err) {
       setError(true);
+    } finally {
+      setIsLoadingPlatformInsightsResponse(false);
     }
   }
 
@@ -67,17 +75,16 @@ const PlatformInsightsPage = () => {
       <Navbar/>
       <div className="flex flex-col items-center min-h-screen">
         {
-          !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse.cryptos?.length > 0 &&
+          !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
-            <h1 className="text-4xl text-center my-12">
-              {`${platformInsightsResponse.platformName} DISTRIBUTION`}
-            </h1>
-
             <TotalBalanceCards totalUsdValue={Number(platformInsightsResponse.balances.totalUSDBalance)}
                                totalEurValue={Number(platformInsightsResponse.balances.totalEURBalance)}
                                totalBtcValue={Number(platformInsightsResponse.balances.totalBTCBalance)}/>
 
-            <PlatformInsightsChart platformInsightsResponse={platformInsightsResponse}/>
+            <BalancesPieChart chartId="platform-pie-chart"
+                              chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}
+                              series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.balances.totalUSDBalance))}
+                              labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoName)}/>
 
             <PlatformInsightsTable platformInsightsResponse={platformInsightsResponse}
                                    deleteCryptoFunction={(cryptoId: string) => deleteCrypto(cryptoId)}/>
