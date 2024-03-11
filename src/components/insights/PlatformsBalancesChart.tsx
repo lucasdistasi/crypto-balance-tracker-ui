@@ -1,13 +1,9 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Chart} from "react-google-charts";
 import ErrorAlert from "../page/ErrorAlert";
 import {retrievePlatformsBalancesInsights} from "../../services/insightsService";
 import {PlatformsBalancesInsightsResponse} from "../../model/response/insight/PlatformsBalancesInsightsResponse";
 import RadialChartSkeleton from "../skeletons/RadialChartSkeleton";
-
-const options = {
-  titleTextStyle: {fontSize: 32, textAlign: "center"},
-};
+import BalancesPieChart from "./BalancesPieChart";
 
 const PlatformsBalancesChart = () => {
 
@@ -36,29 +32,14 @@ const PlatformsBalancesChart = () => {
     )();
   }, []);
 
-  function getData() {
-    const platforms = platformsBalances.platforms?.map(platform => [platform.platformName, Number(platform.balances.totalUSDBalance)])
-
-    return [["Platforms", "USD Balance"], ...platforms];
-  }
-
   return (
     <Fragment>
       {
         !error && !isLoadingPlatformsBalances && platformsBalances.platforms?.length > 0 &&
-        <Fragment>
-          <h1 className="text-4xl text-center">
-            All Platforms Distributions
-          </h1>
-
-          <Chart
-            chartType="PieChart"
-            data={getData()}
-            options={options}
-            width={"100%"}
-            height={"650px"}
-          />
-        </Fragment>
+        <BalancesPieChart chartId="platforms-distribution-pie-chart"
+                          chartTitle="Platforms Distributions"
+                          series={platformsBalances.platforms.map(platform => Number(platform.balances.totalUSDBalance))}
+                          labels={platformsBalances.platforms.map(platform => `${platform.platformName} (${platform.percentage}%)`)}/>
       }
 
       {

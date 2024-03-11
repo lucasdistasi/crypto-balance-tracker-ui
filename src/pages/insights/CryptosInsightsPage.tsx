@@ -42,7 +42,9 @@ const CryptosInsightsPage = () => {
       {
         (pageUserCryptosInsightsResponse.cryptos === undefined || pageUserCryptosInsightsResponse.cryptos?.length === 0) &&
         !isLoadingUserCryptosInsights &&
-        <NoCryptosFoundAlert/>
+        <div className="min-h-screen">
+          <NoCryptosFoundAlert/>
+        </div>
       }
 
       {

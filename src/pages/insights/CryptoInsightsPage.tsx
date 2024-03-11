@@ -2,7 +2,6 @@ import withScrollToTop from "../../hoc/withScrollToTop";
 import Navbar from "../../components/page/Navbar";
 import Footer from "../../components/page/Footer";
 import React, {Fragment, useEffect, useState} from "react";
-import CryptoInsightsChart from "../../components/insights/CryptoInsightsChart";
 import {useParams} from "react-router-dom";
 import {CryptoInsightResponse} from "../../model/response/insight/CryptoInsightResponse";
 import {retrieveCryptoInsights} from "../../services/insightsService";
@@ -10,6 +9,7 @@ import TotalBalanceCards from "../../components/insights/TotalBalanceCards";
 import CryptoInsightsTable from "../../components/insights/CryptoInsightsTable";
 import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleton";
 import ErrorComponent from "../../components/page/ErrorComponent";
+import BalancesPieChart from "../../components/insights/BalancesPieChart";
 
 const CryptoInsightsPage = () => {
 
@@ -56,7 +56,10 @@ const CryptoInsightsPage = () => {
                                totalEurValue={Number(cryptoInsightResponse.balances.totalEURBalance)}
                                totalBtcValue={Number(cryptoInsightResponse.balances.totalBTCBalance)}/>
 
-            <CryptoInsightsChart cryptoInsightResponse={cryptoInsightResponse}/>
+            <BalancesPieChart chartId="platform-pie-chart"
+                              chartTitle={`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
+                              series={cryptoInsightResponse.platforms.map(platform => Number(platform.balances.totalUSDBalance))}
+                              labels={cryptoInsightResponse.platforms.map(platform => platform.platformName)}/>
 
             <CryptoInsightsTable cryptoInsightResponse={cryptoInsightResponse}/>
           </Fragment>

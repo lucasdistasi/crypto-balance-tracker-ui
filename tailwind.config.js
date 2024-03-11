@@ -1,9 +1,11 @@
+import flowbitePlugin from 'flowbite/plugin';
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/flowbite/**/*.js",
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/flowbite/**/*.js',
   ],
   theme: {
     screens: {
@@ -16,6 +18,8 @@ module.exports = {
     }
   },
   plugins: [
-    require('flowbite/plugin')
-  ],
-}
+    flowbitePlugin({
+      charts: true
+    }),
+  ]
+};

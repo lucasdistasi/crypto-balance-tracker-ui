@@ -3,6 +3,7 @@ import axios from "axios";
 import {SortParams} from "../model/request/SortParams";
 
 const CRYPTOS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos/balances");
+const DAYS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/dates-balances");
 const PLATFORMS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/platforms/balances");
 const CRYPTOS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos");
 const CRYPTOS_PLATFORMS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos/platforms");
@@ -13,6 +14,10 @@ const CRYPTO_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cr
 export const retrieveCryptosBalancesInsights = async () => {
   return await axios.get(CRYPTOS_BALANCES_INSIGHTS_ENDPOINT)
     .then(response => response.data);
+}
+
+export const retrieveDaysBalancesInsights = async (balancesPeriodValue: string) => {
+  return await axios.get(DAYS_BALANCES_INSIGHTS_ENDPOINT.concat(`?dateRange=${balancesPeriodValue}`));
 }
 
 export const retrievePlatformsBalancesInsights = async () => {

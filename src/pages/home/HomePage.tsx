@@ -5,14 +5,16 @@ import PlatformsBalancesChart from "../../components/insights/PlatformsBalancesC
 import CryptosBalancesChart from "../../components/insights/CryptosBalancesChart";
 import {Fragment} from "react";
 import TotalBalancesCards from "../../components/insights/TotalBalancesCards";
+import DaysBalancesChart from "../../components/insights/DaysBalancesChart";
 
 const HomePage = () => {
 
   return (
     <Fragment>
       <Navbar/>
-      <div className="min-h-screen flex flex-col items-center mb-10">
+      <div className="min-h-screen">
         <TotalBalancesCards/>
+        <DaysBalancesChart/>
         <CryptosBalancesChart/>
         <PlatformsBalancesChart/>
       </div>
