@@ -11,6 +11,7 @@ import {deleteCryptoService} from "../../services/cryptoService";
 import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleton";
 import ErrorComponent from "../../components/page/ErrorComponent";
 import BalancesPieChart from "../../components/insights/BalancesPieChart";
+import AddNewButton from "../../components/buttons/AddNewButton";
 
 const PlatformInsightsPage = () => {
 
@@ -85,6 +86,10 @@ const PlatformInsightsPage = () => {
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}
                               series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.balances.totalUSDBalance))}
                               labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoName)}/>
+
+            <AddNewButton
+              href={`/crypto?platform=${platformInsightsResponse.platformName}`}
+              text="Add Crypto"/>
 
             <PlatformInsightsTable platformInsightsResponse={platformInsightsResponse}
                                    deleteCryptoFunction={(cryptoId: string) => deleteCrypto(cryptoId)}/>

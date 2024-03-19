@@ -14,10 +14,13 @@ import CryptoPlatformDropdown from "../../components/form/CryptoPlatformDropdown
 import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import DisabledTextInput from "../../components/form/DisabledTextInput";
 
 const AddCryptoPage = () => {
 
   const navigate = useNavigate();
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const platformName = urlSearchParams.get('platform');
   const {isLoadingPlatforms, platforms} = usePlatforms();
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
   const [isAddingCrypto, setIsAddingCrypto] = useState(false);
@@ -26,26 +29,34 @@ const AddCryptoPage = () => {
     const {cryptoName, quantity, platform} = values;
     const platformId = platforms.find(platformResponse => platformResponse.name == platform)?.id ?? ''
 
-    try {
-      setIsAddingCrypto(true);
-      await addCryptoService({
-        cryptoName,
-        quantity,
-        platformId
-      });
+    if (platformId) {
+      try {
+        setIsAddingCrypto(true);
+        await addCryptoService({
+          cryptoName,
+          quantity,
+          platformId
+        });
 
-      navigate("/cryptos");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiErrors(error.response.data);
-      }
+        navigate("/cryptos");
+      } catch (error: any) {
+        const {status} = error.response;
+        if (status >= 400 && status < 500) {
+          setApiErrors(error.response.data);
+        }
 
-      if (status >= 500) {
-        navigate("/error");
+        if (status >= 500) {
+          navigate("/error");
+        }
+      } finally {
+        setIsAddingCrypto(false);
       }
-    } finally {
-      setIsAddingCrypto(false);
+    } else {
+      setApiErrors([{
+        title: 'Invalid platform',
+        status: 404,
+        detail: 'Platform does not exist'
+      }])
     }
   }
 
@@ -71,7 +82,7 @@ const AddCryptoPage = () => {
               initialValues={{
                 cryptoName: '',
                 quantity: 0,
-                platform: ''
+                platform: platformName ?? ''
               }}
               validationSchema={addCryptoValidationSchema}
               onSubmit={(values, {setSubmitting}) => {
@@ -88,12 +99,22 @@ const AddCryptoPage = () => {
                                    type="number"
                                    name="quantity"/>
                 {
-                  !isLoadingPlatforms &&
-                  <CryptoPlatformDropdown label="Platform"
-                                          name="platform"/> ||
+                  isLoadingPlatforms &&
                   <SingleFieldSkeleton label="Platform"
                                        id="platforms-skeleton"
                                        classes="mb-6"/>
+                }
+
+                {
+                  !isLoadingPlatforms && platformName &&
+                  <DisabledTextInput label="Platform"
+                                     name="platform"/>
+                }
+
+                {
+                  !isLoadingPlatforms && !platformName &&
+                  <CryptoPlatformDropdown label="Platform"
+                                          name="platform"/>
                 }
 
                 {

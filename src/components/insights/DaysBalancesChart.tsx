@@ -102,7 +102,6 @@ const DaysBalancesChart = () => {
       await updateChartOptionsConfig(period);
     } catch (err) {
       setErrorDatesBalanceResponse(true);
-      console.log(err)
     } finally {
       setIsLoadingDatesBalanceResponse(false);
     }
