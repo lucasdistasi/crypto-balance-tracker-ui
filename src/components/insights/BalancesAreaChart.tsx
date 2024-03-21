@@ -91,9 +91,7 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
           {
             Object.entries(balancesPeriodValues).map(([key, [_, title]]) => (
               <option key={key} value={key}>
-                {
-                  title
-                }
+                {title}
               </option>
             ))
           }

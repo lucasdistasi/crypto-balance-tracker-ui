@@ -7,7 +7,7 @@ import {retrieveDaysBalancesInsights} from "../../services/insightsService";
 import {chartOptions} from "../../model/ChartOptions";
 
 export const balancesPeriodValues: Record<string, [string, string]> = {
-  ONE_DAY: ['ONE_DAY', 'Last day change'],
+  LAST_DAY: ['LAST_DAY', 'Last day change'],
   THREE_DAYS: ['THREE_DAYS', 'Last 3 days change'],
   ONE_WEEK: ['ONE_WEEK', 'Last 7 days change'],
   ONE_MONTH: ['ONE_MONTH', 'Last month change'],
