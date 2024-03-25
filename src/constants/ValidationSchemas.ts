@@ -31,6 +31,23 @@ export const platformValidationsSchema = Yup.object({
     .matches(/^[a-zA-Z](?:(?!\s{2,})[a-zA-Z\s]){0,22}[a-zA-Z]$/, "Platform name must be 1-24 characters long, no numbers, special characters or subsequents whitespaces allowed")
 });
 
+export const updatePriceTargetValidationsSchema = Yup.object({
+  priceTarget: Yup.string()
+    .required("Price target quantity is required")
+    .matches(QUANTITY_REGEX, INVALID_QUANTITY_MESSAGE)
+});
+
+export const addPriceTargetValidationsSchema = Yup.object({
+  cryptoNameOrId: Yup.string()
+    .required("Crypto name or id is required")
+    .min(1, "Crypto name or id must have at least 1 character")
+    .max(64, "Crypto name or id can not have more than 64 characters")
+    .matches(/^(?!\s)(?!.*\s{2,})\S.*?(?<!\s)$/i, "Invalid crypto name or id"),
+  priceTarget: Yup.string()
+    .required("Price target quantity is required")
+    .matches(QUANTITY_REGEX, INVALID_QUANTITY_MESSAGE)
+});
+
 export const addCryptoValidationSchema = Yup.object({
   ...addUpdateCryptoCommonValidationSchema,
   ...cryptoNameValidationSchema
