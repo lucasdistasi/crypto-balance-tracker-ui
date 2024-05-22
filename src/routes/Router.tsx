@@ -4,11 +4,8 @@ import PlatformsPage from "../pages/platform/PlatformsPage";
 import CryptosPage from "../pages/crypto/CryptosPage";
 import AddPlatformPage from "../pages/platform/AddPlatformPage";
 import AddCryptoPage from "../pages/crypto/AddCryptoPage";
-import EditCryptoPage from "../pages/crypto/UpdateCryptoPage";
-import EditPlatformPage from "../pages/platform/UpdatePlatformPage";
 import InternalErrorPage from "../pages/error/InternalErrorPage";
 import GoalsPage from "../pages/goal/GoalsPage";
-import EditGoalPage from "../pages/goal/UpdateGoalPage";
 import AddGoalPage from "../pages/goal/AddGoalPage";
 import TransferCryptoPage from "../pages/crypto/TransferCryptoPage";
 import ErrorBoundary from "../ErrorBoundary";
@@ -17,6 +14,12 @@ import CryptosPlatformsInsightsPage from "../pages/insights/CryptosPlatformsInsi
 import CryptosInsightsPage from "../pages/insights/CryptosInsightsPage";
 import HomePage from "../pages/home/HomePage";
 import CryptoInsightsPage from "../pages/insights/CryptoInsightsPage";
+import UpdateGoalPage from "../pages/goal/UpdateGoalPage";
+import UpdateCryptoPage from "../pages/crypto/UpdateCryptoPage";
+import UpdatePlatformPage from "../pages/platform/UpdatePlatformPage";
+import AddPriceTarget from "../pages/pricetarget/AddPriceTarget";
+import PriceTargetsPage from "../pages/pricetarget/PriceTargetsPage";
+import UpdatePriceTargetPage from "../pages/pricetarget/UpdatePriceTargetPage";
 
 const ErrorBoundaryLayout = () => (
   <ErrorBoundary fallback={<InternalErrorPage/>}>
@@ -49,7 +52,7 @@ const router = createBrowserRouter([{
     },
     {
       path: '/platform/:id',
-      element: <EditPlatformPage/>,
+      element: <UpdatePlatformPage/>,
     },
     {
       path: '/cryptos',
@@ -61,7 +64,7 @@ const router = createBrowserRouter([{
     },
     {
       path: '/crypto/:id',
-      element: <EditCryptoPage/>,
+      element: <UpdateCryptoPage/>,
     },
     {
       path: '/goal',
@@ -73,7 +76,7 @@ const router = createBrowserRouter([{
     },
     {
       path: '/goal/:id',
-      element: <EditGoalPage/>
+      element: <UpdateGoalPage/>
     },
     {
       path: '/transfer/:id',
@@ -94,6 +97,18 @@ const router = createBrowserRouter([{
     {
       path: '/insights/cryptos/:coingeckoCryptoId',
       element: <CryptoInsightsPage/>
+    },
+    {
+      path: '/price-target',
+      element: <AddPriceTarget/>
+    },
+    {
+      path: '/price-targets',
+      element: <PriceTargetsPage/>
+    },
+    {
+      path: '/price-targets/:id',
+      element: <UpdatePriceTargetPage/>
     },
     {
       path: '/404',
