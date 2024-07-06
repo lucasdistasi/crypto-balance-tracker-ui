@@ -12,6 +12,7 @@ import SortCryptosInsights from "../../components/insights/SortCryptosInsights";
 import LoadMoreButton from "../../components/buttons/LoadMoreButton";
 import CryptoInsightsCards from "../../components/insights/CryptoInsightsCards";
 import CardsInsightsSkeleton from "../../components/skeletons/CardsInsightsSkeleton";
+import InsightsSortFilterComponent from "../../components/insights/InsightsSortFilterComponent";
 
 const CryptosPlatformsInsightsPage = () => {
 
@@ -26,10 +27,13 @@ const CryptosPlatformsInsightsPage = () => {
     isLoadingUserCryptosInsights,
     isLoadingMore,
     loadMoreCryptos,
-    filterTable
+    filterTable,
+    cryptosFilterValue,
+    setCryptosFilterValue
   } = usePageUserCryptosInsightsResponse(() => retrieveCryptosPlatformsInsightsByPage(0, sortParams));
 
   const retrieveSortedResults = async () => {
+    setCryptosFilterValue("");
     const response: PageUserCryptosInsightsResponse = await retrieveCryptosPlatformsInsightsByPage(0, sortParams);
     setPage(0);
     setPageUserCryptosInsightsResponse(response);
@@ -55,12 +59,11 @@ const CryptosPlatformsInsightsPage = () => {
       {
         !error && !isLoadingUserCryptosInsights && pageUserCryptosInsightsResponse.cryptos?.length > 0 &&
         <div className="container mx-auto mt-20 mb-10 min-h-screen">
-          <FilterField filterFunction={filterTable}
-                       placeHolder="Search by crypto name or symbol/ticker"/>
-
-          <SortCryptosInsights updateSortBy={updateSortBy}
-                               updateSortType={updateSortType}
-                               retrieveSortedResults={retrieveSortedResults}/>
+          <InsightsSortFilterComponent filterFunction={filterTable}
+                                       filterValue={cryptosFilterValue}
+                                       updateSortBy={updateSortBy}
+                                       updateSortType={updateSortType}
+                                       retrieveSortedResults={retrieveSortedResults}/>
 
           <CryptoInsightsCards cryptos={filteredCryptos.current}/>
         </div>

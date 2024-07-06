@@ -83,6 +83,8 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>)
     setPage,
     isLoadingMore,
     loadMoreCryptos,
-    filterTable
+    filterTable,
+    cryptosFilterValue,
+    setCryptosFilterValue
   }
 }

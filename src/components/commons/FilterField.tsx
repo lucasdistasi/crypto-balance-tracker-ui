@@ -1,7 +1,8 @@
 import React from "react";
 
-const FilterField = ({filterFunction, placeHolder}: {
+const FilterField = ({filterFunction, filterValue, placeHolder}: {
   filterFunction: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  filterValue: string,
   placeHolder: string
 }) => {
 
@@ -27,6 +28,7 @@ const FilterField = ({filterFunction, placeHolder}: {
                className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-2/4 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                placeholder={placeHolder}
                onChange={event => filterFunction(event)}
+               value={filterValue}
                maxLength={64}/>
       </div>
     </div>

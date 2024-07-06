@@ -21,6 +21,7 @@ const AddCryptoPage = () => {
   const navigate = useNavigate();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const platformName = urlSearchParams.get('platform');
+  const redirectTo = urlSearchParams.get('redirectTo') ?? '/cryptos';
   const {isLoadingPlatforms, platforms} = usePlatforms();
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
   const [isAddingCrypto, setIsAddingCrypto] = useState(false);
@@ -38,7 +39,7 @@ const AddCryptoPage = () => {
           platformId
         });
 
-        navigate("/cryptos");
+        navigate(redirectTo);
       } catch (error: any) {
         const {status} = error.response;
         if (status >= 400 && status < 500) {
@@ -89,7 +90,7 @@ const AddCryptoPage = () => {
                 addCrypto(values);
               }}>
 
-              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
                 <EditableTextInput label="Crypto name or id"
                                    type="text"
                                    name="cryptoName"

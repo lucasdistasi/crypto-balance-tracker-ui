@@ -59,6 +59,7 @@ const PlatformInsightsPage = () => {
             const response = await retrievePlatformInsights(platformId);
             setPlatformInsightsResponse(response);
 
+            // TODO - NOT WORKING
             if (cryptosQuantity == 1) {
               navigate("/");
             }
@@ -88,7 +89,7 @@ const PlatformInsightsPage = () => {
                               labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoName)}/>
 
             <AddNewButton
-              href={`/crypto?platform=${platformInsightsResponse.platformName}`}
+              href={`/crypto?platform=${platformInsightsResponse.platformName}&redirectTo=/insights/platform/${platformId}`}
               text="Add Crypto"/>
 
             <PlatformInsightsTable platformInsightsResponse={platformInsightsResponse}

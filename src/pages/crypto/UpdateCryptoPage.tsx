@@ -109,7 +109,7 @@ const UpdateCryptoPage = () => {
               updateCrypto(values);
             }}>
 
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
               <DisabledTextInput label="Crypto name or id"
                                  type="text"
                                  name="cryptoName"/>

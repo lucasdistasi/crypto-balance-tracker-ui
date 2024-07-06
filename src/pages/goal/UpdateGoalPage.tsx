@@ -118,7 +118,7 @@ const UpdateGoalPage = () => {
             onSubmit={(values, {setSubmitting}) => {
               updateGoalQuantity(values);
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
               <DisabledTextInput label="Crypto Name"
                                  name="cryptoName"
                                  type="text"/>

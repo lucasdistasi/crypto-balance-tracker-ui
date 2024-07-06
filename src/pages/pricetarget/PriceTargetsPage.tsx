@@ -113,7 +113,7 @@ const PriceTargetsPage = () => {
         }
 
         {
-          !fetchPriceTargetsError && !isLoadingPriceTargets && priceTargetsRef.current.length > 0 &&
+          !fetchPriceTargetsError && !isLoadingPriceTargets && priceTargetsRef.current?.length > 0 &&
           <div className="relative overflow-x-auto rounded-lg w-11/12 mt-5">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
