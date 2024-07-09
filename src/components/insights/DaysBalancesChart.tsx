@@ -110,7 +110,7 @@ const DaysBalancesChart = () => {
   return (
     <Fragment>
       {
-        !errorDatesBalanceResponse && !isLoadingDatesBalanceResponse &&
+        !errorDatesBalanceResponse && !isLoadingDatesBalanceResponse && datesBalanceResponse.datesBalances?.length > 0 &&
         <BalancesAreaChart datesBalanceResponse={datesBalanceResponse}
                            updateDatesRange={updateDatesRange}
                            chartOptions={chartOptionsConfig}

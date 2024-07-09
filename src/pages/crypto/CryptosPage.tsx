@@ -151,6 +151,7 @@ const CryptosPage = () => {
           !error && !isLoadingCryptos && pageUserCryptoResponse?.cryptos?.length > 0 &&
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-10 w-11/12">
             <FilterField filterFunction={event => filterTable(event)}
+                         filterValue={filterValue}
                          placeHolder="Search by crypto or platform"/>
 
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

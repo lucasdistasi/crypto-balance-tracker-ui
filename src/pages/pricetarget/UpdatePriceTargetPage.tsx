@@ -11,7 +11,7 @@ import ErrorListAlert from "../../components/page/ErrorListAlert";
 import ErrorAlert from "../../components/page/ErrorAlert";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
 import {Form, Formik} from "formik";
-import {addPriceTargetValidationsSchema, updatePriceTargetValidationsSchema} from "../../constants/ValidationSchemas";
+import {updatePriceTargetValidationsSchema} from "../../constants/ValidationSchemas";
 import DisabledTextInput from "../../components/form/DisabledTextInput";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";

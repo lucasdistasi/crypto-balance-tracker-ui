@@ -1,7 +1,6 @@
 import {CRYPTO_BALANCE_TRACKER_URL} from "../constants/Constants";
 import {PriceTargetRequest} from "../model/request/pricetarget/PriceTargetRequest";
 import axios from "axios";
-import {SortType} from "../enums/SortType";
 
 const PRICE_TARGET_URL = CRYPTO_BALANCE_TRACKER_URL.concat("/price-targets");
 
