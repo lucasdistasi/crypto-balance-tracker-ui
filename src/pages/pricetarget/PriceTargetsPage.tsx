@@ -120,10 +120,10 @@ const PriceTargetsPage = () => {
               <tr>
                 <TableColumnTitle title="Crypto"
                                   additionalClasses="text-center"/>
-                <TableColumnTitle title="Current Price"
-                                  additionalClasses="text-center whitespace-nowrap"/>
                 <TableColumnTitle title="Target"
                                   additionalClasses="text-center"/>
+                <TableColumnTitle title="Current Price"
+                                  additionalClasses="text-center whitespace-nowrap"/>
                 <SortableTableColumnTitle title="Change"
                                           additionalClasses="text-center"
                                           sortFunction={sortPriceTargets}/>
@@ -141,9 +141,9 @@ const PriceTargetsPage = () => {
                       <TableColumnContent content={target.cryptoName}
                                           rowScope={true}
                                           additionalClasses="text-center"/>
-                      <TableColumnContent content={`U$D ${target.currentPrice.toString()}`}
-                                          additionalClasses="text-center"/>
                       <TableColumnContent content={`U$D ${target.priceTarget.toString()}`}
+                                          additionalClasses="text-center text-bold"/>
+                      <TableColumnContent content={`U$D ${target.currentPrice.toString()}`}
                                           additionalClasses="text-center"/>
                       <TableColumnContent content={`${target.change}%`}
                                           additionalClasses="text-center"/>
