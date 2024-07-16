@@ -59,7 +59,7 @@ const PlatformInsightsPage = () => {
       setIsLoadingPlatformInsightsResponse(true);
       await deleteCryptoService(cryptoId)
         .then(async (axiosResponse) => {
-          if (axiosResponse.status === 200) {
+          if (isSuccessfulStatus(axiosResponse.status)) {
             const response = await retrievePlatformInsights(platformId);
             setPlatformInsightsResponse(response);
 

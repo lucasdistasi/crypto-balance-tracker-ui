@@ -30,7 +30,7 @@ export function usePlatforms() {
     try {
       const {status} = await deletePlatformService(platformId);
 
-      if (status === 200) {
+      if (isSuccessfulStatus(status)) {
         const updatedPlatforms = platforms.filter(platform => platform.id !== platformId);
         setPlatforms(updatedPlatforms);
       }
