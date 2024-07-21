@@ -20,8 +20,16 @@ const DaysBalancesChart = () => {
 
   const [datesBalanceResponse, setDatesBalanceResponse] = useState<DatesBalanceResponse>({
     datesBalances: [],
-    change: 0,
-    priceDifference: "0"
+    change: {
+      usdChange: 0,
+      eurChange: 0,
+      btcChange: 0
+    },
+    priceDifference: {
+      usdDifference: "0",
+      eurDifference: "0",
+      btcDifference: "0"
+    }
   });
   const [isLoadingDatesBalanceResponse, setIsLoadingDatesBalanceResponse] = useState(true);
   const [errorDatesBalanceResponse, setErrorDatesBalanceResponse] = useState(false);
@@ -29,12 +37,12 @@ const DaysBalancesChart = () => {
   const [chartTitle, setChartTitle] = useState("Last 7 days change");
   const [chartOptionsConfig, setChartOptionsConfig] = useState(chartOptions);
 
-  const retrieveGradientColor = (datesBalanceResponse: DatesBalanceResponse) => {
-    if (datesBalanceResponse.change > 0) {
+  const retrieveUsdGradientColor = (datesBalanceResponse: DatesBalanceResponse) => {
+    if (datesBalanceResponse.change.usdChange > 0) {
       return "#04A71A";
     }
 
-    if (datesBalanceResponse.change < 0) {
+    if (datesBalanceResponse.change.usdChange < 0) {
       return "#BE3D3DFF";
     }
 
@@ -51,8 +59,8 @@ const DaysBalancesChart = () => {
   const updateChartOptionsConfig = async (balancesPeriodValue: string) => {
     const response = await getDaysBalancesInsights(balancesPeriodValue);
 
-    const dates = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.date);
-    const balances = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.balance);
+    const dates: string[] = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.date);
+    const usdBalances: number[] = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.balances.totalUSDBalance);
 
     setChartOptionsConfig({
       ...chartOptionsConfig,
@@ -60,15 +68,15 @@ const DaysBalancesChart = () => {
         ...chartOptionsConfig.fill,
         gradient: {
           ...chartOptionsConfig.fill.gradient,
-          shade: retrieveGradientColor(response.data),
-          gradientToColors: [retrieveGradientColor(response.data)],
+          shade: retrieveUsdGradientColor(response.data),
+          gradientToColors: [retrieveUsdGradientColor(response.data)],
         },
       },
       series: [
         {
           name: "USD Balance",
-          data: balances,
-          color: retrieveGradientColor(response.data),
+          data: usdBalances,
+          color: retrieveUsdGradientColor(response.data),
         },
       ],
       xaxis: {

@@ -25,11 +25,11 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
   }
 
   const retrieveChangeColor = (datesBalanceResponse: DatesBalanceResponse) => {
-    if (datesBalanceResponse.change > 0) {
+    if (datesBalanceResponse.change.usdChange > 0) {
       return "text-green-500 dark:text-green-500";
     }
 
-    if (datesBalanceResponse.change < 0) {
+    if (datesBalanceResponse.change.usdChange < 0) {
       return "text-red-800 dark:text-red-300";
     }
 
@@ -37,12 +37,12 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
   }
 
   const getPriceDifference = () => {
-    if (Number(datesBalanceResponse.priceDifference) > 0) {
-      return `(+${datesBalanceResponse.priceDifference} USD)`
+    if (Number(datesBalanceResponse.priceDifference.usdDifference) > 0) {
+      return `(+${datesBalanceResponse.priceDifference.usdDifference} USD)`
     }
 
-    if (Number(datesBalanceResponse.priceDifference) < 0) {
-      return `(${datesBalanceResponse.priceDifference} USD)`
+    if (Number(datesBalanceResponse.priceDifference.usdDifference) < 0) {
+      return `(${datesBalanceResponse.priceDifference.usdDifference} USD)`
     }
 
     return "(0)";
@@ -61,16 +61,16 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
             className={`flex items-center px-2.5 py-0.5 text-base font-semibold ${retrieveChangeColor(datesBalanceResponse)} text-center`}>
             {
               datesBalanceResponse &&
-              `${datesBalanceResponse.change}% ${datesBalanceResponse.change !== 0 ? getPriceDifference() : ''}`
+              `${datesBalanceResponse.change.usdChange}% ${datesBalanceResponse.change.usdChange !== 0 ? getPriceDifference() : ''}`
             }
 
             {
-              datesBalanceResponse.change > 0 &&
+              datesBalanceResponse.change.usdChange > 0 &&
               <GreenArrow/>
             }
 
             {
-              datesBalanceResponse.change < 0 &&
+              datesBalanceResponse.change.usdChange < 0 &&
               <RedArrow/>
             }
           </div>
