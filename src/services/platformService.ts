@@ -1,5 +1,6 @@
 import axios from "axios";
 import {CRYPTO_BALANCE_TRACKER_URL} from "../constants/Constants";
+import {PlatformRequest} from "../model/request/platform/PlatformRequest";
 
 const PLATFORMS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/platforms");
 

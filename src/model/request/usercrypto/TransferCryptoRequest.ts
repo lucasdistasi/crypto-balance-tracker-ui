@@ -1,4 +1,4 @@
-interface TransferCryptoRequest {
+export interface TransferCryptoRequest {
   userCryptoId: string,
   quantityToTransfer: bigint,
   sendFullQuantity: boolean,

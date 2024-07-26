@@ -14,6 +14,7 @@ import BalancesPieChart from "../../components/insights/BalancesPieChart";
 import AddNewButton from "../../components/buttons/AddNewButton";
 import {getPlatformService} from "../../services/platformService";
 import {PlatformResponse} from "../../model/response/platform/PlatformResponse";
+import {isSuccessfulStatus} from "../../utils/utils";
 
 const PlatformInsightsPage = () => {
 
@@ -41,7 +42,7 @@ const PlatformInsightsPage = () => {
           const response = await retrievePlatformInsights(platformId);
           setPlatformInsightsResponse(response)
 
-          if (!response || response.status == 204) {
+          if (!response || isSuccessfulStatus(response.status)) {
             const platform = await getPlatformService(platformId);
             setPlatformResponse(platform);
           }

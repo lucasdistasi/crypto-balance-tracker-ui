@@ -3,6 +3,7 @@ import ErrorResponse from "../model/response/ErrorResponse";
 import {useNavigate} from "react-router-dom";
 import {deletePlatformService, retrieveAllPlatforms} from "../services/platformService";
 import {PlatformResponse} from "../model/response/platform/PlatformResponse";
+import {isSuccessfulStatus} from "../utils/utils";
 
 export function usePlatforms() {
 

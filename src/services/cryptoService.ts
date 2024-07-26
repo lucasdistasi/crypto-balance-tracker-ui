@@ -1,7 +1,7 @@
-import {
-  CRYPTO_BALANCE_TRACKER_URL
-} from "../constants/Constants";
+import {CRYPTO_BALANCE_TRACKER_URL} from "../constants/Constants";
 import axios from "axios";
+import {TransferCryptoRequest} from "../model/request/usercrypto/TransferCryptoRequest";
+import {UserCryptoRequest} from "../model/request/usercrypto/UserCryptoRequest";
 
 const CRYPTOS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/cryptos");
 const TRANSFER_CRYPTO_ENDPOINT = CRYPTOS_ENDPOINT.concat("/transfer");

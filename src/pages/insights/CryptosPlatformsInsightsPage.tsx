@@ -7,8 +7,6 @@ import {usePageUserCryptosInsightsResponse} from "../../hooks/usePageUserCryptos
 import {retrieveCryptosPlatformsInsightsByPage} from "../../services/insightsService";
 import {PageUserCryptosInsightsResponse} from "../../model/response/insight/PageUserCryptosInsightsResponse";
 import NoCryptosFoundAlert from "../../components/crypto/NoCryptosFoundAlert";
-import FilterField from "../../components/commons/FilterField";
-import SortCryptosInsights from "../../components/insights/SortCryptosInsights";
 import LoadMoreButton from "../../components/buttons/LoadMoreButton";
 import CryptoInsightsCards from "../../components/insights/CryptoInsightsCards";
 import CardsInsightsSkeleton from "../../components/skeletons/CardsInsightsSkeleton";

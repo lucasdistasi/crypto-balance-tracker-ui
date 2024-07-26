@@ -1,5 +1,6 @@
 import axios from "axios";
 import {CRYPTO_BALANCE_TRACKER_URL} from "../constants/Constants";
+import {GoalRequest} from "../model/request/goal/GoalRequest";
 
 const GOALS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/goals");
 

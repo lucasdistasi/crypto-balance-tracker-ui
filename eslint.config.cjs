@@ -27,7 +27,7 @@ module.exports = [
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': 'off', // Allow omitting return types for React components
       '@typescript-eslint/no-explicit-any': 'off', // Allowing the use of 'any' type
-      '@typescript-eslint/no-unused-vars': 'warn', // Detect unused variables
+      '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_$' }], // Detect unused variables
       'react/prop-types': 'off', // Disable prop-types as we use TypeScript for type checking
       'react/react-in-jsx-scope': 'off', // No need to import React when using JSX with Vite
       'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies

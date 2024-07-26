@@ -1,22 +1,12 @@
 import React, {Fragment, useEffect, useState} from "react";
-import BalancesAreaChart from "./BalancesAreaChart";
 import ErrorAlert from "../page/ErrorAlert";
 import DatesBalancesAreaChartSkeleton from "../skeletons/DatesBalancesAreaChartSkeleton";
 import {DatesBalanceResponse, DatesBalances} from "../../model/response/insight/DatesBalanceResponse";
 import {retrieveDaysBalancesInsights} from "../../services/insightsService";
-import {chartOptions} from "../../model/ChartOptions";
+import FiatBalancesAreaChart from "./FiatBalancesAreaChart";
+import {balancesPeriodValues, usdBalancesChartOptions} from "../../utils/utils";
 
-export const balancesPeriodValues: Record<string, [string, string]> = {
-  LAST_DAY: ['LAST_DAY', 'Last day change'],
-  THREE_DAYS: ['THREE_DAYS', 'Last 3 days change'],
-  ONE_WEEK: ['ONE_WEEK', 'Last 7 days change'],
-  ONE_MONTH: ['ONE_MONTH', 'Last month change'],
-  THREE_MONTHS: ['THREE_MONTHS', 'Last 3 months change'],
-  SIX_MONTHS: ['SIX_MONTHS', 'Last 6 months change'],
-  ONE_YEAR: ['ONE_YEAR', 'Last year change'],
-};
-
-const DaysBalancesChart = () => {
+const FiatDatesBalancesChart = () => {
 
   const [datesBalanceResponse, setDatesBalanceResponse] = useState<DatesBalanceResponse>({
     datesBalances: [],
@@ -35,7 +25,7 @@ const DaysBalancesChart = () => {
   const [errorDatesBalanceResponse, setErrorDatesBalanceResponse] = useState(false);
   const [selectedPeriodTime, setSelectedPeriodTime] = useState("ONE_WEEK");
   const [chartTitle, setChartTitle] = useState("Last 7 days change");
-  const [chartOptionsConfig, setChartOptionsConfig] = useState(chartOptions);
+  const [chartOptionsConfig, setChartOptionsConfig] = useState(usdBalancesChartOptions);
 
   const retrieveUsdGradientColor = (datesBalanceResponse: DatesBalanceResponse) => {
     if (datesBalanceResponse.change.usdChange > 0) {
@@ -119,7 +109,7 @@ const DaysBalancesChart = () => {
     <Fragment>
       {
         !errorDatesBalanceResponse && !isLoadingDatesBalanceResponse && datesBalanceResponse.datesBalances?.length > 0 &&
-        <BalancesAreaChart datesBalanceResponse={datesBalanceResponse}
+        <FiatBalancesAreaChart datesBalanceResponse={datesBalanceResponse}
                            updateDatesRange={updateDatesRange}
                            chartOptions={chartOptionsConfig}
                            chartTitle={chartTitle}
@@ -139,4 +129,4 @@ const DaysBalancesChart = () => {
   );
 }
 
-export default DaysBalancesChart
+export default FiatDatesBalancesChart

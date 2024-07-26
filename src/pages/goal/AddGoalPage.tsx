@@ -16,11 +16,9 @@ const AddGoalPage = () => {
 
   const navigate = useNavigate();
   const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
-  const [isAddingGoal, setIsAddingGoal] = useState(false);
 
   const addGoal = async ({...values}) => {
     const {cryptoName, goalQuantity} = values;
-    setIsAddingGoal(true);
 
     try {
       await saveGoal({
@@ -33,14 +31,11 @@ const AddGoalPage = () => {
       const {status} = error.response;
       if (status >= 400 && status < 500) {
         setApiErrors(error.response.data);
-        setIsAddingGoal(false);
       }
 
       if (status >= 500) {
         navigate("/error");
       }
-    } finally {
-      setIsAddingGoal(false);
     }
   }
 
@@ -66,25 +61,29 @@ const AddGoalPage = () => {
           }}
           validationSchema={addGoalValidationSchema}
           onSubmit={(values, {setSubmitting}) => {
-            addGoal(values);
+            addGoal(values).then(() => {
+              setSubmitting(false); // TODO - TEST THIS
+            });
           }}>
 
-          <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-            <EditableTextInput label="Crypto Name"
-                               type="text"
-                               name="cryptoName"
-                               placeholder="Bitcoin"
-                               maxLength={64}/>
-            <EditableTextInput label="Goal Quantity"
-                               type="text"
-                               name="goalQuantity"/>
+          {({isSubmitting}) => (
+            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+              <EditableTextInput label="Crypto Name"
+                                 type="text"
+                                 name="cryptoName"
+                                 placeholder="Bitcoin"
+                                 maxLength={64}/>
+              <EditableTextInput label="Goal Quantity"
+                                 type="text"
+                                 name="goalQuantity"/>
 
-            {
-              !isAddingGoal &&
-              <SubmitButton text="Add Goal"/> ||
-              <DisabledSubmitButton text="Adding Goal"/>
-            }
-          </Form>
+              {
+                !isSubmitting &&
+                <SubmitButton text="Add Goal"/> ||
+                <DisabledSubmitButton text="Adding Goal"/>
+              }
+            </Form>
+          )}
         </Formik>
       </div>
       <Footer/>

@@ -12,7 +12,6 @@ import SortCryptosInsights from "../../components/insights/SortCryptosInsights";
 import LoadMoreButton from "../../components/buttons/LoadMoreButton";
 import CryptoInsightsCards from "../../components/insights/CryptoInsightsCards";
 import CardsInsightsSkeleton from "../../components/skeletons/CardsInsightsSkeleton";
-import InsightsSortFilterComponent from "../../components/insights/InsightsSortFilterComponent";
 
 const CryptosInsightsPage = () => {
 
