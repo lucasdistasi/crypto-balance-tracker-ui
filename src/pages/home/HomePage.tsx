@@ -25,4 +25,4 @@ const HomePage = () => {
   );
 }
 
-export default withScrollToTop(HomePage)
+export default withScrollToTop(HomePage);

@@ -26,7 +26,6 @@ const UpdatePriceTargetPage = () => {
   const [priceTargetResponse, setPriceTargetResponse] = useState<PriceTargetResponse>();
   const [fetchInfoError, setFetchInfoError] = useState(false);
   const [isLoadingPriceTarget, setIsLoadingPriceTarget] = useState(true);
-  const [isUpdatingPriceTarget, setIsUpdatingPriceTarget] = useState(false);
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>();
   const [noChangesError, setNoChangesError] = useState(false);
 
@@ -56,7 +55,6 @@ const UpdatePriceTargetPage = () => {
     }
 
     try {
-      setIsUpdatingPriceTarget(true);
       await updatePriceTarget(priceTargetId, {
         cryptoNameOrId: cryptoName,
         priceTarget
@@ -72,8 +70,6 @@ const UpdatePriceTargetPage = () => {
       if (status >= 500) {
         navigate("/error");
       }
-    } finally {
-      setIsUpdatingPriceTarget(false);
     }
   }
 
@@ -116,21 +112,26 @@ const UpdatePriceTargetPage = () => {
             }}
             validationSchema={updatePriceTargetValidationsSchema}
             onSubmit={(values, {setSubmitting}) => {
-              updateTargetPrice(values);
+              updateTargetPrice(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
-              <DisabledTextInput label="Crypto Name"
-                                 name="cryptoName"
-                                 type="text"/>
-              <EditableTextInput label="Price Target"
-                                 name="priceTarget"
-                                 type="number"/>
-              {
-                !isUpdatingPriceTarget &&
-                <SubmitButton text="Update Price Target"/> ||
-                <DisabledSubmitButton text="Updating Price Target"/>
-              }
-            </Form>
+
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                  <DisabledTextInput label="Crypto Name"
+                                     name="cryptoName"
+                                     type="text"/>
+                  <EditableTextInput label="Price Target"
+                                     name="priceTarget"
+                                     type="number"/>
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text="Update Price Target"/> ||
+                    <DisabledSubmitButton text="Updating Price Target"/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
 

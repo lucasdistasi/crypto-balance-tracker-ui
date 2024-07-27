@@ -47,7 +47,7 @@ const PriceTargetsPage = () => {
           setIsLoadingPriceTargets(false);
         }
       }
-    )()
+    )();
   }, []);
 
   const deleteTarget = async (priceTargetId: string) => {

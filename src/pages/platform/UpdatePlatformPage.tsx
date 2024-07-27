@@ -24,7 +24,6 @@ const UpdatePlatformPage = () => {
     id: "",
     name: ""
   });
-  const [isUpdatingPlatform, setIsUpdatingPlatform] = useState(false);
   const [isLoadingPlatform, setIsLoadingPlatform] = useState(true);
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
   const [fetchInfoError, setFetchInfoError] = useState(false);
@@ -44,7 +43,6 @@ const UpdatePlatformPage = () => {
   }, []);
 
   const updatePlatform = async ({...values}) => {
-    setIsUpdatingPlatform(true);
     const {platformName} = values;
 
     try {
@@ -60,8 +58,6 @@ const UpdatePlatformPage = () => {
       if (status >= 500) {
         navigate("/error");
       }
-    } finally {
-      setIsUpdatingPlatform(false);
     }
   }
 
@@ -95,18 +91,23 @@ const UpdatePlatformPage = () => {
             }}
             validationSchema={platformValidationsSchema}
             onSubmit={(values, {setSubmitting}) => {
-              updatePlatform(values)
+              updatePlatform(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-              <EditableTextInput label="Platform Name"
-                                 name="platformName"
-                                 type="text"/>
-              {
-               !isUpdatingPlatform &&
-                <SubmitButton text="Update platform"/> ||
-                <DisabledSubmitButton text="Updating platform"/>
-              }
-            </Form>
+
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+                  <EditableTextInput label="Platform Name"
+                                     name="platformName"
+                                     type="text"/>
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text="Update platform"/> ||
+                    <DisabledSubmitButton text="Updating platform"/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
 

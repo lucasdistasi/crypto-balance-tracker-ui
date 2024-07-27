@@ -10,6 +10,7 @@ import {platformValidationsSchema} from "../../constants/ValidationSchemas";
 import {Form, Formik} from "formik";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
+import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 
 const AddPlatformPage = () => {
 
@@ -33,7 +34,7 @@ const AddPlatformPage = () => {
         navigate("/error");
       }
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -55,19 +56,29 @@ const AddPlatformPage = () => {
           }}
           validationSchema={platformValidationsSchema}
           onSubmit={(values, {setSubmitting}) => {
-            addPlatform(values);
+            addPlatform(values).then(() => setSubmitting(false));
           }}>
-          <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-            <EditableTextInput label="Platform Name"
-                               name="platformName"
-                               type="text"/>
-            <SubmitButton text="Add platform"/>
-          </Form>
+
+          {
+            ({isSubmitting}) => (
+              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+                <EditableTextInput label="Platform Name"
+                                   name="platformName"
+                                   type="text"/>
+
+                {
+                  !isSubmitting &&
+                  <SubmitButton text="Add platform"/> ||
+                  <DisabledSubmitButton text="Adding platform"/>
+                }
+              </Form>
+            )
+          }
         </Formik>
       </div>
       <Footer/>
     </Fragment>
   );
-}
+};
 
-export default withScrollToTop(AddPlatformPage)
+export default withScrollToTop(AddPlatformPage);

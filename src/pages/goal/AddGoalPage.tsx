@@ -61,29 +61,29 @@ const AddGoalPage = () => {
           }}
           validationSchema={addGoalValidationSchema}
           onSubmit={(values, {setSubmitting}) => {
-            addGoal(values).then(() => {
-              setSubmitting(false); // TODO - TEST THIS
-            });
+            addGoal(values).then(() => setSubmitting(false));
           }}>
 
-          {({isSubmitting}) => (
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-              <EditableTextInput label="Crypto Name"
-                                 type="text"
-                                 name="cryptoName"
-                                 placeholder="Bitcoin"
-                                 maxLength={64}/>
-              <EditableTextInput label="Goal Quantity"
-                                 type="text"
-                                 name="goalQuantity"/>
+          {
+            ({isSubmitting}) => (
+              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+                <EditableTextInput label="Crypto Name"
+                                   type="text"
+                                   name="cryptoName"
+                                   placeholder="Bitcoin"
+                                   maxLength={64}/>
+                <EditableTextInput label="Goal Quantity"
+                                   type="text"
+                                   name="goalQuantity"/>
 
-              {
-                !isSubmitting &&
-                <SubmitButton text="Add Goal"/> ||
-                <DisabledSubmitButton text="Adding Goal"/>
-              }
-            </Form>
-          )}
+                {
+                  !isSubmitting &&
+                  <SubmitButton text="Add Goal"/> ||
+                  <DisabledSubmitButton text="Adding Goal"/>
+                }
+              </Form>
+            )
+          }
         </Formik>
       </div>
       <Footer/>

@@ -40,7 +40,7 @@ const PlatformInsightsPage = () => {
     (async () => {
         try {
           const response = await retrievePlatformInsights(platformId);
-          setPlatformInsightsResponse(response)
+          setPlatformInsightsResponse(response);
 
           if (!response || isSuccessfulStatus(response.status)) {
             const platform = await getPlatformService(platformId);
@@ -52,7 +52,7 @@ const PlatformInsightsPage = () => {
           setIsLoadingPlatformInsightsResponse(false);
         }
       }
-    )()
+    )();
   }, []);
 
   const deleteCrypto = async (cryptoId: string) => {
@@ -72,7 +72,7 @@ const PlatformInsightsPage = () => {
     } finally {
       setIsLoadingPlatformInsightsResponse(false);
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -124,7 +124,7 @@ const PlatformInsightsPage = () => {
       </div>
       <Footer/>
     </Fragment>
-  )
-}
+  );
+};
 
-export default withScrollToTop(PlatformInsightsPage)
+export default withScrollToTop(PlatformInsightsPage);

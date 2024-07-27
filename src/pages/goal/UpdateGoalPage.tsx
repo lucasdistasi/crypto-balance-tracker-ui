@@ -24,7 +24,6 @@ const UpdateGoalPage = () => {
   const goalId: string = params.id!!;
   const [goal, setGoal] = useState<GoalResponse>();
   const [isLoadingGoal, setIsLoadingGoal] = useState(true);
-  const [isUpdatingGoal, setIsUpdatingGoal] = useState(false);
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
   const [fetchInfoError, setFetchInfoError] = useState(false);
   const [noChangesError, setNoChangesError] = useState(false);
@@ -56,7 +55,6 @@ const UpdateGoalPage = () => {
     }
 
     try {
-      setIsUpdatingGoal(true);
       await updateGoal(goalId, {
         cryptoName,
         goalQuantity
@@ -72,8 +70,6 @@ const UpdateGoalPage = () => {
       if (status >= 500) {
         navigate("/error");
       }
-    } finally {
-      setIsUpdatingGoal(false);
     }
   }
 
@@ -116,21 +112,26 @@ const UpdateGoalPage = () => {
             }}
             validationSchema={updateGoalValidationSchema}
             onSubmit={(values, {setSubmitting}) => {
-              updateGoalQuantity(values);
+              updateGoalQuantity(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
-              <DisabledTextInput label="Crypto Name"
-                                 name="cryptoName"
-                                 type="text"/>
-              <EditableTextInput label="Goal Quantity"
-                                 name="goalQuantity"
-                                 type="number"/>
-              {
-                !isUpdatingGoal &&
-                <SubmitButton text="Update Goal"/> ||
-                <DisabledSubmitButton text="Updating Goal"/>
-              }
-            </Form>
+
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                  <DisabledTextInput label="Crypto Name"
+                                     name="cryptoName"
+                                     type="text"/>
+                  <EditableTextInput label="Goal Quantity"
+                                     name="goalQuantity"
+                                     type="number"/>
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text="Update Goal"/> ||
+                    <DisabledSubmitButton text="Updating Goal"/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
 

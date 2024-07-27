@@ -24,7 +24,6 @@ const AddCryptoPage = () => {
   const redirectTo = urlSearchParams.get('redirectTo') ?? '/cryptos';
   const {isLoadingPlatforms, platforms} = usePlatforms();
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
-  const [isAddingCrypto, setIsAddingCrypto] = useState(false);
 
   const addCrypto = async ({...values}) => {
     const {cryptoName, quantity, platform} = values;
@@ -32,7 +31,6 @@ const AddCryptoPage = () => {
 
     if (platformId) {
       try {
-        setIsAddingCrypto(true);
         await addCryptoService({
           cryptoName,
           quantity,
@@ -49,8 +47,6 @@ const AddCryptoPage = () => {
         if (status >= 500) {
           navigate("/error");
         }
-      } finally {
-        setIsAddingCrypto(false);
       }
     } else {
       setApiErrors([{
@@ -87,43 +83,47 @@ const AddCryptoPage = () => {
               }}
               validationSchema={addCryptoValidationSchema}
               onSubmit={(values, {setSubmitting}) => {
-                addCrypto(values);
+                addCrypto(values).then(() => setSubmitting(false));
               }}>
 
-              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
-                <EditableTextInput label="Crypto name or id"
-                                   type="text"
-                                   name="cryptoName"
-                                   placeholder="Bitcoin"
-                                   maxLength={64}/>
-                <EditableTextInput label="Quantity"
-                                   type="number"
-                                   name="quantity"/>
-                {
-                  isLoadingPlatforms &&
-                  <SingleFieldSkeleton label="Platform"
-                                       id="platforms-skeleton"
-                                       classes="mb-6"/>
-                }
+              {
+                ({isSubmitting}) => (
+                  <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                    <EditableTextInput label="Crypto name or id"
+                                       type="text"
+                                       name="cryptoName"
+                                       placeholder="Bitcoin"
+                                       maxLength={64}/>
+                    <EditableTextInput label="Quantity"
+                                       type="number"
+                                       name="quantity"/>
+                    {
+                      isLoadingPlatforms &&
+                      <SingleFieldSkeleton label="Platform"
+                                           id="platforms-skeleton"
+                                           classes="mb-6"/>
+                    }
 
-                {
-                  !isLoadingPlatforms && platformName &&
-                  <DisabledTextInput label="Platform"
-                                     name="platform"/>
-                }
+                    {
+                      !isLoadingPlatforms && platformName &&
+                      <DisabledTextInput label="Platform"
+                                         name="platform"/>
+                    }
 
-                {
-                  !isLoadingPlatforms && !platformName &&
-                  <CryptoPlatformDropdown label="Platform"
-                                          name="platform"/>
-                }
+                    {
+                      !isLoadingPlatforms && !platformName &&
+                      <CryptoPlatformDropdown label="Platform"
+                                              name="platform"/>
+                    }
 
-                {
-                  !isAddingCrypto &&
-                  <SubmitButton text="Add crypto"/> ||
-                  <DisabledSubmitButton text="Adding crypto"/>
-                }
-              </Form>
+                    {
+                      !isSubmitting &&
+                      <SubmitButton text="Add crypto"/> ||
+                      <DisabledSubmitButton text="Adding crypto"/>
+                    }
+                  </Form>
+                )
+              }
             </Formik>
           </div>
         }

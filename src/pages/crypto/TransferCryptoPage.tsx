@@ -38,7 +38,6 @@ const TransferCryptoPage = () => {
     fromPlatform: userCrypto?.platform ?? '',
     toPlatform: ''
   };
-  const [isTransferringCrypto, setIsTransferringCrypto] = useState(false);
 
   const validationSchema = Yup.object({
     networkFee: Yup.number()
@@ -59,7 +58,6 @@ const TransferCryptoPage = () => {
     const toPlatformId = platforms.find(platform => platform.name == toPlatform)?.id ?? '';
 
     try {
-      setIsTransferringCrypto(true);
       await transferCryptoService({
         userCryptoId,
         quantityToTransfer,
@@ -78,8 +76,6 @@ const TransferCryptoPage = () => {
       if (status >= 500) {
         navigate("/error");
       }
-    } finally {
-      setIsTransferringCrypto(false);
     }
   }
 
@@ -114,40 +110,45 @@ const TransferCryptoPage = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(values, {setSubmitting}) => {
-              transferCrypto(values)
+              transferCrypto(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
-              <DisabledTextInput label="Crypto Name"
-                                 type="text"
-                                 name="cryptoName"/>
-              <EditableTextInput label="Quantity to transfer"
-                                 name="quantityToTransfer"
-                                 type="number"
-                                 max={userCrypto?.quantity}/>
-              <CheckboxInput label="Send full quantity"
-                             name="sendFullQuantity"/>
-              <EditableTextInput label="Network fee"
-                                 name="networkFee"
-                                 type="number"
-                                 max={userCrypto?.quantity}/>
-              <DisabledTextInput label="From platform"
-                                 type="text"
-                                 name="fromPlatform"/>
-              {
-                !isLoadingPlatforms &&
-                <CryptoPlatformDropdown label="To platform"
-                                        name="toPlatform"/> ||
-                <SingleFieldSkeleton label="To platform"
-                                     id="to-platform-skeleton"
-                                     classes="mb-6"/>
-              }
 
-              {
-                !isTransferringCrypto &&
-                <SubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/> ||
-                <DisabledSubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/>
-              }
-            </Form>
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                  <DisabledTextInput label="Crypto Name"
+                                     type="text"
+                                     name="cryptoName"/>
+                  <EditableTextInput label="Quantity to transfer"
+                                     name="quantityToTransfer"
+                                     type="number"
+                                     max={userCrypto?.quantity}/>
+                  <CheckboxInput label="Send full quantity"
+                                 name="sendFullQuantity"/>
+                  <EditableTextInput label="Network fee"
+                                     name="networkFee"
+                                     type="number"
+                                     max={userCrypto?.quantity}/>
+                  <DisabledTextInput label="From platform"
+                                     type="text"
+                                     name="fromPlatform"/>
+                  {
+                    !isLoadingPlatforms &&
+                    <CryptoPlatformDropdown label="To platform"
+                                            name="toPlatform"/> ||
+                    <SingleFieldSkeleton label="To platform"
+                                         id="to-platform-skeleton"
+                                         classes="mb-6"/>
+                  }
+
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/> ||
+                    <DisabledSubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
       </div>

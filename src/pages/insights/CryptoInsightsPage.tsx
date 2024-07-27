@@ -78,6 +78,6 @@ const CryptoInsightsPage = () => {
       <Footer/>
     </Fragment>
   )
-}
+};
 
-export default withScrollToTop(CryptoInsightsPage)
+export default withScrollToTop(CryptoInsightsPage);

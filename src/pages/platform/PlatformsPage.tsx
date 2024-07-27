@@ -36,7 +36,7 @@ const PlatformsPage = () => {
 
       return 0;
     });
-    setPlatforms(sortedPlatforms)
+    setPlatforms(sortedPlatforms);
     setSortAscending(!sortAscending);
   }
 

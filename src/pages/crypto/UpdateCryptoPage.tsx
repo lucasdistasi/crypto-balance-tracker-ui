@@ -30,7 +30,6 @@ const UpdateCryptoPage = () => {
   const {userCrypto, isLoadingUserCrypto, fetchInfoError} = useGetCrypto();
   const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
   const [noChangesError, setNoChangesError] = useState(false);
-  const [isUpdatingCrypto, setIsUpdatingCrypto] = useState(false);
 
   const updateCrypto = async ({...values}) => {
     const {cryptoName, quantity, platform} = values;
@@ -43,7 +42,6 @@ const UpdateCryptoPage = () => {
     const platformId = platforms.find(p => platform == p.name)?.id ?? ""
 
     try {
-      setIsUpdatingCrypto(true);
       await updateCryptoService(cryptoId, {
         cryptoName,
         quantity,
@@ -60,8 +58,6 @@ const UpdateCryptoPage = () => {
       if (status >= 500) {
         navigate("/error");
       }
-    } finally {
-      setIsUpdatingCrypto(false);
     }
   }
 
@@ -106,31 +102,35 @@ const UpdateCryptoPage = () => {
             }}
             validationSchema={updateCryptoValidationSchema}
             onSubmit={(values, {setSubmitting}) => {
-              updateCrypto(values);
+              updateCrypto(values).then(() => setSubmitting(false));
             }}>
 
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
-              <DisabledTextInput label="Crypto name or id"
-                                 type="text"
-                                 name="cryptoName"/>
-              <EditableTextInput label="Quantity"
-                                 type="number"
-                                 name="quantity"/>
-              {
-                !isLoadingPlatforms &&
-                <CryptoPlatformDropdown label="Platform"
-                                        name="platform"/> ||
-                <SingleFieldSkeleton label="Platform"
-                                     id="platforms-skeleton"
-                                     classes="mb-6"/>
-              }
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                  <DisabledTextInput label="Crypto name or id"
+                                     type="text"
+                                     name="cryptoName"/>
+                  <EditableTextInput label="Quantity"
+                                     type="number"
+                                     name="quantity"/>
+                  {
+                    !isLoadingPlatforms &&
+                    <CryptoPlatformDropdown label="Platform"
+                                            name="platform"/> ||
+                    <SingleFieldSkeleton label="Platform"
+                                         id="platforms-skeleton"
+                                         classes="mb-6"/>
+                  }
 
-              {
-                !isUpdatingCrypto &&
-                <SubmitButton text="Update crypto"/> ||
-                <DisabledSubmitButton text="Updating crypto"/>
-              }
-            </Form>
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text="Update crypto"/> ||
+                    <DisabledSubmitButton text="Updating crypto"/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
       </div>

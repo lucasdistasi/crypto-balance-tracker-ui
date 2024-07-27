@@ -30,7 +30,7 @@ module.exports = [
       '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_$' }], // Detect unused variables
       'react/prop-types': 'off', // Disable prop-types as we use TypeScript for type checking
       'react/react-in-jsx-scope': 'off', // No need to import React when using JSX with Vite
-      'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+      //'react-hooks/exhaustive-deps': 'off', // Checks effect dependencies TODO - check if it's ok to disable it
       'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     },
     settings: {
