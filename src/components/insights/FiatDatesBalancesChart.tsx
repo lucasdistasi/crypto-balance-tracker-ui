@@ -40,8 +40,8 @@ const FiatDatesBalancesChart = () => {
   }
 
   const getDaysBalancesInsights = async (balancesPeriodValue: string) => {
-    const response = await retrieveDaysBalancesInsights(balancesPeriodValue);
-    setDatesBalanceResponse(response.data);
+    const response: DatesBalanceResponse = await retrieveDaysBalancesInsights(balancesPeriodValue);
+    setDatesBalanceResponse(response);
 
     return response;
   }
@@ -49,8 +49,8 @@ const FiatDatesBalancesChart = () => {
   const updateChartOptionsConfig = async (balancesPeriodValue: string) => {
     const response = await getDaysBalancesInsights(balancesPeriodValue);
 
-    const dates: string[] = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.date);
-    const usdBalances: number[] = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.balances.totalUSDBalance);
+    const dates: string[] = response.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.date);
+    const usdBalances: number[] = response.datesBalances?.map((dateBalance: DatesBalances) => Number(dateBalance.balances.totalUSDBalance));
 
     setChartOptionsConfig({
       ...chartOptionsConfig,
@@ -58,15 +58,15 @@ const FiatDatesBalancesChart = () => {
         ...chartOptionsConfig.fill,
         gradient: {
           ...chartOptionsConfig.fill.gradient,
-          shade: retrieveUsdGradientColor(response.data),
-          gradientToColors: [retrieveUsdGradientColor(response.data)],
+          shade: retrieveUsdGradientColor(response),
+          gradientToColors: [retrieveUsdGradientColor(response)],
         },
       },
       series: [
         {
           name: "USD Balance",
           data: usdBalances,
-          color: retrieveUsdGradientColor(response.data),
+          color: retrieveUsdGradientColor(response),
         },
       ],
       xaxis: {

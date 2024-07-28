@@ -39,14 +39,12 @@ const PlatformInsightsPage = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await retrievePlatformInsights(platformId);
+          const response: PlatformInsightsResponse = await retrievePlatformInsights(platformId);
           setPlatformInsightsResponse(response);
 
-          if (!response || isSuccessfulStatus(response.status)) {
-            const platform = await getPlatformService(platformId);
-            setPlatformResponse(platform);
-          }
-        } catch (err) {
+          const platform = await getPlatformService(platformId);
+          setPlatformResponse(platform);
+        } catch (err: any) {
           setError(true);
         } finally {
           setIsLoadingPlatformInsightsResponse(false);
@@ -61,7 +59,7 @@ const PlatformInsightsPage = () => {
       await deleteCryptoService(cryptoId)
         .then(async (axiosResponse) => {
           if (isSuccessfulStatus(axiosResponse.status)) {
-            const response = await retrievePlatformInsights(platformId);
+            const response: PlatformInsightsResponse = await retrievePlatformInsights(platformId);
             setPlatformInsightsResponse(response);
 
             // FIXME - add crypto button does not have the platform name

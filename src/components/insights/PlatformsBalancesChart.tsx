@@ -21,7 +21,7 @@ const PlatformsBalancesChart = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await retrievePlatformsBalancesInsights();
+          const response: PlatformsBalancesInsightsResponse = await retrievePlatformsBalancesInsights();
           setPlatformsBalances(response);
         } catch (err) {
           setError(true);

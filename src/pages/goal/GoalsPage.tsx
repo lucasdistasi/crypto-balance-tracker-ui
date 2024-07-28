@@ -75,7 +75,7 @@ const GoalsPage = () => {
     setPage(nextPage);
 
     try {
-      const response: PageGoalResponse = await getGoalsByPageService(nextPage);
+      const response = await getGoalsByPageService(nextPage);
       setPageGoals({
         goals: [...pageGoals.goals, ...response.goals],
         hasNextPage: response.hasNextPage,

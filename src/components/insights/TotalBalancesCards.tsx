@@ -18,7 +18,7 @@ const TotalBalancesCards = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await retrieveTotalBalancesInsights();
+        const response: BalancesResponse = await retrieveTotalBalancesInsights();
         setTotalBalances(response);
       } catch (err) {
         setError(true);

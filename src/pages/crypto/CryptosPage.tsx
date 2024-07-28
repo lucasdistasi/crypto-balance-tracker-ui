@@ -81,7 +81,7 @@ const CryptosPage = () => {
     setPage(nextPage);
 
     try {
-      const response: PageUserCryptoResponse = await getCryptosByPageService(nextPage);
+      const response = await getCryptosByPageService(nextPage);
       filteredCryptos.current = [...filteredCryptos.current, ...response.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))];
 
       setPageUserCryptoResponse({

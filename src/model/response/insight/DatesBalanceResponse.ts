@@ -11,13 +11,13 @@ export interface DatesBalances {
   balances: BalancesResponse
 }
 
-export interface BalanceChanges {
+interface BalanceChanges {
   usdChange: number,
   eurChange: number,
   btcChange: number,
 }
 
-export interface DifferencesChanges {
+interface DifferencesChanges {
   usdDifference: string,
   eurDifference: string,
   btcDifference: string,

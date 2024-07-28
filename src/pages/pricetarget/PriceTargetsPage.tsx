@@ -37,8 +37,7 @@ const PriceTargetsPage = () => {
   useEffect(() => {
     (async () => {
         try {
-          const pagePriceTargetResponse: PagePriceTargetResponse = await retrievePriceTargetsByPage(page)
-            .then(response => response.data);
+          const pagePriceTargetResponse = await retrievePriceTargetsByPage(page);
           setPagePriceTargetsPageResponse(pagePriceTargetResponse);
           priceTargetsRef.current = pagePriceTargetResponse.targets;
         } catch (error: any) {
@@ -52,11 +51,12 @@ const PriceTargetsPage = () => {
 
   const deleteTarget = async (priceTargetId: string) => {
     try {
-      await deletePriceTarget(priceTargetId)
-        .then(_ => setPage(0));
-      const pagePriceTargetResponse: PagePriceTargetResponse = await retrievePriceTargetsByPage(0)
-        .then(response => response.data);
+      await deletePriceTarget(priceTargetId);
+      setPage(0);
+
+      const pagePriceTargetResponse = await retrievePriceTargetsByPage(0);
       setPagePriceTargetsPageResponse(pagePriceTargetResponse);
+
       priceTargetsRef.current = pagePriceTargetResponse.targets;
       setSortType(sortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
     } catch (error: any) {
@@ -70,8 +70,7 @@ const PriceTargetsPage = () => {
     setPage(nextPage);
 
     try {
-      const pagePriceTargetResponse: PagePriceTargetResponse = await retrievePriceTargetsByPage(nextPage)
-        .then(response => response.data);
+      const pagePriceTargetResponse = await retrievePriceTargetsByPage(nextPage);
       setPagePriceTargetsPageResponse({
         ...pagePriceTargetResponse,
         targets: [...pagePriceTargetsPageResponse.targets, ...pagePriceTargetResponse.targets]

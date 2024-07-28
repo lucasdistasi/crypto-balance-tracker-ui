@@ -28,8 +28,8 @@ const BitcoinDatesBalancesChart = () => {
   const [chartOptionsConfig, setChartOptionsConfig] = useState(btcBalancesChartOptions);
 
   const getDaysBalancesInsights = async (balancesPeriodValue: string) => {
-    const response = await retrieveDaysBalancesInsights(balancesPeriodValue);
-    setDatesBalanceResponse(response.data);
+    const response: DatesBalanceResponse = await retrieveDaysBalancesInsights(balancesPeriodValue);
+    setDatesBalanceResponse(response);
 
     return response;
   }
@@ -37,8 +37,8 @@ const BitcoinDatesBalancesChart = () => {
   const updateChartOptionsConfig = async (balancesPeriodValue: string) => {
     const response = await getDaysBalancesInsights(balancesPeriodValue);
 
-    const dates: string[] = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.date);
-    const btcBalances: number[] = response.data.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.balances.totalBTCBalance);
+    const dates: string[] = response.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.date);
+    const btcBalances: number[] = response.datesBalances?.map((dateBalance: DatesBalances) => Number(dateBalance.balances.totalBTCBalance));
 
     setChartOptionsConfig({
       ...chartOptionsConfig,

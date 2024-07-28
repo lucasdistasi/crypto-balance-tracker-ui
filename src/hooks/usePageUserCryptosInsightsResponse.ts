@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {PageUserCryptosInsightsResponse} from "../model/response/insight/PageUserCryptosInsightsResponse";
 import {UserCryptosInsights} from "../model/response/insight/UserCryptosInsights";
 
-export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>) {
+export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageUserCryptosInsightsResponse>) {
 
   const [pageUserCryptosInsightsResponse, setPageUserCryptosInsightsResponse] = useState<PageUserCryptosInsightsResponse>({
     page: 0,
@@ -36,7 +36,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<any>)
     })()
   }, []);
 
-  const loadMoreCryptos = async (insightsMethod: Promise<any>) => {
+  const loadMoreCryptos = async (insightsMethod: Promise<PageUserCryptosInsightsResponse>) => {
     setIsLoadingMore(true);
     const nextPage = page + 1;
     setPage(nextPage);

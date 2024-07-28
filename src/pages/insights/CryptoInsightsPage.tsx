@@ -30,7 +30,7 @@ const CryptoInsightsPage = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await retrieveCryptoInsights(coingeckoCryptoId);
+          const response: CryptoInsightResponse = await retrieveCryptoInsights(coingeckoCryptoId);
           setCryptoInsightResponse(response);
         } catch (err) {
           setError(true);
@@ -78,6 +78,6 @@ const CryptoInsightsPage = () => {
       <Footer/>
     </Fragment>
   )
-};
+}
 
 export default withScrollToTop(CryptoInsightsPage);

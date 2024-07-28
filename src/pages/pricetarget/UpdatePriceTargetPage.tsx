@@ -33,8 +33,8 @@ const UpdatePriceTargetPage = () => {
     (async () => {
       if (UUID_REGEX.test(priceTargetId)) {
         try {
-          await retrievePriceTarget(priceTargetId)
-            .then(response => setPriceTargetResponse(response.data));
+          const priceTarget = await retrievePriceTarget(priceTargetId);
+          setPriceTargetResponse(priceTarget);
         } catch (error: any) {
           setFetchInfoError(true);
         } finally {
