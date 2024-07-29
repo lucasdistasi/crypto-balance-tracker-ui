@@ -44,7 +44,7 @@ const PlatformInsightsPage = () => {
 
           const platform = await getPlatformService(platformId);
           setPlatformResponse(platform);
-        } catch (err: any) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingPlatformInsightsResponse(false);
@@ -79,9 +79,9 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && !platformInsightsResponse &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={Number(0)}
-                               totalEurValue={Number(0)}
-                               totalBtcValue={Number(0)}/>
+            <TotalBalanceCards totalUsdValue={"0"}
+                               totalEurValue={"0"}
+                               totalBtcValue={"0"}/>
 
             <AddNewButton
               href={`/crypto?platform=${platformResponse.name}&redirectTo=/insights/platform/${platformId}`}
@@ -92,9 +92,9 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={Number(platformInsightsResponse.balances.totalUSDBalance)}
-                               totalEurValue={Number(platformInsightsResponse.balances.totalEURBalance)}
-                               totalBtcValue={Number(platformInsightsResponse.balances.totalBTCBalance)}/>
+            <TotalBalanceCards totalUsdValue={platformInsightsResponse.balances.totalUSDBalance}
+                               totalEurValue={platformInsightsResponse.balances.totalEURBalance}
+                               totalBtcValue={platformInsightsResponse.balances.totalBTCBalance}/>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}

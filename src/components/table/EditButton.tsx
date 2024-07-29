@@ -1,8 +1,8 @@
 import {Link} from "react-router-dom";
 
-const EditButton = ({...props}) => {
-
-  const {editLink} = props;
+const EditButton = ({editLink}: {
+  editLink: string
+}) => {
 
   return (
     <Link to={editLink}>

@@ -1,8 +1,9 @@
 import ErrorResponse from "../../model/response/ErrorResponse";
 
-const ErrorListAlert = ({...props}) => {
-
-  const {title, errors} = props;
+const ErrorListAlert = ({title, errors}: {
+  title: string,
+  errors: Array<ErrorResponse>,
+}) => {
 
   return(
     <div className="w-1/2 flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"

@@ -42,9 +42,9 @@ const TotalBalancesCards = () => {
 
       {
         !error && !isLoadingTotalBalances &&
-        <TotalBalanceCards totalUsdValue={Number(totalBalances.totalUSDBalance)}
-                           totalEurValue={Number(totalBalances.totalEURBalance)}
-                           totalBtcValue={Number(totalBalances.totalBTCBalance)}/>
+        <TotalBalanceCards totalUsdValue={totalBalances.totalUSDBalance}
+                           totalEurValue={totalBalances.totalEURBalance}
+                           totalBtcValue={totalBalances.totalBTCBalance}/>
       }
     </Fragment>
   )

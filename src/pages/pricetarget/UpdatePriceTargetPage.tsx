@@ -16,6 +16,7 @@ import DisabledTextInput from "../../components/form/DisabledTextInput";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import axios from "axios";
 
 const UpdatePriceTargetPage = () => {
 
@@ -35,7 +36,7 @@ const UpdatePriceTargetPage = () => {
         try {
           const priceTarget = await retrievePriceTarget(priceTargetId);
           setPriceTargetResponse(priceTarget);
-        } catch (error: any) {
+        } catch (error: unknown) {
           setFetchInfoError(true);
         } finally {
           setIsLoadingPriceTarget(false);
@@ -46,30 +47,30 @@ const UpdatePriceTargetPage = () => {
     })()
   }, []);
 
-  const updateTargetPrice = async ({...values}) => {
-    const {cryptoName, priceTarget} = values;
-
-    if (String(priceTargetResponse?.priceTarget!) === String(priceTarget)) {
+  const updateTargetPrice = async (values: {cryptoName: string, priceTarget: string}) => {
+    if (String(priceTargetResponse?.priceTarget!) === values.priceTarget) {
       setNoChangesError(true);
       return;
     }
 
     try {
       await updatePriceTarget(priceTargetId, {
-        cryptoNameOrId: cryptoName,
-        priceTarget
+        cryptoNameOrId: values.cryptoName,
+        priceTarget: Number(values.priceTarget),
       });
 
       navigate("/price-targets");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiResponseError(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 
@@ -108,7 +109,7 @@ const UpdatePriceTargetPage = () => {
           <Formik
             initialValues={{
               cryptoName: priceTargetResponse?.cryptoName ?? '',
-              priceTarget: priceTargetResponse?.priceTarget ?? 0
+              priceTarget: priceTargetResponse?.priceTarget ?? '0'
             }}
             validationSchema={updatePriceTargetValidationsSchema}
             onSubmit={(values, {setSubmitting}) => {

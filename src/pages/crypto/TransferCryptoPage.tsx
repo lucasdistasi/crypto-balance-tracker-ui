@@ -19,6 +19,7 @@ import CryptoPlatformDropdown from "../../components/form/CryptoPlatformDropdown
 import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import axios from "axios";
 
 const TransferCryptoPage = () => {
 
@@ -30,14 +31,6 @@ const TransferCryptoPage = () => {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const redirectTo = urlSearchParams.get('redirectTo') ?? "/cryptos";
   const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
-  const initialValues = {
-    cryptoName: userCrypto?.cryptoName ?? '',
-    quantityToTransfer: userCrypto?.quantity ?? 0,
-    sendFullQuantity: false,
-    networkFee: 0,
-    fromPlatform: userCrypto?.platform ?? '',
-    toPlatform: ''
-  };
 
   const validationSchema = Yup.object({
     networkFee: Yup.number()
@@ -53,29 +46,37 @@ const TransferCryptoPage = () => {
       .notOneOf([userCrypto?.platform], "Can't be same as from platform")
   });
 
-  const transferCrypto = async ({...props}) => {
-    const {quantityToTransfer, sendFullQuantity, networkFee, toPlatform} = props;
-    const toPlatformId = platforms.find(platform => platform.name == toPlatform)?.id ?? '';
+  const transferCrypto = async (values: {
+    cryptoName: string,
+    quantityToTransfer: string,
+    sendFullQuantity: boolean,
+    networkFee: string,
+    fromPlatform: string,
+    toPlatform: string
+  }) => {
+    const toPlatformId = platforms.find(platform => platform.name == values.toPlatform)?.id ?? '';
 
     try {
       await transferCryptoService({
         userCryptoId,
-        quantityToTransfer,
-        sendFullQuantity,
-        networkFee,
+        quantityToTransfer: BigInt(values.quantityToTransfer),
+        sendFullQuantity: values.sendFullQuantity,
+        networkFee: BigInt(values.networkFee),
         toPlatformId
       });
 
       navigate(redirectTo);
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiErrors(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiErrors(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 
@@ -107,7 +108,14 @@ const TransferCryptoPage = () => {
         {
           !isLoadingUserCrypto && !fetchInfoError &&
           <Formik
-            initialValues={initialValues}
+            initialValues={{
+              cryptoName: userCrypto?.cryptoName ?? '',
+              quantityToTransfer: userCrypto?.quantity ?? '0',
+              sendFullQuantity: false,
+              networkFee: '0',
+              fromPlatform: userCrypto?.platform ?? '',
+              toPlatform: ''
+            }}
             validationSchema={validationSchema}
             onSubmit={(values, {setSubmitting}) => {
               transferCrypto(values).then(() => setSubmitting(false));

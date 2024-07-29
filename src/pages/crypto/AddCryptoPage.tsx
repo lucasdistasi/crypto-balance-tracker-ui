@@ -15,6 +15,7 @@ import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton"
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import DisabledTextInput from "../../components/form/DisabledTextInput";
+import axios from "axios";
 
 const AddCryptoPage = () => {
 
@@ -25,29 +26,30 @@ const AddCryptoPage = () => {
   const {isLoadingPlatforms, platforms} = usePlatforms();
   const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
 
-  const addCrypto = async ({...values}) => {
-    const {cryptoName, quantity, platform} = values;
-    const platformId = platforms.find(platformResponse => platformResponse.name == platform)?.id ?? ''
+  const addCrypto = async (values: {cryptoName: string, quantity: number, platform: string}) => {
+    const platformId = platforms.find(platformResponse => platformResponse.name == values.platform)?.id ?? ''
 
     if (platformId) {
       try {
         await addCryptoService({
-          cryptoName,
-          quantity,
+          cryptoName: values.cryptoName,
+          quantity: BigInt(values.quantity),
           platformId
         });
 
         navigate(redirectTo);
-      } catch (error: any) {
-        const {status} = error.response;
-        if (status >= 400 && status < 500) {
-          setApiErrors(error.response.data);
-        }
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
 
-        if (status >= 500) {
-          navigate("/error");
+          if (status && (status >= 400 && status < 500)) {
+            setApiErrors(error.response?.data);
+            return;
+          }
         }
       }
+
+      navigate("/error");
     } else {
       setApiErrors([{
         title: 'Invalid platform',

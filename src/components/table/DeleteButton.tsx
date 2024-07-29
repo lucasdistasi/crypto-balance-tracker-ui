@@ -2,9 +2,11 @@ import {Link} from "react-router-dom";
 import {Fragment, useEffect} from "react";
 import {initFlowbite} from "flowbite";
 
-const DeleteButton = ({...props}) => {
-
-  const {deleteFunction, deleteMessage, deleteId} = props
+const DeleteButton = ({deleteFunction, deleteMessage, deleteId}: {
+  deleteFunction: () => void,
+  deleteMessage: string,
+  deleteId: string
+}) => {
 
   useEffect(() => {
     initFlowbite();

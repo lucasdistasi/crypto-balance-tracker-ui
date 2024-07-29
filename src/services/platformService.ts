@@ -10,7 +10,7 @@ const getPlatformsURL = (platformId: string) => {
 }
 
 export const retrieveAllPlatforms = async (): Promise<Array<PlatformResponse>> => {
-  return await axios.get(PLATFORMS_ENDPOINT)
+  return await axios.get<Array<PlatformResponse>>(PLATFORMS_ENDPOINT)
     .then(response => response.data);
 }
 
@@ -23,7 +23,7 @@ export const deletePlatformService = async (platformId: string) => {
 export const getPlatformService = async (platformId: string): Promise<PlatformResponse> => {
   const platformURL = getPlatformsURL(platformId);
 
-  return await axios.get(platformURL)
+  return await axios.get<PlatformResponse>(platformURL)
     .then(response => response.data);
 }
 
@@ -33,11 +33,11 @@ export const updatePlatformService = async (
 ): Promise<PlatformResponse> => {
   const platformURL = getPlatformsURL(platformId);
 
-  return await axios.put(platformURL, platformRequest)
+  return await axios.put<PlatformResponse>(platformURL, platformRequest)
     .then(response => response.data);
 }
 
 export const addPlatformService = async (platformRequest: PlatformRequest): Promise<PlatformResponse> => {
-  return await axios.post(PLATFORMS_ENDPOINT, platformRequest)
+  return await axios.post<PlatformResponse>(PLATFORMS_ENDPOINT, platformRequest)
     .then(response => response.data);
 }

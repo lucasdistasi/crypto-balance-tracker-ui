@@ -16,6 +16,7 @@ import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
+import axios from "axios";
 
 const UpdateGoalPage = () => {
 
@@ -34,7 +35,7 @@ const UpdateGoalPage = () => {
           try {
             const goal = await retrieveGoal(goalId);
             setGoal(goal);
-          } catch (error: any) {
+          } catch (error: unknown) {
             setFetchInfoError(true);
           } finally {
             setIsLoadingGoal(false);
@@ -46,30 +47,30 @@ const UpdateGoalPage = () => {
     )();
   }, []);
 
-  const updateGoalQuantity = async ({...values}) => {
-    const {cryptoName, goalQuantity} = values;
-
-    if (String(goal?.goalQuantity!) === String(goalQuantity)) {
+  const updateGoalQuantity = async (values: {cryptoName: string, goalQuantity: string}) => {
+    if (String(goal?.goalQuantity!) === values.goalQuantity) {
       setNoChangesError(true);
       return;
     }
 
     try {
       await updateGoal(goalId, {
-        cryptoName,
-        goalQuantity
+        cryptoName: values.cryptoName,
+        goalQuantity: Number(values.goalQuantity)
       });
 
       navigate("/goals");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiResponseError(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 
@@ -108,7 +109,7 @@ const UpdateGoalPage = () => {
           <Formik
             initialValues={{
               cryptoName: goal?.cryptoName ?? '',
-              goalQuantity: goal?.goalQuantity ?? 0
+              goalQuantity: goal?.goalQuantity ?? '0'
             }}
             validationSchema={updateGoalValidationSchema}
             onSubmit={(values, {setSubmitting}) => {

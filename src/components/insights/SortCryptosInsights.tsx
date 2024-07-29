@@ -1,9 +1,12 @@
 import {SortBy} from "../../enums/SortBy";
 import {SortType} from "../../enums/SortType";
+import React from "react";
 
-const SortCryptosInsights = ({...methods}) => {
-
-  const {updateSortBy, updateSortType, retrieveSortedResults} = methods;
+const SortCryptosInsights = ({updateSortBy, updateSortType, retrieveSortedResults}: {
+  updateSortBy: (event: React.ChangeEvent<HTMLSelectElement>) => void,
+  updateSortType: (event: React.ChangeEvent<HTMLSelectElement>) => void,
+  retrieveSortedResults: () => void
+}) => {
 
   return (
     <div className="container flex mb-3 items-cente justify-between w-full flex-col lg:w-1/2 lg:flex-row gap-2 lg:gap-0">

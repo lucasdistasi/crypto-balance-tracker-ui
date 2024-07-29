@@ -11,31 +11,33 @@ import {addGoalValidationSchema} from "../../constants/ValidationSchemas";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import axios from "axios";
+import {GoalRequest} from "../../model/request/goal/GoalRequest";
 
 const AddGoalPage = () => {
 
   const navigate = useNavigate();
   const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
 
-  const addGoal = async ({...values}) => {
-    const {cryptoName, goalQuantity} = values;
-
+  const addGoal = async (goalRequest: GoalRequest) => {
     try {
       await saveGoal({
-        cryptoName,
-        goalQuantity
+        cryptoName: goalRequest.cryptoName,
+        goalQuantity: goalRequest.goalQuantity,
       });
 
       navigate("/goals");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiErrors(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiErrors(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 

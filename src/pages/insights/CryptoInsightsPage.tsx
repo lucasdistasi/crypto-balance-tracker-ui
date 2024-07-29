@@ -52,9 +52,9 @@ const CryptoInsightsPage = () => {
               {`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
             </h1>
 
-            <TotalBalanceCards totalUsdValue={Number(cryptoInsightResponse.balances.totalUSDBalance)}
-                               totalEurValue={Number(cryptoInsightResponse.balances.totalEURBalance)}
-                               totalBtcValue={Number(cryptoInsightResponse.balances.totalBTCBalance)}/>
+            <TotalBalanceCards totalUsdValue={cryptoInsightResponse.balances.totalUSDBalance}
+                               totalEurValue={cryptoInsightResponse.balances.totalEURBalance}
+                               totalBtcValue={cryptoInsightResponse.balances.totalBTCBalance}/>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}

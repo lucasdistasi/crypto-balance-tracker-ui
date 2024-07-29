@@ -11,31 +11,32 @@ import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import {useNavigate} from "react-router-dom";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import {savePriceTarget} from "../../services/priceTargetService";
+import axios from "axios";
 
 const AddPriceTarget = () => {
 
   const navigate = useNavigate();
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
-  const addPriceTarget = async ({...values}) => {
-    const {cryptoNameOrId, priceTarget} = values;
-
+  const addPriceTarget = async (values: {cryptoNameOrId: string, priceTarget: string}) => {
     try {
       await savePriceTarget({
-        cryptoNameOrId,
-        priceTarget
+        cryptoNameOrId: values.cryptoNameOrId,
+        priceTarget: Number(values.priceTarget)
       })
 
       navigate('/price-targets');
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiResponseError(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 
@@ -56,7 +57,7 @@ const AddPriceTarget = () => {
         <Formik
           initialValues={{
             cryptoNameOrId: '',
-            target: 0
+            priceTarget: '0'
           }}
           validationSchema={addPriceTargetValidationsSchema}
           onSubmit={(values, {setSubmitting}) => {

@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {deletePlatformService, retrieveAllPlatforms} from "../services/platformService";
 import {PlatformResponse} from "../model/response/platform/PlatformResponse";
 import {isSuccessfulStatus} from "../utils/utils";
+import axios from "axios";
 
 export function usePlatforms() {
 
@@ -35,15 +36,17 @@ export function usePlatforms() {
         const updatedPlatforms = platforms.filter(platform => platform.id !== platformId);
         setPlatforms(updatedPlatforms);
       }
-    } catch (err: any) {
-      const {status, data} = err.response;
-      if (status === 400) {
-        setErrors(data.errors);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setErrors(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 

@@ -11,28 +11,30 @@ import {Form, Formik} from "formik";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import axios from "axios";
+import {PlatformRequest} from "../../model/request/platform/PlatformRequest";
 
 const AddPlatformPage = () => {
 
   const navigate = useNavigate();
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
-  const addPlatform = async ({...values}) => {
-    const {platformName} = values;
-
+  const addPlatform = async (platformRequest: PlatformRequest) => {
     try {
-      await addPlatformService({name: platformName});
+      await addPlatformService(platformRequest);
 
       navigate("/platforms");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiResponseError(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   };
 
@@ -52,7 +54,7 @@ const AddPlatformPage = () => {
 
         <Formik
           initialValues={{
-            platformName: ''
+            name: ''
           }}
           validationSchema={platformValidationsSchema}
           onSubmit={(values, {setSubmitting}) => {
@@ -63,7 +65,7 @@ const AddPlatformPage = () => {
             ({isSubmitting}) => (
               <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
                 <EditableTextInput label="Platform Name"
-                                   name="platformName"
+                                   name="name"
                                    type="text"/>
 
                 {

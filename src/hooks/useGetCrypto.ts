@@ -21,7 +21,7 @@ export function useGetCrypto() {
             const response = await getCryptoService(cryptoId);
 
             setUserCrypto(response);
-          } catch (error: any) {
+          } catch (error: unknown) {
             setFetchInfoError(true);
           } finally {
             setIsLoadingUserCrypto(false);

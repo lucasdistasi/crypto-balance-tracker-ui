@@ -16,19 +16,19 @@ const getCryptosURL = (cryptoId: string) => {
 export const getCryptoService = async (cryptoId: string): Promise<UserCryptoResponse> => {
   const cryptoInfoURL = getCryptosURL(cryptoId);
 
-  return await axios.get(cryptoInfoURL)
+  return await axios.get<UserCryptoResponse>(cryptoInfoURL)
     .then(response => response.data);
 }
 
 export const getCryptosByPageService = async (page: number): Promise<PageUserCryptoResponse> => {
   const cryptosURL = `${CRYPTO_BALANCE_TRACKER_URL}/cryptos?page=${page}`;
 
-  return await axios.get(cryptosURL)
+  return await axios.get<PageUserCryptoResponse>(cryptosURL)
     .then(response => response.data);
 }
 
 export const addCryptoService = async (userCryptoRequest: UserCryptoRequest): Promise<UserCryptoResponse> => {
-  return await axios.post(CRYPTOS_ENDPOINT, userCryptoRequest)
+  return await axios.post<UserCryptoResponse>(CRYPTOS_ENDPOINT, userCryptoRequest)
     .then(response => response.data);
 }
 
@@ -36,12 +36,12 @@ export const updateCryptoService = async (
   cryptoId: string,
   userCryptoRequest: UserCryptoRequest
 ): Promise<UserCryptoResponse> => {
-  return await axios.put(getCryptosURL(cryptoId), userCryptoRequest)
+  return await axios.put<UserCryptoResponse>(getCryptosURL(cryptoId), userCryptoRequest)
     .then(response => response.data);
 }
 
 export const transferCryptoService = async (transferCryptoRequest: TransferCryptoRequest): Promise<TransferCryptoResponse> => {
-  return await axios.post(TRANSFER_CRYPTO_ENDPOINT, transferCryptoRequest)
+  return await axios.post<TransferCryptoResponse>(TRANSFER_CRYPTO_ENDPOINT, transferCryptoRequest)
     .then(response => response.data);
 }
 

@@ -14,6 +14,7 @@ import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import axios from "axios";
 
 const UpdatePlatformPage = () => {
 
@@ -33,7 +34,7 @@ const UpdatePlatformPage = () => {
         try {
           const response = await getPlatformService(platformId);
           setPlatformResponse(response);
-        } catch (err: any) {
+        } catch (error: unknown) {
           setFetchInfoError(true);
         } finally {
           setIsLoadingPlatform(false);
@@ -42,22 +43,22 @@ const UpdatePlatformPage = () => {
     )();
   }, []);
 
-  const updatePlatform = async ({...values}) => {
-    const {platformName} = values;
-
+  const updatePlatform = async (values: {platformName: string}) => {
     try {
-      await updatePlatformService(platformId, {name: platformName});
+      await updatePlatformService(platformId, {name: values.platformName});
 
       navigate("/platforms");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiResponseError(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 

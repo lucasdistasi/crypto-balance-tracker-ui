@@ -64,7 +64,7 @@ const GoalsPage = () => {
       filteredGoals.current = hideAchieved
         ? pageGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
         : pageGoals.goals;
-    } catch (error: any) {
+    } catch (error: unknown) {
       navigate("/error");
     }
   }

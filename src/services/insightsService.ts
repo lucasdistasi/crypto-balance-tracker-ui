@@ -19,14 +19,14 @@ const TOTAL_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/ins
 const CRYPTO_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos");
 
 export const retrieveTotalBalancesInsights = async (): Promise<BalancesResponse> => {
-  return await axios.get(TOTAL_BALANCES_INSIGHTS_ENDPOINT)
+  return await axios.get<BalancesResponse>(TOTAL_BALANCES_INSIGHTS_ENDPOINT)
     .then(response => response.data);
 }
 
 export const retrieveDaysBalancesInsights = async (balancesPeriodValue: string): Promise<DatesBalanceResponse> => {
   const url = DAYS_BALANCES_INSIGHTS_ENDPOINT.concat(`?dateRange=${balancesPeriodValue}`);
 
-  return await axios.get(url)
+  return await axios.get<DatesBalanceResponse>(url)
     .then(response => response.data);
 }
 
@@ -37,7 +37,7 @@ export const retrieveCryptosInsightsByPage = async (
   const {sortBy, sortType} = sortParams;
   const url = CRYPTOS_INSIGHTS_ENDPOINT.concat(`?page=${page}&sortBy=${sortBy}&sortType=${sortType}`);
 
-  return await axios.get(url)
+  return await axios.get<PageUserCryptosInsightsResponse>(url)
     .then(response => response.data);
 }
 
@@ -48,26 +48,26 @@ export const retrieveCryptosPlatformsInsightsByPage = async (
   const {sortBy, sortType} = sortParams;
   const url = CRYPTOS_PLATFORMS_INSIGHTS_ENDPOINT.concat(`?page=${page}&sortBy=${sortBy}&sortType=${sortType}`);
 
-  return await axios.get(url)
+  return await axios.get<PageUserCryptosInsightsResponse>(url)
     .then(response => response.data);
 }
 
 export const retrieveCryptosBalancesInsights = async (): Promise<CryptosBalancesInsightsResponse> => {
-  return await axios.get(CRYPTOS_BALANCES_INSIGHTS_ENDPOINT)
+  return await axios.get<CryptosBalancesInsightsResponse>(CRYPTOS_BALANCES_INSIGHTS_ENDPOINT)
     .then(response => response.data);
 }
 
 export const retrievePlatformsBalancesInsights = async (): Promise<PlatformsBalancesInsightsResponse> => {
-  return await axios.get(PLATFORMS_BALANCES_INSIGHTS_ENDPOINT)
+  return await axios.get<PlatformsBalancesInsightsResponse>(PLATFORMS_BALANCES_INSIGHTS_ENDPOINT)
     .then(response => response.data);
 }
 
 export const retrieveCryptoInsights = async (coingeckoCryptoId: string): Promise<CryptoInsightResponse> => {
-  return await axios.get(CRYPTO_INSIGHTS_ENDPOINT.concat(`/${coingeckoCryptoId}`))
+  return await axios.get<CryptoInsightResponse>(CRYPTO_INSIGHTS_ENDPOINT.concat(`/${coingeckoCryptoId}`))
     .then(response => response.data);
 }
 
 export const retrievePlatformInsights = async (platformId: string): Promise<PlatformInsightsResponse> => {
-  return await axios.get(PLATFORMS_INSIGHTS_ENDPOINT.concat(`/${platformId}`))
+  return await axios.get<PlatformInsightsResponse>(PLATFORMS_INSIGHTS_ENDPOINT.concat(`/${platformId}`))
     .then(response => response.data);
 }

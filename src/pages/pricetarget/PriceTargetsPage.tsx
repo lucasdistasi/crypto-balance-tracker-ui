@@ -40,7 +40,7 @@ const PriceTargetsPage = () => {
           const pagePriceTargetResponse = await retrievePriceTargetsByPage(page);
           setPagePriceTargetsPageResponse(pagePriceTargetResponse);
           priceTargetsRef.current = pagePriceTargetResponse.targets;
-        } catch (error: any) {
+        } catch (error: unknown) {
           setFetchPriceTargetsError(true);
         } finally {
           setIsLoadingPriceTargets(false);
@@ -59,7 +59,7 @@ const PriceTargetsPage = () => {
 
       priceTargetsRef.current = pagePriceTargetResponse.targets;
       setSortType(sortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
-    } catch (error: any) {
+    } catch (error: unknown) {
       navigate("/error");
     }
   }

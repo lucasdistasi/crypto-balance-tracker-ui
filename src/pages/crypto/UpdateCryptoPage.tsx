@@ -18,6 +18,7 @@ import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton"
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
+import axios from "axios";
 
 const UpdateCryptoPage = () => {
 
@@ -31,9 +32,11 @@ const UpdateCryptoPage = () => {
   const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
   const [noChangesError, setNoChangesError] = useState(false);
 
-  const updateCrypto = async ({...values}) => {
-    const {cryptoName, quantity, platform} = values;
-
+  const updateCrypto = async ({cryptoName, quantity, platform}: {
+    cryptoName: string,
+    quantity: string,
+    platform: string
+  }) => {
     if (userCrypto?.quantity === quantity.toString() && userCrypto?.platform === platform) {
       setNoChangesError(true);
       return;
@@ -44,20 +47,22 @@ const UpdateCryptoPage = () => {
     try {
       await updateCryptoService(cryptoId, {
         cryptoName,
-        quantity,
+        quantity: BigInt(quantity),
         platformId
       });
 
       navigate(redirectTo);
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status && (status >= 400 && status < 500)) {
+          setApiResponseError(error.response?.data);
+          return;
+        }
       }
 
-      if (status >= 500) {
-        navigate("/error");
-      }
+      navigate("/error");
     }
   }
 
@@ -97,7 +102,7 @@ const UpdateCryptoPage = () => {
           <Formik
             initialValues={{
               cryptoName: userCrypto?.cryptoName ?? '',
-              quantity: userCrypto?.quantity ?? 0,
+              quantity: userCrypto?.quantity ?? '0',
               platform: userCrypto?.platform ?? ''
             }}
             validationSchema={updateCryptoValidationSchema}
