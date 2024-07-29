@@ -1,17 +1,16 @@
 import {useEffect, useState} from "react";
 import ErrorResponse from "../model/response/ErrorResponse";
-import {useNavigate} from "react-router-dom";
 import {deletePlatformService, retrieveAllPlatforms} from "../services/platformService";
 import {PlatformResponse} from "../model/response/platform/PlatformResponse";
-import {isSuccessfulStatus} from "../utils/utils";
-import axios from "axios";
+import {handleAxiosError} from "../utils/utils";
+import {useNavigate} from "react-router-dom";
 
 export function usePlatforms() {
 
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [isLoadingPlatforms, setIsLoadingPlatforms] = useState(true);
-  const [errors, setErrors] = useState<ErrorResponse[]>([]);
+  const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
   const [platforms, setPlatforms] = useState<Array<PlatformResponse>>([]);
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export function usePlatforms() {
         try {
           const response = await retrieveAllPlatforms();
           setPlatforms(response);
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingPlatforms(false);
@@ -30,23 +29,13 @@ export function usePlatforms() {
 
   const deletePlatform = async (platformId: string) => {
     try {
-      const {status} = await deletePlatformService(platformId);
-
-      if (isSuccessfulStatus(status)) {
-        const updatedPlatforms = platforms.filter(platform => platform.id !== platformId);
-        setPlatforms(updatedPlatforms);
-      }
+      await deletePlatformService(platformId)
+        .then(() => {
+          const updatedPlatforms = platforms.filter(platform => platform.id !== platformId);
+          setPlatforms(updatedPlatforms);
+        });
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setErrors(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -55,7 +44,7 @@ export function usePlatforms() {
     setPlatforms,
     error,
     isLoadingPlatforms,
-    errors,
+    errors: apiResponseError,
     deletePlatform,
   };
 }

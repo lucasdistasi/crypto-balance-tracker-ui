@@ -14,13 +14,13 @@ import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
-import axios from "axios";
+import {handleAxiosError} from "../../utils/utils";
 
 const UpdatePlatformPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const platformId: string = params.id!!;
+  const platformId: string = params.id!;
   const [platformResponse, setPlatformResponse] = useState<PlatformResponse>({
     id: "",
     name: ""
@@ -49,16 +49,7 @@ const UpdatePlatformPage = () => {
 
       navigate("/platforms");
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setApiResponseError(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 

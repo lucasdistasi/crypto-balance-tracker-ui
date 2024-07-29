@@ -16,13 +16,13 @@ import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
-import axios from "axios";
+import {handleAxiosError} from "../../utils/utils";
 
 const UpdateGoalPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const goalId: string = params.id!!;
+  const goalId: string = params.id!;
   const [goal, setGoal] = useState<GoalResponse>();
   const [isLoadingGoal, setIsLoadingGoal] = useState(true);
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
@@ -61,16 +61,7 @@ const UpdateGoalPage = () => {
 
       navigate("/goals");
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setApiResponseError(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 

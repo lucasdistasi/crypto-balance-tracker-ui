@@ -11,13 +11,13 @@ import {addGoalValidationSchema} from "../../constants/ValidationSchemas";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
-import axios from "axios";
 import {GoalRequest} from "../../model/request/goal/GoalRequest";
+import {handleAxiosError} from "../../utils/utils";
 
 const AddGoalPage = () => {
 
   const navigate = useNavigate();
-  const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
+  const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
   const addGoal = async (goalRequest: GoalRequest) => {
     try {
@@ -28,16 +28,7 @@ const AddGoalPage = () => {
 
       navigate("/goals");
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setApiErrors(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -50,10 +41,10 @@ const AddGoalPage = () => {
         </h1>
 
         {
-          apiErrors && apiErrors.length >= 1 &&
+          apiResponseError && apiResponseError.length >= 1 &&
           <ErrorListAlert
             title="Error adding goal"
-            errors={apiErrors}/>
+            errors={apiResponseError}/>
         }
 
         <Formik

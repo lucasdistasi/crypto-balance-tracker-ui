@@ -24,7 +24,7 @@ const CryptosBalancesChart = () => {
         try {
           const response: CryptosBalancesInsightsResponse = await retrieveCryptosBalancesInsights();
           setCryptosBalances(response);
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingCryptosBalancesInsights(false);

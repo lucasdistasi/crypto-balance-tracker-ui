@@ -15,7 +15,7 @@ import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton"
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import DisabledTextInput from "../../components/form/DisabledTextInput";
-import axios from "axios";
+import {handleAxiosError} from "../../utils/utils";
 
 const AddCryptoPage = () => {
 
@@ -24,7 +24,7 @@ const AddCryptoPage = () => {
   const platformName = urlSearchParams.get('platform');
   const redirectTo = urlSearchParams.get('redirectTo') ?? '/cryptos';
   const {isLoadingPlatforms, platforms} = usePlatforms();
-  const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
+  const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
 
   const addCrypto = async (values: {cryptoName: string, quantity: number, platform: string}) => {
     const platformId = platforms.find(platformResponse => platformResponse.name == values.platform)?.id ?? ''
@@ -39,19 +39,10 @@ const AddCryptoPage = () => {
 
         navigate(redirectTo);
       } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          const status = error.response?.status;
-
-          if (status && (status >= 400 && status < 500)) {
-            setApiErrors(error.response?.data);
-            return;
-          }
-        }
+        handleAxiosError(error, setApiResponseError, navigate);
       }
-
-      navigate("/error");
     } else {
-      setApiErrors([{
+      setApiResponseError([{
         title: 'Invalid platform',
         status: 404,
         detail: 'Platform does not exist'
@@ -71,10 +62,10 @@ const AddCryptoPage = () => {
           platforms.length > 0 &&
           <div className="flex flex-col items-center">
             {
-              apiErrors && apiErrors.length >= 1 &&
+              apiResponseError && apiResponseError.length >= 1 &&
               <ErrorListAlert
                 title="Error adding crypto"
-                errors={apiErrors}/>
+                errors={apiResponseError}/>
             }
 
             <Formik

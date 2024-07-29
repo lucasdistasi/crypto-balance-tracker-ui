@@ -11,7 +11,7 @@ import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import {useNavigate} from "react-router-dom";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import {savePriceTarget} from "../../services/priceTargetService";
-import axios from "axios";
+import {handleAxiosError} from "../../utils/utils";
 
 const AddPriceTarget = () => {
 
@@ -27,16 +27,7 @@ const AddPriceTarget = () => {
 
       navigate('/price-targets');
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setApiResponseError(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 

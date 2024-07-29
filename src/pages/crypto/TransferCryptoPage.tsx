@@ -19,18 +19,18 @@ import CryptoPlatformDropdown from "../../components/form/CryptoPlatformDropdown
 import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
-import axios from "axios";
+import {handleAxiosError} from "../../utils/utils";
 
 const TransferCryptoPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const userCryptoId: string = params.id!!;
+  const userCryptoId: string = params.id!;
   const {userCrypto, isLoadingUserCrypto, fetchInfoError} = useGetCrypto();
   const {platforms, isLoadingPlatforms} = usePlatforms();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const redirectTo = urlSearchParams.get('redirectTo') ?? "/cryptos";
-  const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
+  const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
   const validationSchema = Yup.object({
     networkFee: Yup.number()
@@ -67,16 +67,7 @@ const TransferCryptoPage = () => {
 
       navigate(redirectTo);
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setApiErrors(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -99,10 +90,10 @@ const TransferCryptoPage = () => {
         }
 
         {
-          apiErrors && apiErrors.length >= 1 &&
+          apiResponseError && apiResponseError.length >= 1 &&
           <ErrorListAlert
             title="Error transfering crypto"
-            errors={apiErrors}/>
+            errors={apiResponseError}/>
         }
 
         {

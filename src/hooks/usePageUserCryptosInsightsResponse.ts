@@ -28,7 +28,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
         const response = await callback();
         setPageUserCryptosInsightsResponse(response);
         filteredCryptos.current = response.cryptos;
-      } catch (err) {
+      } catch (error: unknown) {
         setError(true);
       } finally {
         setIsLoadingUserCryptosInsights(false);
@@ -59,7 +59,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
         },
         cryptos: [...pageUserCryptosInsightsResponse.cryptos, ...response.cryptos]
       });
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     } finally {
       setIsLoadingMore(false);

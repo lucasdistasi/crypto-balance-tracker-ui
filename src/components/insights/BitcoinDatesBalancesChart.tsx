@@ -67,7 +67,7 @@ const BitcoinDatesBalancesChart = () => {
       try {
         const [defaultPeriod] = balancesPeriodValues["ONE_WEEK"];
         await updateChartOptionsConfig(defaultPeriod);
-      } catch (err) {
+      } catch (error: unknown) {
         setErrorDatesBalanceResponse(true);
       } finally {
         setIsLoadingDatesBalanceResponse(false);
@@ -84,7 +84,7 @@ const BitcoinDatesBalancesChart = () => {
 
     try {
       await updateChartOptionsConfig(period);
-    } catch (err) {
+    } catch (error: unknown) {
       setErrorDatesBalanceResponse(true);
     } finally {
       setIsLoadingDatesBalanceResponse(false);

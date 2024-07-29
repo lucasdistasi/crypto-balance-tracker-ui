@@ -19,7 +19,7 @@ import {isSuccessfulStatus} from "../../utils/utils";
 const PlatformInsightsPage = () => {
 
   const params = useParams();
-  const platformId: string = params.platformId!!;
+  const platformId: string = params.platformId!;
   const [platformInsightsResponse, setPlatformInsightsResponse] = useState<PlatformInsightsResponse>({
     balances: {
       totalUSDBalance: "0",
@@ -65,7 +65,7 @@ const PlatformInsightsPage = () => {
             // FIXME - add crypto button does not have the platform name
           }
         });
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     } finally {
       setIsLoadingPlatformInsightsResponse(false);

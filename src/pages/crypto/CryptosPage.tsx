@@ -40,7 +40,7 @@ const CryptosPage = () => {
 
           setPageUserCryptoResponse(response);
           filteredCryptos.current = response.cryptos;
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingCryptos(false);
@@ -64,7 +64,7 @@ const CryptosPage = () => {
         totalPages
       });
       filteredCryptos.current = updatedFilteredCryptos;
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     }
   }
@@ -90,7 +90,7 @@ const CryptosPage = () => {
         page: response.page,
         totalPages: response.totalPages
       });
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     } finally {
       setIsLoadingMoreCryptos(false);

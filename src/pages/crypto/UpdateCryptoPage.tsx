@@ -18,13 +18,13 @@ import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton"
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
-import axios from "axios";
+import {handleAxiosError} from "../../utils/utils";
 
 const UpdateCryptoPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const cryptoId: string = params.id!!;
+  const cryptoId: string = params.id!;
   const urlSearchParams = new URLSearchParams(window.location.search);
   const redirectTo = urlSearchParams.get('redirectTo') ?? "/cryptos";
   const {platforms, isLoadingPlatforms} = usePlatforms();
@@ -53,16 +53,7 @@ const UpdateCryptoPage = () => {
 
       navigate(redirectTo);
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setApiResponseError(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 

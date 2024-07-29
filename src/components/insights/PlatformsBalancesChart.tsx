@@ -23,7 +23,7 @@ const PlatformsBalancesChart = () => {
         try {
           const response: PlatformsBalancesInsightsResponse = await retrievePlatformsBalancesInsights();
           setPlatformsBalances(response);
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingPlatformsBalances(false);

@@ -1,3 +1,7 @@
+import axios from "axios";
+import ErrorResponse from "../model/response/ErrorResponse";
+import {NavigateFunction} from "react-router-dom";
+
 export const isSuccessfulStatus = (status: number): boolean => {
   return status >= 200 && status < 300;
 }
@@ -144,4 +148,31 @@ export const btcBalancesChartOptions = {
   yaxis: {
     show: false,
   },
+}
+
+export const defaultErrorResponse = () => {
+  return [{
+    title: "Unknown error",
+    status: 400,
+    detail: "Unknown error"
+  }];
+}
+
+export const handleAxiosError = (
+  error: unknown,
+  setErrors: (errors: ErrorResponse[]) => void,
+  navigate: NavigateFunction
+) => {
+  if (axios.isAxiosError(error)) {
+    const status = error.response?.status;
+
+    if (status && (status >= 400 && status < 500)) {
+      const errorResponses: ErrorResponse[] = error.response?.data as ErrorResponse[] ?? defaultErrorResponse();
+      setErrors(errorResponses);
+
+      return;
+    }
+  }
+
+  navigate("/error");
 }

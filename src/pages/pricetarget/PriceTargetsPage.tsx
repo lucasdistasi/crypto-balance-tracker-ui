@@ -77,7 +77,7 @@ const PriceTargetsPage = () => {
       });
       priceTargetsRef.current = [...priceTargetsRef.current, ...pagePriceTargetResponse.targets];
       sortPriceTargets();
-    } catch (err) {
+    } catch (error: unknown) {
       setFetchPriceTargetsError(true);
     } finally {
       setIsLoadingMorePriceTargets(false);

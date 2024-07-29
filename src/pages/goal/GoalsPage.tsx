@@ -45,7 +45,7 @@ const GoalsPage = () => {
           filteredGoals.current = hideAchieved
             ? pageGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
             : pageGoals.goals;
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingGoals(false);
@@ -85,7 +85,7 @@ const GoalsPage = () => {
 
       const moreGoals = hideAchieved ? response.goals.filter(goal => goal.progress < 100) : response.goals;
       filteredGoals.current = sortGoals(lastOrderBy, [...filteredGoals.current, ...moreGoals], sortAscending);
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     } finally {
       setIsLoadingMoreGoals(false);

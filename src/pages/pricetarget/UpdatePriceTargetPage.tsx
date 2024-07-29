@@ -16,13 +16,13 @@ import DisabledTextInput from "../../components/form/DisabledTextInput";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
-import axios from "axios";
+import {handleAxiosError} from "../../utils/utils";
 
 const UpdatePriceTargetPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const priceTargetId: string = params.id!!;
+  const priceTargetId: string = params.id!;
 
   const [priceTargetResponse, setPriceTargetResponse] = useState<PriceTargetResponse>();
   const [fetchInfoError, setFetchInfoError] = useState(false);
@@ -61,16 +61,7 @@ const UpdatePriceTargetPage = () => {
 
       navigate("/price-targets");
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status && (status >= 400 && status < 500)) {
-          setApiResponseError(error.response?.data);
-          return;
-        }
-      }
-
-      navigate("/error");
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
