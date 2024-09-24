@@ -79,9 +79,9 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && !platformInsightsResponse &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={"0"}
-                               totalEurValue={"0"}
-                               totalBtcValue={"0"}/>
+            <TotalBalanceCards totalUsdValue={0}
+                               totalEurValue={0}
+                               totalBtcValue={0}/>
 
             <AddNewButton
               href={`/crypto?platform=${platformResponse.name}&redirectTo=/insights/platform/${platformId}`}
@@ -92,9 +92,9 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={platformInsightsResponse.balances.totalUSDBalance}
-                               totalEurValue={platformInsightsResponse.balances.totalEURBalance}
-                               totalBtcValue={platformInsightsResponse.balances.totalBTCBalance}/>
+            <TotalBalanceCards totalUsdValue={Number(platformInsightsResponse.balances.totalUSDBalance)}
+                               totalEurValue={Number(platformInsightsResponse.balances.totalEURBalance)}
+                               totalBtcValue={Number(platformInsightsResponse.balances.totalBTCBalance)}/>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}

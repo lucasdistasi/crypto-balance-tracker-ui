@@ -26,14 +26,14 @@ const AddCryptoPage = () => {
   const {isLoadingPlatforms, platforms} = usePlatforms();
   const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
 
-  const addCrypto = async (values: {cryptoName: string, quantity: number, platform: string}) => {
+  const addCrypto = async (values: {cryptoName: string, quantity: string, platform: string}) => {
     const platformId = platforms.find(platformResponse => platformResponse.name == values.platform)?.id ?? ''
 
     if (platformId) {
       try {
         await addCryptoService({
           cryptoName: values.cryptoName,
-          quantity: BigInt(values.quantity),
+          quantity: values.quantity,
           platformId
         });
 
@@ -71,7 +71,7 @@ const AddCryptoPage = () => {
             <Formik
               initialValues={{
                 cryptoName: '',
-                quantity: 0,
+                quantity: '0',
                 platform: platformName ?? ''
               }}
               validationSchema={addCryptoValidationSchema}

@@ -163,6 +163,8 @@ export const handleAxiosError = (
   setErrors: (errors: ErrorResponse[]) => void,
   navigate: NavigateFunction
 ) => {
+  console.log(error);
+
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;
 

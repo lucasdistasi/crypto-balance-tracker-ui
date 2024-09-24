@@ -43,9 +43,9 @@ const UpdatePlatformPage = () => {
     )();
   }, []);
 
-  const updatePlatform = async (values: {platformName: string}) => {
+  const updatePlatform = async (values: {name: string}) => {
     try {
-      await updatePlatformService(platformId, {name: values.platformName});
+      await updatePlatformService(platformId, {name: values.name});
 
       navigate("/platforms");
     } catch (error: unknown) {
@@ -79,7 +79,7 @@ const UpdatePlatformPage = () => {
           !fetchInfoError && !isLoadingPlatform &&
           <Formik
             initialValues={{
-              platformName: platformResponse.name ?? ''
+              name: platformResponse.name ?? ''
             }}
             validationSchema={platformValidationsSchema}
             onSubmit={(values, {setSubmitting}) => {

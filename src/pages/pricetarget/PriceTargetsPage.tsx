@@ -76,7 +76,8 @@ const PriceTargetsPage = () => {
         targets: [...pagePriceTargetsPageResponse.targets, ...pagePriceTargetResponse.targets]
       });
       priceTargetsRef.current = [...priceTargetsRef.current, ...pagePriceTargetResponse.targets];
-      sortPriceTargets();
+      // FIXME - DO NOT SEND TO TOP
+      // sortPriceTargets();
     } catch (error: unknown) {
       setFetchPriceTargetsError(true);
     } finally {
@@ -87,6 +88,21 @@ const PriceTargetsPage = () => {
   const sortPriceTargets = () => {
     setSortType(sortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
     priceTargetsRef.current = priceTargetsRef.current.toSorted((first, second) => sortByDistanceToZero(first.change, second.change));
+  }
+
+  const sortByCryptoName = () => {
+    priceTargetsRef.current = priceTargetsRef.current.toSorted((first, second) => {
+      if (first.cryptoName > second.cryptoName) {
+        return sortType == SortType.ASCENDING ? 1 : -1;
+      }
+
+      if (second.cryptoName > first.cryptoName) {
+        return sortType == SortType.ASCENDING ? -1 : 1;
+      }
+
+      return 0;
+    });
+    setSortType(sortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
   }
 
   function sortByDistanceToZero(first: number, second: number) {
@@ -117,8 +133,9 @@ const PriceTargetsPage = () => {
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <TableColumnTitle title="Crypto"
-                                  additionalClasses="text-center"/>
+                <SortableTableColumnTitle title="Crypto"
+                                          additionalClasses="text-center"
+                                          sortFunction={sortByCryptoName}/>
                 <TableColumnTitle title="Target"
                                   additionalClasses="text-center"/>
                 <TableColumnTitle title="Current Price"

@@ -1,9 +1,9 @@
 import TotalBalanceCard from "./TotalBalanceCard";
 
 const TotalBalanceCards = ({totalUsdValue, totalEurValue, totalBtcValue}: {
-  totalUsdValue: string,
-  totalEurValue: string,
-  totalBtcValue: string
+  totalUsdValue: number,
+  totalEurValue: number,
+  totalBtcValue: number
 }) => {
 
   const btcDecimals = Number(String(totalBtcValue).split(".")[1]?.length) || 2;

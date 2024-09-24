@@ -59,9 +59,9 @@ const TransferCryptoPage = () => {
     try {
       await transferCryptoService({
         userCryptoId,
-        quantityToTransfer: BigInt(values.quantityToTransfer),
+        quantityToTransfer: values.quantityToTransfer,
         sendFullQuantity: values.sendFullQuantity,
-        networkFee: BigInt(values.networkFee),
+        networkFee: values.networkFee,
         toPlatformId
       });
 

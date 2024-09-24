@@ -37,7 +37,7 @@ const UpdateCryptoPage = () => {
     quantity: string,
     platform: string
   }) => {
-    if (userCrypto?.quantity === quantity.toString() && userCrypto?.platform === platform) {
+    if (userCrypto?.quantity === quantity && userCrypto?.platform === platform) {
       setNoChangesError(true);
       return;
     }
@@ -47,7 +47,7 @@ const UpdateCryptoPage = () => {
     try {
       await updateCryptoService(cryptoId, {
         cryptoName,
-        quantity: BigInt(quantity),
+        quantity: quantity,
         platformId
       });
 
@@ -93,7 +93,7 @@ const UpdateCryptoPage = () => {
           <Formik
             initialValues={{
               cryptoName: userCrypto?.cryptoName ?? '',
-              quantity: userCrypto?.quantity ?? '0',
+              quantity: String(userCrypto?.quantity ?? 0),
               platform: userCrypto?.platform ?? ''
             }}
             validationSchema={updateCryptoValidationSchema}

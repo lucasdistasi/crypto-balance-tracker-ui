@@ -12,7 +12,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-gray-200 dark:bg-gray-900">
+    <nav className="bg-gray-200 mb-12 dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <Link to="/" className="flex items-center">
           <img src="/bitcoin.svg" className="mr-3 h-8" alt="Bitcoin Logo"/>

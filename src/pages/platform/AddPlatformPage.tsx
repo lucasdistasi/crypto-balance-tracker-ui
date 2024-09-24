@@ -20,6 +20,8 @@ const AddPlatformPage = () => {
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
   const addPlatform = async (platformRequest: PlatformRequest) => {
+    console.log("Adding platform...")
+
     try {
       await addPlatformService(platformRequest);
 
