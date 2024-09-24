@@ -19,26 +19,18 @@ import CryptoPlatformDropdown from "../../components/form/CryptoPlatformDropdown
 import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import {handleAxiosError} from "../../utils/utils";
 
 const TransferCryptoPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const userCryptoId: string = params.id!!;
+  const userCryptoId: string = params.id!;
   const {userCrypto, isLoadingUserCrypto, fetchInfoError} = useGetCrypto();
   const {platforms, isLoadingPlatforms} = usePlatforms();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const redirectTo = urlSearchParams.get('redirectTo') ?? "/cryptos";
-  const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
-  const initialValues = {
-    cryptoName: userCrypto?.cryptoName ?? '',
-    quantityToTransfer: userCrypto?.quantity ?? 0,
-    sendFullQuantity: false,
-    networkFee: 0,
-    fromPlatform: userCrypto?.platform ?? '',
-    toPlatform: ''
-  };
-  const [isTransferringCrypto, setIsTransferringCrypto] = useState(false);
+  const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
   const validationSchema = Yup.object({
     networkFee: Yup.number()
@@ -54,32 +46,28 @@ const TransferCryptoPage = () => {
       .notOneOf([userCrypto?.platform], "Can't be same as from platform")
   });
 
-  const transferCrypto = async ({...props}) => {
-    const {quantityToTransfer, sendFullQuantity, networkFee, toPlatform} = props;
-    const toPlatformId = platforms.find(platform => platform.name == toPlatform)?.id ?? '';
+  const transferCrypto = async (values: {
+    cryptoName: string,
+    quantityToTransfer: string,
+    sendFullQuantity: boolean,
+    networkFee: string,
+    fromPlatform: string,
+    toPlatform: string
+  }) => {
+    const toPlatformId = platforms.find(platform => platform.name == values.toPlatform)?.id ?? '';
 
     try {
-      setIsTransferringCrypto(true);
       await transferCryptoService({
         userCryptoId,
-        quantityToTransfer,
-        sendFullQuantity,
-        networkFee,
+        quantityToTransfer: values.quantityToTransfer,
+        sendFullQuantity: values.sendFullQuantity,
+        networkFee: values.networkFee,
         toPlatformId
       });
 
       navigate(redirectTo);
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiErrors(error.response.data);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    } finally {
-      setIsTransferringCrypto(false);
+    } catch (error: unknown) {
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -102,52 +90,64 @@ const TransferCryptoPage = () => {
         }
 
         {
-          apiErrors && apiErrors.length >= 1 &&
+          apiResponseError && apiResponseError.length >= 1 &&
           <ErrorListAlert
             title="Error transfering crypto"
-            errors={apiErrors}/>
+            errors={apiResponseError}/>
         }
 
         {
           !isLoadingUserCrypto && !fetchInfoError &&
           <Formik
-            initialValues={initialValues}
+            initialValues={{
+              cryptoName: userCrypto?.cryptoName ?? '',
+              quantityToTransfer: userCrypto?.quantity ?? '0',
+              sendFullQuantity: false,
+              networkFee: '0',
+              fromPlatform: userCrypto?.platform ?? '',
+              toPlatform: ''
+            }}
             validationSchema={validationSchema}
             onSubmit={(values, {setSubmitting}) => {
-              transferCrypto(values)
+              transferCrypto(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-              <DisabledTextInput label="Crypto Name"
-                                 type="text"
-                                 name="cryptoName"/>
-              <EditableTextInput label="Quantity to transfer"
-                                 name="quantityToTransfer"
-                                 type="number"
-                                 max={userCrypto?.quantity}/>
-              <CheckboxInput label="Send full quantity"
-                             name="sendFullQuantity"/>
-              <EditableTextInput label="Network fee"
-                                 name="networkFee"
-                                 type="number"
-                                 max={userCrypto?.quantity}/>
-              <DisabledTextInput label="From platform"
-                                 type="text"
-                                 name="fromPlatform"/>
-              {
-                !isLoadingPlatforms &&
-                <CryptoPlatformDropdown label="To platform"
-                                        name="toPlatform"/> ||
-                <SingleFieldSkeleton label="To platform"
-                                     id="to-platform-skeleton"
-                                     classes="mb-6"/>
-              }
 
-              {
-                !isTransferringCrypto &&
-                <SubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/> ||
-                <DisabledSubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/>
-              }
-            </Form>
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                  <DisabledTextInput label="Crypto Name"
+                                     type="text"
+                                     name="cryptoName"/>
+                  <EditableTextInput label="Quantity to transfer"
+                                     name="quantityToTransfer"
+                                     type="number"
+                                     max={userCrypto?.quantity}/>
+                  <CheckboxInput label="Send full quantity"
+                                 name="sendFullQuantity"/>
+                  <EditableTextInput label="Network fee"
+                                     name="networkFee"
+                                     type="number"
+                                     max={userCrypto?.quantity}/>
+                  <DisabledTextInput label="From platform"
+                                     type="text"
+                                     name="fromPlatform"/>
+                  {
+                    !isLoadingPlatforms &&
+                    <CryptoPlatformDropdown label="To platform"
+                                            name="toPlatform"/> ||
+                    <SingleFieldSkeleton label="To platform"
+                                         id="to-platform-skeleton"
+                                         classes="mb-6"/>
+                  }
+
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/> ||
+                    <DisabledSubmitButton text={`Transfer ${userCrypto?.cryptoName}`}/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
       </div>

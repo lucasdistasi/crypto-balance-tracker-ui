@@ -3,9 +3,9 @@ import ApexCharts from "apexcharts";
 import {DatesBalanceResponse} from "../../model/response/insight/DatesBalanceResponse";
 import GreenArrow from "./GreenArrow";
 import RedArrow from "./RedArrow";
-import {balancesPeriodValues} from "./DaysBalancesChart";
+import {balancesPeriodValues} from "../../utils/utils";
 
-const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeriodTime, chartOptions, chartTitle}: {
+const FiatBalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeriodTime, chartOptions, chartTitle}: {
   datesBalanceResponse: DatesBalanceResponse,
   updateDatesRange: (periodType: string) => Promise<void>,
   selectedPeriodTime: string,
@@ -14,8 +14,8 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
 }) => {
 
   useEffect(() => {
-    if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
-      const chart = new ApexCharts(document.getElementById("area-chart"), chartOptions);
+    if (document.getElementById("fiat-balances-area-chart") && typeof ApexCharts !== 'undefined') {
+      const chart = new ApexCharts(document.getElementById("fiat-balances-area-chart"), chartOptions);
       chart.render();
     }
   }, []);
@@ -25,11 +25,11 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
   }
 
   const retrieveChangeColor = (datesBalanceResponse: DatesBalanceResponse) => {
-    if (datesBalanceResponse.change > 0) {
+    if (datesBalanceResponse.change.usdChange > 0) {
       return "text-green-500 dark:text-green-500";
     }
 
-    if (datesBalanceResponse.change < 0) {
+    if (datesBalanceResponse.change.usdChange < 0) {
       return "text-red-800 dark:text-red-300";
     }
 
@@ -37,19 +37,19 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
   }
 
   const getPriceDifference = () => {
-    if (Number(datesBalanceResponse.priceDifference) > 0) {
-      return `(+${datesBalanceResponse.priceDifference} USD)`
+    if (Number(datesBalanceResponse.priceDifference.usdDifference) > 0) {
+      return `(+${datesBalanceResponse.priceDifference.usdDifference} USD)`
     }
 
-    if (Number(datesBalanceResponse.priceDifference) < 0) {
-      return `(${datesBalanceResponse.priceDifference} USD)`
+    if (Number(datesBalanceResponse.priceDifference.usdDifference) < 0) {
+      return `(${datesBalanceResponse.priceDifference.usdDifference} USD)`
     }
 
     return "(0)";
   }
 
   return (
-    <div className="container flex flex-row mx-auto">
+    <div className="container flex flex-row mx-auto mb-20">
       <div className="w-full bg-gray-100 rounded-lg shadow p-4 md:p-6 dark:bg-gray-800">
         <div className="flex justify-between">
           <div>
@@ -61,16 +61,16 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
             className={`flex items-center px-2.5 py-0.5 text-base font-semibold ${retrieveChangeColor(datesBalanceResponse)} text-center`}>
             {
               datesBalanceResponse &&
-              `${datesBalanceResponse.change}% ${datesBalanceResponse.change !== 0 ? getPriceDifference() : ''}`
+              `${datesBalanceResponse.change.usdChange}% ${datesBalanceResponse.change.usdChange !== 0 ? getPriceDifference() : ''}`
             }
 
             {
-              datesBalanceResponse.change > 0 &&
+              datesBalanceResponse.change.usdChange > 0 &&
               <GreenArrow/>
             }
 
             {
-              datesBalanceResponse.change < 0 &&
+              datesBalanceResponse.change.usdChange < 0 &&
               <RedArrow/>
             }
           </div>
@@ -78,7 +78,7 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
 
         {
           datesBalanceResponse?.datesBalances?.length > 1 ?
-            <div id="area-chart"></div> :
+            <div id="fiat-balances-area-chart"></div> :
             <p className="uppercase mx-auto py-10 text-gray-900 dark:text-white">
               Not enough data
             </p>
@@ -101,4 +101,4 @@ const BalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selectedPeri
   );
 }
 
-export default BalancesAreaChart
+export default FiatBalancesAreaChart

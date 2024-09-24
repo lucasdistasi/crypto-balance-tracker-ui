@@ -37,29 +37,29 @@ const PriceTargetsPage = () => {
   useEffect(() => {
     (async () => {
         try {
-          const pagePriceTargetResponse: PagePriceTargetResponse = await retrievePriceTargetsByPage(page)
-            .then(response => response.data);
+          const pagePriceTargetResponse = await retrievePriceTargetsByPage(page);
           setPagePriceTargetsPageResponse(pagePriceTargetResponse);
           priceTargetsRef.current = pagePriceTargetResponse.targets;
-        } catch (error: any) {
+        } catch (error: unknown) {
           setFetchPriceTargetsError(true);
         } finally {
           setIsLoadingPriceTargets(false);
         }
       }
-    )()
+    )();
   }, []);
 
   const deleteTarget = async (priceTargetId: string) => {
     try {
-      await deletePriceTarget(priceTargetId)
-        .then(_ => setPage(0));
-      const pagePriceTargetResponse: PagePriceTargetResponse = await retrievePriceTargetsByPage(0)
-        .then(response => response.data);
+      await deletePriceTarget(priceTargetId);
+      setPage(0);
+
+      const pagePriceTargetResponse = await retrievePriceTargetsByPage(0);
       setPagePriceTargetsPageResponse(pagePriceTargetResponse);
+
       priceTargetsRef.current = pagePriceTargetResponse.targets;
       setSortType(sortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
-    } catch (error: any) {
+    } catch (error: unknown) {
       navigate("/error");
     }
   }
@@ -70,15 +70,15 @@ const PriceTargetsPage = () => {
     setPage(nextPage);
 
     try {
-      const pagePriceTargetResponse: PagePriceTargetResponse = await retrievePriceTargetsByPage(nextPage)
-        .then(response => response.data);
+      const pagePriceTargetResponse = await retrievePriceTargetsByPage(nextPage);
       setPagePriceTargetsPageResponse({
         ...pagePriceTargetResponse,
         targets: [...pagePriceTargetsPageResponse.targets, ...pagePriceTargetResponse.targets]
       });
       priceTargetsRef.current = [...priceTargetsRef.current, ...pagePriceTargetResponse.targets];
-      sortPriceTargets();
-    } catch (err) {
+      // FIXME - DO NOT SEND TO TOP
+      // sortPriceTargets();
+    } catch (error: unknown) {
       setFetchPriceTargetsError(true);
     } finally {
       setIsLoadingMorePriceTargets(false);
@@ -88,6 +88,21 @@ const PriceTargetsPage = () => {
   const sortPriceTargets = () => {
     setSortType(sortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
     priceTargetsRef.current = priceTargetsRef.current.toSorted((first, second) => sortByDistanceToZero(first.change, second.change));
+  }
+
+  const sortByCryptoName = () => {
+    priceTargetsRef.current = priceTargetsRef.current.toSorted((first, second) => {
+      if (first.cryptoName > second.cryptoName) {
+        return sortType == SortType.ASCENDING ? 1 : -1;
+      }
+
+      if (second.cryptoName > first.cryptoName) {
+        return sortType == SortType.ASCENDING ? -1 : 1;
+      }
+
+      return 0;
+    });
+    setSortType(sortType === SortType.ASCENDING ? SortType.DESCENDING : SortType.ASCENDING);
   }
 
   function sortByDistanceToZero(first: number, second: number) {
@@ -113,17 +128,18 @@ const PriceTargetsPage = () => {
         }
 
         {
-          !fetchPriceTargetsError && !isLoadingPriceTargets && priceTargetsRef.current.length > 0 &&
+          !fetchPriceTargetsError && !isLoadingPriceTargets && priceTargetsRef.current?.length > 0 &&
           <div className="relative overflow-x-auto rounded-lg w-11/12 mt-5">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <TableColumnTitle title="Crypto"
+                <SortableTableColumnTitle title="Crypto"
+                                          additionalClasses="text-center"
+                                          sortFunction={sortByCryptoName}/>
+                <TableColumnTitle title="Target"
                                   additionalClasses="text-center"/>
                 <TableColumnTitle title="Current Price"
                                   additionalClasses="text-center whitespace-nowrap"/>
-                <TableColumnTitle title="Target"
-                                  additionalClasses="text-center"/>
                 <SortableTableColumnTitle title="Change"
                                           additionalClasses="text-center"
                                           sortFunction={sortPriceTargets}/>
@@ -141,9 +157,9 @@ const PriceTargetsPage = () => {
                       <TableColumnContent content={target.cryptoName}
                                           rowScope={true}
                                           additionalClasses="text-center"/>
-                      <TableColumnContent content={`U$D ${target.currentPrice.toString()}`}
-                                          additionalClasses="text-center"/>
                       <TableColumnContent content={`U$D ${target.priceTarget.toString()}`}
+                                          additionalClasses="text-center text-bold"/>
+                      <TableColumnContent content={`U$D ${target.currentPrice.toString()}`}
                                           additionalClasses="text-center"/>
                       <TableColumnContent content={`${target.change}%`}
                                           additionalClasses="text-center"/>

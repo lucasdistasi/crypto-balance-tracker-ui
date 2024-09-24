@@ -1,7 +1,7 @@
-interface TransferCryptoRequest {
+export interface TransferCryptoRequest {
   userCryptoId: string,
-  quantityToTransfer: bigint,
+  quantityToTransfer: string,
   sendFullQuantity: boolean,
-  networkFee: bigint,
+  networkFee: string,
   toPlatformId: string
 }

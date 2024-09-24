@@ -1,7 +1,7 @@
 import {useSpring, animated} from "react-spring";
 
 const CardAnimation = ({balance, decimals, symbol}: {
-  balance: string,
+  balance: number,
   decimals: number,
   symbol: string
 }) => {
@@ -23,7 +23,7 @@ const CardAnimation = ({balance, decimals, symbol}: {
 
 const TotalBalanceCard = ({title, value, decimals, symbol}: {
   title: string,
-  value: string,
+  value: number,
   decimals: number,
   symbol: string
 }) => {

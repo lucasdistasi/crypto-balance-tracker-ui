@@ -1,15 +1,16 @@
 import {useEffect, useState} from "react";
 import ErrorResponse from "../model/response/ErrorResponse";
-import {useNavigate} from "react-router-dom";
 import {deletePlatformService, retrieveAllPlatforms} from "../services/platformService";
 import {PlatformResponse} from "../model/response/platform/PlatformResponse";
+import {handleAxiosError} from "../utils/utils";
+import {useNavigate} from "react-router-dom";
 
 export function usePlatforms() {
 
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [isLoadingPlatforms, setIsLoadingPlatforms] = useState(true);
-  const [errors, setErrors] = useState<ErrorResponse[]>([]);
+  const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
   const [platforms, setPlatforms] = useState<Array<PlatformResponse>>([]);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export function usePlatforms() {
         try {
           const response = await retrieveAllPlatforms();
           setPlatforms(response);
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingPlatforms(false);
@@ -28,21 +29,13 @@ export function usePlatforms() {
 
   const deletePlatform = async (platformId: string) => {
     try {
-      const {status} = await deletePlatformService(platformId);
-
-      if (status === 200) {
-        const updatedPlatforms = platforms.filter(platform => platform.id !== platformId);
-        setPlatforms(updatedPlatforms);
-      }
-    } catch (err: any) {
-      const {status, data} = err.response;
-      if (status === 400) {
-        setErrors(data.errors);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
+      await deletePlatformService(platformId)
+        .then(() => {
+          const updatedPlatforms = platforms.filter(platform => platform.id !== platformId);
+          setPlatforms(updatedPlatforms);
+        });
+    } catch (error: unknown) {
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -51,7 +44,7 @@ export function usePlatforms() {
     setPlatforms,
     error,
     isLoadingPlatforms,
-    errors,
+    errors: apiResponseError,
     deletePlatform,
   };
 }

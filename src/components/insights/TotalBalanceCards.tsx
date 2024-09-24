@@ -1,8 +1,11 @@
 import TotalBalanceCard from "./TotalBalanceCard";
 
-const TotalBalanceCards = ({...props}) => {
+const TotalBalanceCards = ({totalUsdValue, totalEurValue, totalBtcValue}: {
+  totalUsdValue: number,
+  totalEurValue: number,
+  totalBtcValue: number
+}) => {
 
-  const {totalUsdValue, totalEurValue, totalBtcValue} = props;
   const btcDecimals = Number(String(totalBtcValue).split(".")[1]?.length) || 2;
 
   return (

@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
 import React from "react";
 
-export const ViewInsightsButton = ({...props}) => {
-
-  const {viewInsightsLink} = props
+export const ViewInsightsButton = ({viewInsightsLink}: {
+  viewInsightsLink: string
+}) => {
 
   return (
     <Link to={viewInsightsLink}>

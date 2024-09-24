@@ -1,5 +1,5 @@
-interface UserCryptoRequest {
+export interface UserCryptoRequest {
   cryptoName: string,
-  quantity: bigint,
+  quantity: string,
   platformId: string
 }

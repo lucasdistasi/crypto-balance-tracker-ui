@@ -15,44 +15,34 @@ import SingleFieldSkeleton from "../../components/skeletons/SingleFieldSkeleton"
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import DisabledTextInput from "../../components/form/DisabledTextInput";
+import {handleAxiosError} from "../../utils/utils";
 
 const AddCryptoPage = () => {
 
   const navigate = useNavigate();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const platformName = urlSearchParams.get('platform');
+  const redirectTo = urlSearchParams.get('redirectTo') ?? '/cryptos';
   const {isLoadingPlatforms, platforms} = usePlatforms();
-  const [apiErrors, setApiErrors] = useState<ErrorResponse[]>([]);
-  const [isAddingCrypto, setIsAddingCrypto] = useState(false);
+  const [apiResponseError, setApiResponseError] = useState<ErrorResponse[]>([]);
 
-  const addCrypto = async ({...values}) => {
-    const {cryptoName, quantity, platform} = values;
-    const platformId = platforms.find(platformResponse => platformResponse.name == platform)?.id ?? ''
+  const addCrypto = async (values: {cryptoName: string, quantity: string, platform: string}) => {
+    const platformId = platforms.find(platformResponse => platformResponse.name == values.platform)?.id ?? ''
 
     if (platformId) {
       try {
-        setIsAddingCrypto(true);
         await addCryptoService({
-          cryptoName,
-          quantity,
+          cryptoName: values.cryptoName,
+          quantity: values.quantity,
           platformId
         });
 
-        navigate("/cryptos");
-      } catch (error: any) {
-        const {status} = error.response;
-        if (status >= 400 && status < 500) {
-          setApiErrors(error.response.data);
-        }
-
-        if (status >= 500) {
-          navigate("/error");
-        }
-      } finally {
-        setIsAddingCrypto(false);
+        navigate(redirectTo);
+      } catch (error: unknown) {
+        handleAxiosError(error, setApiResponseError, navigate);
       }
     } else {
-      setApiErrors([{
+      setApiResponseError([{
         title: 'Invalid platform',
         status: 404,
         detail: 'Platform does not exist'
@@ -72,57 +62,61 @@ const AddCryptoPage = () => {
           platforms.length > 0 &&
           <div className="flex flex-col items-center">
             {
-              apiErrors && apiErrors.length >= 1 &&
+              apiResponseError && apiResponseError.length >= 1 &&
               <ErrorListAlert
                 title="Error adding crypto"
-                errors={apiErrors}/>
+                errors={apiResponseError}/>
             }
 
             <Formik
               initialValues={{
                 cryptoName: '',
-                quantity: 0,
+                quantity: '0',
                 platform: platformName ?? ''
               }}
               validationSchema={addCryptoValidationSchema}
               onSubmit={(values, {setSubmitting}) => {
-                addCrypto(values);
+                addCrypto(values).then(() => setSubmitting(false));
               }}>
 
-              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-                <EditableTextInput label="Crypto name or id"
-                                   type="text"
-                                   name="cryptoName"
-                                   placeholder="Bitcoin"
-                                   maxLength={64}/>
-                <EditableTextInput label="Quantity"
-                                   type="number"
-                                   name="quantity"/>
-                {
-                  isLoadingPlatforms &&
-                  <SingleFieldSkeleton label="Platform"
-                                       id="platforms-skeleton"
-                                       classes="mb-6"/>
-                }
+              {
+                ({isSubmitting}) => (
+                  <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                    <EditableTextInput label="Crypto name or id"
+                                       type="text"
+                                       name="cryptoName"
+                                       placeholder="Bitcoin"
+                                       maxLength={64}/>
+                    <EditableTextInput label="Quantity"
+                                       type="number"
+                                       name="quantity"/>
+                    {
+                      isLoadingPlatforms &&
+                      <SingleFieldSkeleton label="Platform"
+                                           id="platforms-skeleton"
+                                           classes="mb-6"/>
+                    }
 
-                {
-                  !isLoadingPlatforms && platformName &&
-                  <DisabledTextInput label="Platform"
-                                     name="platform"/>
-                }
+                    {
+                      !isLoadingPlatforms && platformName &&
+                      <DisabledTextInput label="Platform"
+                                         name="platform"/>
+                    }
 
-                {
-                  !isLoadingPlatforms && !platformName &&
-                  <CryptoPlatformDropdown label="Platform"
-                                          name="platform"/>
-                }
+                    {
+                      !isLoadingPlatforms && !platformName &&
+                      <CryptoPlatformDropdown label="Platform"
+                                              name="platform"/>
+                    }
 
-                {
-                  !isAddingCrypto &&
-                  <SubmitButton text="Add crypto"/> ||
-                  <DisabledSubmitButton text="Adding crypto"/>
-                }
-              </Form>
+                    {
+                      !isSubmitting &&
+                      <SubmitButton text="Add crypto"/> ||
+                      <DisabledSubmitButton text="Adding crypto"/>
+                    }
+                  </Form>
+                )
+              }
             </Formik>
           </div>
         }

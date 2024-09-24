@@ -11,36 +11,24 @@ import {addGoalValidationSchema} from "../../constants/ValidationSchemas";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import {GoalRequest} from "../../model/request/goal/GoalRequest";
+import {handleAxiosError} from "../../utils/utils";
 
 const AddGoalPage = () => {
 
   const navigate = useNavigate();
-  const [apiErrors, setApiErrors] = useState<Array<ErrorResponse>>([]);
-  const [isAddingGoal, setIsAddingGoal] = useState(false);
+  const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
 
-  const addGoal = async ({...values}) => {
-    const {cryptoName, goalQuantity} = values;
-    setIsAddingGoal(true);
-
+  const addGoal = async (goalRequest: GoalRequest) => {
     try {
       await saveGoal({
-        cryptoName,
-        goalQuantity
+        cryptoName: goalRequest.cryptoName,
+        goalQuantity: goalRequest.goalQuantity,
       });
 
       navigate("/goals");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiErrors(error.response.data);
-        setIsAddingGoal(false);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    } finally {
-      setIsAddingGoal(false);
+    } catch (error: unknown) {
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -53,10 +41,10 @@ const AddGoalPage = () => {
         </h1>
 
         {
-          apiErrors && apiErrors.length >= 1 &&
+          apiResponseError && apiResponseError.length >= 1 &&
           <ErrorListAlert
             title="Error adding goal"
-            errors={apiErrors}/>
+            errors={apiResponseError}/>
         }
 
         <Formik
@@ -66,25 +54,29 @@ const AddGoalPage = () => {
           }}
           validationSchema={addGoalValidationSchema}
           onSubmit={(values, {setSubmitting}) => {
-            addGoal(values);
+            addGoal(values).then(() => setSubmitting(false));
           }}>
 
-          <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-            <EditableTextInput label="Crypto Name"
-                               type="text"
-                               name="cryptoName"
-                               placeholder="Bitcoin"
-                               maxLength={64}/>
-            <EditableTextInput label="Goal Quantity"
-                               type="text"
-                               name="goalQuantity"/>
+          {
+            ({isSubmitting}) => (
+              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+                <EditableTextInput label="Crypto Name"
+                                   type="text"
+                                   name="cryptoName"
+                                   placeholder="Bitcoin"
+                                   maxLength={64}/>
+                <EditableTextInput label="Goal Quantity"
+                                   type="text"
+                                   name="goalQuantity"/>
 
-            {
-              !isAddingGoal &&
-              <SubmitButton text="Add Goal"/> ||
-              <DisabledSubmitButton text="Adding Goal"/>
-            }
-          </Form>
+                {
+                  !isSubmitting &&
+                  <SubmitButton text="Add Goal"/> ||
+                  <DisabledSubmitButton text="Adding Goal"/>
+                }
+              </Form>
+            )
+          }
         </Formik>
       </div>
       <Footer/>

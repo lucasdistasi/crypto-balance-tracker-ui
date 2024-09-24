@@ -16,15 +16,15 @@ import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
+import {handleAxiosError} from "../../utils/utils";
 
 const UpdateGoalPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const goalId: string = params.id!!;
+  const goalId: string = params.id!;
   const [goal, setGoal] = useState<GoalResponse>();
   const [isLoadingGoal, setIsLoadingGoal] = useState(true);
-  const [isUpdatingGoal, setIsUpdatingGoal] = useState(false);
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
   const [fetchInfoError, setFetchInfoError] = useState(false);
   const [noChangesError, setNoChangesError] = useState(false);
@@ -35,7 +35,7 @@ const UpdateGoalPage = () => {
           try {
             const goal = await retrieveGoal(goalId);
             setGoal(goal);
-          } catch (error: any) {
+          } catch (error: unknown) {
             setFetchInfoError(true);
           } finally {
             setIsLoadingGoal(false);
@@ -47,33 +47,21 @@ const UpdateGoalPage = () => {
     )();
   }, []);
 
-  const updateGoalQuantity = async ({...values}) => {
-    const {cryptoName, goalQuantity} = values;
-
-    if (String(goal?.goalQuantity!) === String(goalQuantity)) {
+  const updateGoalQuantity = async (values: {cryptoName: string, goalQuantity: string}) => {
+    if (String(goal?.goalQuantity!) === values.goalQuantity) {
       setNoChangesError(true);
       return;
     }
 
     try {
-      setIsUpdatingGoal(true);
       await updateGoal(goalId, {
-        cryptoName,
-        goalQuantity
+        cryptoName: values.cryptoName,
+        goalQuantity: Number(values.goalQuantity)
       });
 
       navigate("/goals");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    } finally {
-      setIsUpdatingGoal(false);
+    } catch (error: unknown) {
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -112,25 +100,30 @@ const UpdateGoalPage = () => {
           <Formik
             initialValues={{
               cryptoName: goal?.cryptoName ?? '',
-              goalQuantity: goal?.goalQuantity ?? 0
+              goalQuantity: goal?.goalQuantity ?? '0'
             }}
             validationSchema={updateGoalValidationSchema}
             onSubmit={(values, {setSubmitting}) => {
-              updateGoalQuantity(values);
+              updateGoalQuantity(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-              <DisabledTextInput label="Crypto Name"
-                                 name="cryptoName"
-                                 type="text"/>
-              <EditableTextInput label="Goal Quantity"
-                                 name="goalQuantity"
-                                 type="number"/>
-              {
-                !isUpdatingGoal &&
-                <SubmitButton text="Update Goal"/> ||
-                <DisabledSubmitButton text="Updating Goal"/>
-              }
-            </Form>
+
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                  <DisabledTextInput label="Crypto Name"
+                                     name="cryptoName"
+                                     type="text"/>
+                  <EditableTextInput label="Goal Quantity"
+                                     name="goalQuantity"
+                                     type="number"/>
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text="Update Goal"/> ||
+                    <DisabledSubmitButton text="Updating Goal"/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
 

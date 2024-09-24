@@ -1,3 +1,3 @@
-interface PlatformRequest {
+export interface PlatformRequest {
   name: string
 }

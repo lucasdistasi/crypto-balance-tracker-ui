@@ -45,7 +45,7 @@ const GoalsPage = () => {
           filteredGoals.current = hideAchieved
             ? pageGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
             : pageGoals.goals;
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingGoals(false);
@@ -59,11 +59,12 @@ const GoalsPage = () => {
       await deleteGoalService({goalId});
       const pageGoals = await getGoalsByPageService(0);
       setPageGoals(pageGoals);
+      setPage(0);
 
       filteredGoals.current = hideAchieved
         ? pageGoals.goals.filter((goal: GoalResponse) => goal.progress < 100)
         : pageGoals.goals;
-    } catch (error: any) {
+    } catch (error: unknown) {
       navigate("/error");
     }
   }
@@ -74,7 +75,7 @@ const GoalsPage = () => {
     setPage(nextPage);
 
     try {
-      const response: PageGoalResponse = await getGoalsByPageService(nextPage);
+      const response = await getGoalsByPageService(nextPage);
       setPageGoals({
         goals: [...pageGoals.goals, ...response.goals],
         hasNextPage: response.hasNextPage,
@@ -84,7 +85,7 @@ const GoalsPage = () => {
 
       const moreGoals = hideAchieved ? response.goals.filter(goal => goal.progress < 100) : response.goals;
       filteredGoals.current = sortGoals(lastOrderBy, [...filteredGoals.current, ...moreGoals], sortAscending);
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     } finally {
       setIsLoadingMoreGoals(false);
@@ -155,21 +156,21 @@ const GoalsPage = () => {
               </label>
             </div>
 
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-10">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <SortableTableColumnTitle title="Crypto"
                                           additionalClasses="text-center"
                                           sortFunction={sortByCryptoName}/>
                 <TableColumnTitle title="Goal Quantity"
-                                  additionalClasses="text-center"/>
+                                  additionalClasses="text-center whitespace-nowrap"/>
                 <SortableTableColumnTitle title="Progress"
                                           additionalClasses="text-center"
                                           sortFunction={sortByProgress}/>
                 <TableColumnTitle title="Remaining Quantity"
-                                  additionalClasses="text-center"/>
+                                  additionalClasses="text-center whitespace-nowrap"/>
                 <SortableTableColumnTitle title="Money Needed"
-                                          additionalClasses="text-center"
+                                          additionalClasses="text-center whitespace-nowrap"
                                           sortFunction={sortByMoneyNeeded}/>
                 <TableColumnTitle title="Action"
                                   additionalClasses="text-center"/>
@@ -193,7 +194,7 @@ const GoalsPage = () => {
                                           additionalClasses="text-center"/>
                       <TableColumnContent content={`U$D ${goal.moneyNeeded.toString()}`}
                                           additionalClasses="whitespace-nowrap text-center"/>
-                      <td className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
+                      <td className="px-6 py-4 text-center flex flex-col justify-center space-y-2 xl:space-y-0 xl:space-x-4 xl:flex-row">
                         <EditButton editLink={`/goal/${goal.id}`}/>
                         <DeleteButton deleteFunction={() => deleteGoal(goal.id)}
                                       deleteId={goal.id}

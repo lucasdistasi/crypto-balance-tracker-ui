@@ -8,7 +8,7 @@ export function useGetCrypto() {
 
   const navigate = useNavigate();
   const params = useParams();
-  const cryptoId: string = params.id!!;
+  const cryptoId: string = params.id!;
 
   const [userCrypto, setUserCrypto] = useState<UserCryptoResponse>();
   const [isLoadingUserCrypto, setIsLoadingUserCrypto] = useState(true);
@@ -21,7 +21,7 @@ export function useGetCrypto() {
             const response = await getCryptoService(cryptoId);
 
             setUserCrypto(response);
-          } catch (error: any) {
+          } catch (error: unknown) {
             setFetchInfoError(true);
           } finally {
             setIsLoadingUserCrypto(false);

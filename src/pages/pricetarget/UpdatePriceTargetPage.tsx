@@ -11,22 +11,22 @@ import ErrorListAlert from "../../components/page/ErrorListAlert";
 import ErrorAlert from "../../components/page/ErrorAlert";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
 import {Form, Formik} from "formik";
-import {addPriceTargetValidationsSchema, updatePriceTargetValidationsSchema} from "../../constants/ValidationSchemas";
+import {updatePriceTargetValidationsSchema} from "../../constants/ValidationSchemas";
 import DisabledTextInput from "../../components/form/DisabledTextInput";
 import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import {handleAxiosError} from "../../utils/utils";
 
 const UpdatePriceTargetPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const priceTargetId: string = params.id!!;
+  const priceTargetId: string = params.id!;
 
   const [priceTargetResponse, setPriceTargetResponse] = useState<PriceTargetResponse>();
   const [fetchInfoError, setFetchInfoError] = useState(false);
   const [isLoadingPriceTarget, setIsLoadingPriceTarget] = useState(true);
-  const [isUpdatingPriceTarget, setIsUpdatingPriceTarget] = useState(false);
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>();
   const [noChangesError, setNoChangesError] = useState(false);
 
@@ -34,9 +34,9 @@ const UpdatePriceTargetPage = () => {
     (async () => {
       if (UUID_REGEX.test(priceTargetId)) {
         try {
-          await retrievePriceTarget(priceTargetId)
-            .then(response => setPriceTargetResponse(response.data));
-        } catch (error: any) {
+          const priceTarget = await retrievePriceTarget(priceTargetId);
+          setPriceTargetResponse(priceTarget);
+        } catch (error: unknown) {
           setFetchInfoError(true);
         } finally {
           setIsLoadingPriceTarget(false);
@@ -47,33 +47,21 @@ const UpdatePriceTargetPage = () => {
     })()
   }, []);
 
-  const updateTargetPrice = async ({...values}) => {
-    const {cryptoName, priceTarget} = values;
-
-    if (String(priceTargetResponse?.priceTarget!) === String(priceTarget)) {
+  const updateTargetPrice = async (values: {cryptoName: string, priceTarget: string}) => {
+    if (String(priceTargetResponse?.priceTarget!) === values.priceTarget) {
       setNoChangesError(true);
       return;
     }
 
     try {
-      setIsUpdatingPriceTarget(true);
       await updatePriceTarget(priceTargetId, {
-        cryptoNameOrId: cryptoName,
-        priceTarget
+        cryptoNameOrId: values.cryptoName,
+        priceTarget: Number(values.priceTarget),
       });
 
       navigate("/price-targets");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    } finally {
-      setIsUpdatingPriceTarget(false);
+    } catch (error: unknown) {
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -112,25 +100,30 @@ const UpdatePriceTargetPage = () => {
           <Formik
             initialValues={{
               cryptoName: priceTargetResponse?.cryptoName ?? '',
-              priceTarget: priceTargetResponse?.priceTarget ?? 0
+              priceTarget: priceTargetResponse?.priceTarget ?? '0'
             }}
             validationSchema={updatePriceTargetValidationsSchema}
             onSubmit={(values, {setSubmitting}) => {
-              updateTargetPrice(values);
+              updateTargetPrice(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-              <DisabledTextInput label="Crypto Name"
-                                 name="cryptoName"
-                                 type="text"/>
-              <EditableTextInput label="Price Target"
-                                 name="priceTarget"
-                                 type="number"/>
-              {
-                !isUpdatingPriceTarget &&
-                <SubmitButton text="Update Price Target"/> ||
-                <DisabledSubmitButton text="Updating Price Target"/>
-              }
-            </Form>
+
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2" noValidate>
+                  <DisabledTextInput label="Crypto Name"
+                                     name="cryptoName"
+                                     type="text"/>
+                  <EditableTextInput label="Price Target"
+                                     name="priceTarget"
+                                     type="number"/>
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text="Update Price Target"/> ||
+                    <DisabledSubmitButton text="Updating Price Target"/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
 

@@ -14,7 +14,7 @@ import BalancesPieChart from "../../components/insights/BalancesPieChart";
 const CryptoInsightsPage = () => {
 
   const params = useParams();
-  const coingeckoCryptoId: string = params.coingeckoCryptoId!!;
+  const coingeckoCryptoId: string = params.coingeckoCryptoId!;
   const [cryptoInsightResponse, setCryptoInsightResponse] = useState<CryptoInsightResponse>({
     cryptoName: "",
     balances: {
@@ -30,9 +30,9 @@ const CryptoInsightsPage = () => {
   useEffect(() => {
     (async () => {
         try {
-          const response = await retrieveCryptoInsights(coingeckoCryptoId);
+          const response: CryptoInsightResponse = await retrieveCryptoInsights(coingeckoCryptoId);
           setCryptoInsightResponse(response);
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingCryptoInsightResponse(false);
@@ -80,4 +80,4 @@ const CryptoInsightsPage = () => {
   )
 }
 
-export default withScrollToTop(CryptoInsightsPage)
+export default withScrollToTop(CryptoInsightsPage);

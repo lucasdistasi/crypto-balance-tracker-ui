@@ -40,7 +40,7 @@ const CryptosPage = () => {
 
           setPageUserCryptoResponse(response);
           filteredCryptos.current = response.cryptos;
-        } catch (err) {
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingCryptos(false);
@@ -64,7 +64,7 @@ const CryptosPage = () => {
         totalPages
       });
       filteredCryptos.current = updatedFilteredCryptos;
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     }
   }
@@ -81,7 +81,7 @@ const CryptosPage = () => {
     setPage(nextPage);
 
     try {
-      const response: PageUserCryptoResponse = await getCryptosByPageService(nextPage);
+      const response = await getCryptosByPageService(nextPage);
       filteredCryptos.current = [...filteredCryptos.current, ...response.cryptos.filter((crypto) => doesMatchFilter(crypto, filterValue))];
 
       setPageUserCryptoResponse({
@@ -90,7 +90,7 @@ const CryptosPage = () => {
         page: response.page,
         totalPages: response.totalPages
       });
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     } finally {
       setIsLoadingMoreCryptos(false);
@@ -151,6 +151,7 @@ const CryptosPage = () => {
           !error && !isLoadingCryptos && pageUserCryptoResponse?.cryptos?.length > 0 &&
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-10 w-11/12">
             <FilterField filterFunction={event => filterTable(event)}
+                         filterValue={filterValue}
                          placeHolder="Search by crypto or platform"/>
 
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

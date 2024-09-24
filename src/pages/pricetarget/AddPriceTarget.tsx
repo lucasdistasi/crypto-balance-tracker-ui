@@ -11,36 +11,23 @@ import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
 import {useNavigate} from "react-router-dom";
 import ErrorResponse from "../../model/response/ErrorResponse";
 import {savePriceTarget} from "../../services/priceTargetService";
+import {handleAxiosError} from "../../utils/utils";
 
 const AddPriceTarget = () => {
 
   const navigate = useNavigate();
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
-  const [isAddingPriceTarget, setIsAddingPriceTarget] = useState(false);
 
-  const addPriceTarget = async ({...values}) => {
-    const {cryptoNameOrId, priceTarget} = values;
-    setIsAddingPriceTarget(true);
-
+  const addPriceTarget = async (values: {cryptoNameOrId: string, priceTarget: string}) => {
     try {
       await savePriceTarget({
-        cryptoNameOrId,
-        priceTarget
+        cryptoNameOrId: values.cryptoNameOrId,
+        priceTarget: Number(values.priceTarget)
       })
 
       navigate('/price-targets');
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
-        setIsAddingPriceTarget(false);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    } finally {
-      setIsAddingPriceTarget(false);
+    } catch (error: unknown) {
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -61,33 +48,38 @@ const AddPriceTarget = () => {
         <Formik
           initialValues={{
             cryptoNameOrId: '',
-            target: 0
+            priceTarget: '0'
           }}
           validationSchema={addPriceTargetValidationsSchema}
           onSubmit={(values, {setSubmitting}) => {
-            addPriceTarget(values);
+            addPriceTarget(values).then(() => setSubmitting(false));
           }}>
-          <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-            <EditableTextInput label="Crypto Name or ID"
-                               type="text"
-                               name="cryptoNameOrId"
-                               placeholder="Bitcoin"
-                               maxLength={64}/>
-            <EditableTextInput label="Price Target"
-                               type="text"
-                               name="priceTarget"/>
 
-            {
-              !isAddingPriceTarget &&
-              <SubmitButton text="Add Price Target"/> ||
-              <DisabledSubmitButton text="Adding Price Target"/>
-            }
-          </Form>
+          {
+            ({isSubmitting}) => (
+              <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+                <EditableTextInput label="Crypto Name or ID"
+                                   type="text"
+                                   name="cryptoNameOrId"
+                                   placeholder="Bitcoin"
+                                   maxLength={64}/>
+                <EditableTextInput label="Price Target"
+                                   type="text"
+                                   name="priceTarget"/>
+
+                {
+                  !isSubmitting &&
+                  <SubmitButton text="Add Price Target"/> ||
+                  <DisabledSubmitButton text="Adding Price Target"/>
+                }
+              </Form>
+            )
+          }
         </Formik>
       </div>
       <Footer/>
     </Fragment>
-  )
+  );
 }
 
 export default withScrollToTop(AddPriceTarget)

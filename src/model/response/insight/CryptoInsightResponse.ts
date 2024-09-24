@@ -6,7 +6,7 @@ export interface CryptoInsightResponse {
   platforms: Array<PlatformInsight>
 }
 
-export interface PlatformInsight {
+interface PlatformInsight {
   quantity: string,
   balances: BalancesResponse,
   percentage: number,

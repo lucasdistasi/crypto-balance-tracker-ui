@@ -1,10 +1,24 @@
+import {BalancesResponse} from "../BalancesResponse";
+
 export interface DatesBalanceResponse {
   datesBalances: Array<DatesBalances>,
-  change: number,
-  priceDifference: string
+  change: BalanceChanges,
+  priceDifference: DifferencesChanges
 }
 
 export interface DatesBalances {
   date: string,
-  balance: string
+  balances: BalancesResponse
+}
+
+interface BalanceChanges {
+  usdChange: number,
+  eurChange: number,
+  btcChange: number,
+}
+
+interface DifferencesChanges {
+  usdDifference: string,
+  eurDifference: string,
+  btcDifference: string,
 }

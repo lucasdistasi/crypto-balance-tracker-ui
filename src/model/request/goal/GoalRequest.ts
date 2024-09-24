@@ -1,4 +1,4 @@
-interface GoalRequest {
+export interface GoalRequest {
   cryptoName: string,
-  goalQuantity: bigint
+  goalQuantity: number
 }

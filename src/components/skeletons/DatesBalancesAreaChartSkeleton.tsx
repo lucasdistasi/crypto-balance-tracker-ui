@@ -1,12 +1,12 @@
 import {useEffect} from "react";
 import ApexCharts from "apexcharts";
-import {chartOptions} from "../../model/ChartOptions";
+import {usdBalancesChartOptions} from "../../utils/utils";
 
 const DatesBalancesAreaChartSkeleton = () => {
 
   useEffect(() => {
-    if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
-      const chart = new ApexCharts(document.getElementById("area-chart"), chartOptions);
+    if (document.getElementById("skeleton-area-chart") && typeof ApexCharts !== 'undefined') {
+      const chart = new ApexCharts(document.getElementById("skeleton-area-chart"), usdBalancesChartOptions);
       chart.render();
     }
   }, []);
@@ -25,7 +25,7 @@ const DatesBalancesAreaChartSkeleton = () => {
           </div>
         </div>
 
-        <div id="area-chart"></div>
+        <div id="skeleton-area-chart"></div>
 
         <select id="date-range"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

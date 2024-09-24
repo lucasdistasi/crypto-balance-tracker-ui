@@ -4,7 +4,7 @@ import Footer from "../../components/page/Footer";
 import React, {Fragment, useEffect, useState} from "react";
 import {PlatformInsightsResponse} from "../../model/response/insight/PlatformInsightsResponse";
 import {retrievePlatformInsights} from "../../services/insightsService";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import TotalBalanceCards from "../../components/insights/TotalBalanceCards";
 import PlatformInsightsTable from "../../components/insights/PlatformInsightsTable";
 import {deleteCryptoService} from "../../services/cryptoService";
@@ -12,12 +12,14 @@ import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleto
 import ErrorComponent from "../../components/page/ErrorComponent";
 import BalancesPieChart from "../../components/insights/BalancesPieChart";
 import AddNewButton from "../../components/buttons/AddNewButton";
+import {getPlatformService} from "../../services/platformService";
+import {PlatformResponse} from "../../model/response/platform/PlatformResponse";
+import {isSuccessfulStatus} from "../../utils/utils";
 
 const PlatformInsightsPage = () => {
 
-  const navigate = useNavigate();
   const params = useParams();
-  const platformId: string = params.platformId!!;
+  const platformId: string = params.platformId!;
   const [platformInsightsResponse, setPlatformInsightsResponse] = useState<PlatformInsightsResponse>({
     balances: {
       totalUSDBalance: "0",
@@ -27,26 +29,28 @@ const PlatformInsightsPage = () => {
     cryptos: [],
     platformName: ""
   });
+  const [platformResponse, setPlatformResponse] = useState<PlatformResponse>({
+    id: "",
+    name: ""
+  });
   const [isLoadingPlatformInsightsResponse, setIsLoadingPlatformInsightsResponse] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     (async () => {
         try {
-          const response = await retrievePlatformInsights(platformId);
-
-          if (!response || response.status === 204) {
-            navigate("/");
-          }
-
+          const response: PlatformInsightsResponse = await retrievePlatformInsights(platformId);
           setPlatformInsightsResponse(response);
-        } catch (err) {
+
+          const platform = await getPlatformService(platformId);
+          setPlatformResponse(platform);
+        } catch (error: unknown) {
           setError(true);
         } finally {
           setIsLoadingPlatformInsightsResponse(false);
         }
       }
-    )()
+    )();
   }, []);
 
   const deleteCrypto = async (cryptoId: string) => {
@@ -54,27 +58,37 @@ const PlatformInsightsPage = () => {
       setIsLoadingPlatformInsightsResponse(true);
       await deleteCryptoService(cryptoId)
         .then(async (axiosResponse) => {
-          if (axiosResponse.status === 200) {
-            const cryptosQuantity = platformInsightsResponse.cryptos.length;
-            const response = await retrievePlatformInsights(platformId);
+          if (isSuccessfulStatus(axiosResponse.status)) {
+            const response: PlatformInsightsResponse = await retrievePlatformInsights(platformId);
             setPlatformInsightsResponse(response);
 
-            if (cryptosQuantity == 1) {
-              navigate("/");
-            }
+            // FIXME - add crypto button does not have the platform name
           }
         });
-    } catch (err) {
+    } catch (error: unknown) {
       setError(true);
     } finally {
       setIsLoadingPlatformInsightsResponse(false);
     }
-  }
+  };
 
   return (
     <Fragment>
       <Navbar/>
       <div className="flex flex-col items-center min-h-screen">
+        {
+          !error && !isLoadingPlatformInsightsResponse && !platformInsightsResponse &&
+          <Fragment>
+            <TotalBalanceCards totalUsdValue={0}
+                               totalEurValue={0}
+                               totalBtcValue={0}/>
+
+            <AddNewButton
+              href={`/crypto?platform=${platformResponse.name}&redirectTo=/insights/platform/${platformId}`}
+              text="Add Crypto"/>
+          </Fragment>
+        }
+
         {
           !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
@@ -88,7 +102,7 @@ const PlatformInsightsPage = () => {
                               labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoName)}/>
 
             <AddNewButton
-              href={`/crypto?platform=${platformInsightsResponse.platformName}`}
+              href={`/crypto?platform=${platformInsightsResponse.platformName}&redirectTo=/insights/platform/${platformId}`}
               text="Add Crypto"/>
 
             <PlatformInsightsTable platformInsightsResponse={platformInsightsResponse}
@@ -108,7 +122,7 @@ const PlatformInsightsPage = () => {
       </div>
       <Footer/>
     </Fragment>
-  )
-}
+  );
+};
 
-export default withScrollToTop(PlatformInsightsPage)
+export default withScrollToTop(PlatformInsightsPage);

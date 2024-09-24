@@ -14,17 +14,17 @@ import EditableTextInput from "../../components/form/EditableTextInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import FormSkeleton from "../../components/skeletons/FormSkeleton";
 import DisabledSubmitButton from "../../components/form/DisabledSubmitButton";
+import {handleAxiosError} from "../../utils/utils";
 
 const UpdatePlatformPage = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const platformId: string = params.id!!;
+  const platformId: string = params.id!;
   const [platformResponse, setPlatformResponse] = useState<PlatformResponse>({
     id: "",
     name: ""
   });
-  const [isUpdatingPlatform, setIsUpdatingPlatform] = useState(false);
   const [isLoadingPlatform, setIsLoadingPlatform] = useState(true);
   const [apiResponseError, setApiResponseError] = useState<Array<ErrorResponse>>([]);
   const [fetchInfoError, setFetchInfoError] = useState(false);
@@ -34,7 +34,7 @@ const UpdatePlatformPage = () => {
         try {
           const response = await getPlatformService(platformId);
           setPlatformResponse(response);
-        } catch (err: any) {
+        } catch (error: unknown) {
           setFetchInfoError(true);
         } finally {
           setIsLoadingPlatform(false);
@@ -43,25 +43,13 @@ const UpdatePlatformPage = () => {
     )();
   }, []);
 
-  const updatePlatform = async ({...values}) => {
-    setIsUpdatingPlatform(true);
-    const {platformName} = values;
-
+  const updatePlatform = async (values: {name: string}) => {
     try {
-      await updatePlatformService(platformId, {name: platformName});
+      await updatePlatformService(platformId, {name: values.name});
 
       navigate("/platforms");
-    } catch (error: any) {
-      const {status} = error.response;
-      if (status >= 400 && status < 500) {
-        setApiResponseError(error.response.data);
-      }
-
-      if (status >= 500) {
-        navigate("/error");
-      }
-    } finally {
-      setIsUpdatingPlatform(false);
+    } catch (error: unknown) {
+      handleAxiosError(error, setApiResponseError, navigate);
     }
   }
 
@@ -91,22 +79,27 @@ const UpdatePlatformPage = () => {
           !fetchInfoError && !isLoadingPlatform &&
           <Formik
             initialValues={{
-              platformName: platformResponse.name ?? ''
+              name: platformResponse.name ?? ''
             }}
             validationSchema={platformValidationsSchema}
             onSubmit={(values, {setSubmitting}) => {
-              updatePlatform(values)
+              updatePlatform(values).then(() => setSubmitting(false));
             }}>
-            <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
-              <EditableTextInput label="Platform Name"
-                                 name="platformName"
-                                 type="text"/>
-              {
-               !isUpdatingPlatform &&
-                <SubmitButton text="Update platform"/> ||
-                <DisabledSubmitButton text="Updating platform"/>
-              }
-            </Form>
+
+            {
+              ({isSubmitting}) => (
+                <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
+                  <EditableTextInput label="Platform Name"
+                                     name="platformName"
+                                     type="text"/>
+                  {
+                    !isSubmitting &&
+                    <SubmitButton text="Update platform"/> ||
+                    <DisabledSubmitButton text="Updating platform"/>
+                  }
+                </Form>
+              )
+            }
           </Formik>
         }
 

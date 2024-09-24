@@ -5,7 +5,8 @@ import PlatformsBalancesChart from "../../components/insights/PlatformsBalancesC
 import CryptosBalancesChart from "../../components/insights/CryptosBalancesChart";
 import {Fragment} from "react";
 import TotalBalancesCards from "../../components/insights/TotalBalancesCards";
-import DaysBalancesChart from "../../components/insights/DaysBalancesChart";
+import FiatDatesBalancesChart from "../../components/insights/FiatDatesBalancesChart";
+import BitcoinDatesBalancesChart from "../../components/insights/BitcoinDatesBalancesChart";
 
 const HomePage = () => {
 
@@ -14,7 +15,8 @@ const HomePage = () => {
       <Navbar/>
       <div className="min-h-screen">
         <TotalBalancesCards/>
-        <DaysBalancesChart/>
+        <FiatDatesBalancesChart/>
+        <BitcoinDatesBalancesChart/>
         <CryptosBalancesChart/>
         <PlatformsBalancesChart/>
       </div>
@@ -23,4 +25,4 @@ const HomePage = () => {
   );
 }
 
-export default withScrollToTop(HomePage)
+export default withScrollToTop(HomePage);

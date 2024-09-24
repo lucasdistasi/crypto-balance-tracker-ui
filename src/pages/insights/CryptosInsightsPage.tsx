@@ -26,10 +26,13 @@ const CryptosInsightsPage = () => {
     isLoadingUserCryptosInsights,
     isLoadingMore,
     loadMoreCryptos,
-    filterTable
+    filterTable,
+    cryptosFilterValue,
+    setCryptosFilterValue
   } = usePageUserCryptosInsightsResponse(() => retrieveCryptosInsightsByPage(0, sortParams));
 
   const retrieveSortedResults = async () => {
+    setCryptosFilterValue("");
     const response: PageUserCryptosInsightsResponse = await retrieveCryptosInsightsByPage(0, sortParams);
     setPage(0);
     setPageUserCryptosInsightsResponse(response);
@@ -56,6 +59,7 @@ const CryptosInsightsPage = () => {
         !error && !isLoadingUserCryptosInsights && pageUserCryptosInsightsResponse.cryptos?.length > 0 &&
         <div className="container mx-auto mt-20 mb-10 min-h-screen">
           <FilterField filterFunction={filterTable}
+                       filterValue={cryptosFilterValue}
                        placeHolder="Search by crypto name or symbol/ticker"/>
 
           <SortCryptosInsights updateSortBy={updateSortBy}
