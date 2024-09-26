@@ -17,6 +17,7 @@
   "dependencies": {
     "apexcharts": "^3.50.0",
     "axios": "^1.7.2",
+    "dayjs": "^1.11.13",
     "flowbite": "^2.4.1",
     "formik": "^2.4.6",
     "react": "^18.3.1",

@@ -20,6 +20,10 @@ import UpdatePlatformPage from "../pages/platform/UpdatePlatformPage";
 import AddPriceTarget from "../pages/pricetarget/AddPriceTarget";
 import PriceTargetsPage from "../pages/pricetarget/PriceTargetsPage";
 import UpdatePriceTargetPage from "../pages/pricetarget/UpdatePriceTargetPage";
+import React from "react";
+import AddTransactionPage from "../pages/transaction/AddTransactionPage";
+import TransactionsPage from "../pages/transaction/TransactionsPage";
+import UpdateTransactionPage from "../pages/transaction/UpdateTransactionPage";
 
 const ErrorBoundaryLayout = () => (
   <ErrorBoundary fallback={<InternalErrorPage/>}>
@@ -109,6 +113,18 @@ const router = createBrowserRouter([{
     {
       path: '/price-targets/:id',
       element: <UpdatePriceTargetPage/>
+    },
+    {
+      path: '/transaction',
+      element: <AddTransactionPage/>
+    },
+    {
+      path: '/transactions',
+      element: <TransactionsPage/>
+    },
+    {
+      path: '/transaction/:id',
+      element: <UpdateTransactionPage/>
     },
     {
       path: '/404',
