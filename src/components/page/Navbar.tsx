@@ -55,6 +55,7 @@ const Navbar = () => {
                 </ul>
               </div>
             </li>
+            <NavbarSimpleLink toLink={"/cryptos"} linkTitle={"Cryptos"}/>
             <NavbarSimpleLink toLink={"/platforms"} linkTitle={"Platforms"}/>
             <NavbarSimpleLink toLink={"/goals"} linkTitle={"Goals"}/>
             <NavbarSimpleLink toLink={"/price-targets"} linkTitle={"Targets"}/>
