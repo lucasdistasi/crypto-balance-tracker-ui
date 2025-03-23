@@ -11,6 +11,7 @@ import LoadMoreButton from "../../components/buttons/LoadMoreButton";
 import InsightsSortFilterComponent from "../../components/insights/InsightsSortFilterComponent";
 import {Link} from "react-router-dom";
 import TableSkeleton from "../../components/skeletons/TableSkeleton";
+import AddNewButton from "../../components/buttons/AddNewButton";
 
 const CryptosPage = () => {
 
@@ -69,13 +70,17 @@ const CryptosPage = () => {
       {
         !error && !isLoadingUserCryptosInsights && pageUserCryptosInsightsResponse.cryptos?.length > 0 &&
         <div className="mx-10 max-w-[1920px] min-h-screen">
+          <div className="flex justify-center my-10">
+            <AddNewButton text="+ Add New Crypto" href="/crypto"/>
+          </div>
+
           <InsightsSortFilterComponent filterFunction={filterTable}
                                        filterValue={cryptosFilterValue}
                                        updateSortBy={updateSortBy}
                                        updateSortType={updateSortType}
                                        retrieveSortedResults={retrieveSortedResults}/>
 
-          <div className="relative overflow-x-auto rounded-lg mt-10">
+          <div className="relative overflow-x-auto rounded-lg mt-5">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
