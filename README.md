@@ -61,76 +61,68 @@ This app requires a backend one, you can check instructions on how to run it in 
 
 ### Home page
 
-![Imgur](https://i.imgur.com/Qg9TTmQ.png)
+![Imgur](https://i.imgur.com/o4vtdLN.png)
 
 ### Insights pages
 
 #### Cryptos Insights
 
-![Imgur](https://i.imgur.com/Fq97uYh.png)
-
-#### Cryptos Platforms Insights
-
-![Imgur](https://i.imgur.com/awQdmkU.png)
+![Imgur](https://i.imgur.com/w2ljIqG.png)
 
 #### Crypto Insights
 
-![Imgur](https://i.imgur.com/1kJIUz0.png)
+![Imgur](https://i.imgur.com/VTjlEUs.png)
 
 #### Platform Insights
 
-![Imgur](https://i.imgur.com/ySK40aV.png)
+![Imgur](https://i.imgur.com/l7mqwPJ.png)
 
 ### Cryptos page
 
-#### Cryptos
-
-![Imgur](https://i.imgur.com/35v64ho.png)
-
 #### Add Crypto
 
-![Imgur](https://i.imgur.com/2xmc0iG.png)
+![Imgur](https://i.imgur.com/QgwGTnk.png)
 
 #### Transfer Crypto
 
-![Imgur](https://i.imgur.com/fC1kuvk.png)
+![Imgur](https://i.imgur.com/aAFf1qI.png)
 
 #### Update Crypto
 
-![Imgur](https://i.imgur.com/BzOrwS1.png)
+![Imgur](https://i.imgur.com/kfK64bd.png)
 
 ### Goals page
 
 #### Goals
 
-![Imgur](https://i.imgur.com/wkmV4Ai.png)
+![Imgur](https://i.imgur.com/9z9I1Cn.png)
 
 #### Add Goal
 
-![Imgur](https://i.imgur.com/fCILvC6.png)
+![Imgur](https://i.imgur.com/TwGP9lL.png)
 
 #### Update Goal
 
-![Imgur](https://i.imgur.com/ShKWRmi.png)
+![Imgur](https://i.imgur.com/dsQnxCf.png)
 
 ### Platforms page
 
 #### Platforms
 
-![Imgur](https://i.imgur.com/zLO9EQX.png)
+![Imgur](https://i.imgur.com/IhYAHI0.png)
 
 #### Add Platform
 
-![Imgur](https://i.imgur.com/GeMnXzq.png)
+![Imgur](https://i.imgur.com/CCO08bZ.png)
 
 #### Update Platform
 
-![Imgur](https://i.imgur.com/kLe3dQl.png)
+![Imgur](https://i.imgur.com/v4BzqeY.png)
 
 ### Frontend error example
 
-![Imgur](https://i.imgur.com/TafVBKm.png)
+![Imgur](https://i.imgur.com/IpcdoYN.png)
 
 ### Backend error example
 
-![Imgur](https://i.imgur.com/IgFzamP.png)
+![Imgur](https://i.imgur.com/G3LUsb4.png)
