@@ -1,7 +1,6 @@
 import {createBrowserRouter, Outlet} from "react-router-dom";
 import NotFoundPage from "../pages/error/NotFoundPage";
 import PlatformsPage from "../pages/platform/PlatformsPage";
-import CryptosPage from "../pages/crypto/CryptosPage";
 import AddPlatformPage from "../pages/platform/AddPlatformPage";
 import AddCryptoPage from "../pages/crypto/AddCryptoPage";
 import InternalErrorPage from "../pages/error/InternalErrorPage";
@@ -10,8 +9,6 @@ import AddGoalPage from "../pages/goal/AddGoalPage";
 import TransferCryptoPage from "../pages/crypto/TransferCryptoPage";
 import ErrorBoundary from "../ErrorBoundary";
 import PlatformInsightsPage from "../pages/insights/PlatformInsightsPage";
-import CryptosPlatformsInsightsPage from "../pages/insights/CryptosPlatformsInsightsPage";
-import CryptosInsightsPage from "../pages/insights/CryptosInsightsPage";
 import HomePage from "../pages/home/HomePage";
 import CryptoInsightsPage from "../pages/insights/CryptoInsightsPage";
 import UpdateGoalPage from "../pages/goal/UpdateGoalPage";
@@ -20,6 +17,7 @@ import UpdatePlatformPage from "../pages/platform/UpdatePlatformPage";
 import AddPriceTarget from "../pages/pricetarget/AddPriceTarget";
 import PriceTargetsPage from "../pages/pricetarget/PriceTargetsPage";
 import UpdatePriceTargetPage from "../pages/pricetarget/UpdatePriceTargetPage";
+import CryptosPage from "../pages/crypto/CryptosPage";
 
 const ErrorBoundaryLayout = () => (
   <ErrorBoundary fallback={<InternalErrorPage/>}>
@@ -81,14 +79,6 @@ const router = createBrowserRouter([{
     {
       path: '/transfer/:id',
       element: <TransferCryptoPage/>
-    },
-    {
-      path: '/insights/cryptos',
-      element: <CryptosInsightsPage/>
-    },
-    {
-      path: '/insights/cryptos-platforms',
-      element: <CryptosPlatformsInsightsPage/>
     },
     {
       path: '/insights/platform/:platformId',

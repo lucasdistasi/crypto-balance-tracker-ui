@@ -3,7 +3,6 @@ import axios from "axios";
 import {TransferCryptoRequest} from "../model/request/usercrypto/TransferCryptoRequest";
 import {UserCryptoRequest} from "../model/request/usercrypto/UserCryptoRequest";
 import {UserCryptoResponse} from "../model/response/usercrypto/UserCryptoResponse";
-import {PageUserCryptoResponse} from "../model/response/usercrypto/PageUserCryptoResponse";
 import {TransferCryptoResponse} from "../model/response/usercrypto/TransferCryptoResponse";
 
 const CRYPTOS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/cryptos");
@@ -17,13 +16,6 @@ export const getCryptoService = async (cryptoId: string): Promise<UserCryptoResp
   const cryptoInfoURL = getCryptosURL(cryptoId);
 
   return await axios.get<UserCryptoResponse>(cryptoInfoURL)
-    .then(response => response.data);
-}
-
-export const getCryptosByPageService = async (page: number): Promise<PageUserCryptoResponse> => {
-  const cryptosURL = `${CRYPTO_BALANCE_TRACKER_URL}/cryptos?page=${page}`;
-
-  return await axios.get<PageUserCryptoResponse>(cryptosURL)
     .then(response => response.data);
 }
 
