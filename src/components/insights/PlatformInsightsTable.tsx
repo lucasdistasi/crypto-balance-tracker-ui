@@ -2,7 +2,7 @@ import {PlatformInsightsResponse} from "../../model/response/insight/PlatformIns
 import EditButton from "../table/EditButton";
 import TransferButton from "../table/TransferButton";
 import DeleteButton from "../table/DeleteButton";
-import {Fragment} from "react";
+import React, {Fragment} from "react";
 
 const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}: {
   platformInsightsResponse: PlatformInsightsResponse,
@@ -21,6 +21,9 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
+                #
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Crypto
               </th>
               <th scope="col" className="px-6 py-3">
@@ -30,13 +33,7 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
                 Percentage
               </th>
               <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                USD Balance
-              </th>
-              <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                EUR Balance
-              </th>
-              <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                BTC Balance
+                Balance
               </th>
               <th scope="col" className="px-6 py-3 whitespace-nowrap text-center">
                 Action
@@ -45,36 +42,38 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
             </thead>
             <tbody>
             {
-              cryptos.map(crypto => (
-                <tr key={crypto.cryptoName} className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
-                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {
-                      crypto.cryptoName
-                    }
-                  </th>
+              cryptos.map((crypto, index) => (
+                <tr key={crypto.userCryptoInfo.cryptoInfo.cryptoId}
+                    className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
+                  <td className="px-6 py-4">
+                    {index + 1}
+                  </td>
+                  <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    <img className="w-10 h-10 rounded-full" src={crypto.userCryptoInfo.cryptoInfo.image}
+                         alt={`${crypto.userCryptoInfo.cryptoInfo.cryptoName} logo`}/>
+                    <div className="pl-3">
+                      <div className="text-base font-semibold">
+                        {crypto.userCryptoInfo.cryptoInfo.symbol.toUpperCase()}
+                      </div>
+                      <div
+                        className="font-normal text-gray-500 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">
+                        {crypto.userCryptoInfo.cryptoInfo.cryptoName}
+                      </div>
+                    </div>
+                  </td>
                   <td className="px-6 py-4">
                     {
-                      crypto.quantity
+                      crypto.userCryptoInfo.quantity
                     }
                   </td>
                   <td className="px-6 py-4">
                     {
-                      `${crypto.percentage}%`
+                      `${crypto.userCryptoInfo.percentage}%`
                     }
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {
-                      `$ ${crypto.balances.totalUSDBalance}`
-                    }
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {
-                      `€ ${crypto.balances.totalEURBalance}`
-                    }
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {
-                      `₿ ${crypto.balances.totalBTCBalance}`
+                      `$ ${crypto.userCryptoInfo.balances.totalUSDBalance}`
                     }
                   </td>
 
@@ -84,7 +83,7 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
                     <TransferButton transferLink={`/transfer/${crypto.id}?redirectTo=${window.location.pathname}`}/>
                     <DeleteButton deleteFunction={() => deleteCryptoFunction(crypto.id!)}
                                   deleteId={crypto.id!}
-                                  deleteMessage={`Are you sure you want to delete ${crypto.cryptoName.toUpperCase()} in ${platformName}?`}/>
+                                  deleteMessage={`Are you sure you want to delete ${crypto.userCryptoInfo.cryptoInfo.cryptoName.toUpperCase()} in ${platformName}?`}/>
                   </td>
                 </tr>
               ))

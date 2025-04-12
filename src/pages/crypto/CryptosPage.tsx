@@ -4,7 +4,7 @@ import React, {Fragment} from "react";
 import withScrollToTop from "../../hoc/withScrollToTop";
 import {useSortParams} from "../../hooks/useSortParams";
 import {usePageUserCryptosInsightsResponse} from "../../hooks/usePageUserCryptosInsightsResponse";
-import {retrieveCryptosPlatformsInsightsByPage} from "../../services/insightsService";
+import {retrieveCryptosInsightsByPage} from "../../services/insightsService";
 import {PageUserCryptosInsightsResponse} from "../../model/response/insight/PageUserCryptosInsightsResponse";
 import NoCryptosFoundAlert from "../../components/crypto/NoCryptosFoundAlert";
 import LoadMoreButton from "../../components/buttons/LoadMoreButton";
@@ -29,17 +29,21 @@ const CryptosPage = () => {
     filterTable,
     cryptosFilterValue,
     setCryptosFilterValue
-  } = usePageUserCryptosInsightsResponse(() => retrieveCryptosPlatformsInsightsByPage(0, sortParams));
+  } = usePageUserCryptosInsightsResponse(() => retrieveCryptosInsightsByPage(0, sortParams));
 
   const retrieveSortedResults = async () => {
     setCryptosFilterValue("");
-    const response: PageUserCryptosInsightsResponse = await retrieveCryptosPlatformsInsightsByPage(0, sortParams);
+    const response: PageUserCryptosInsightsResponse = await retrieveCryptosInsightsByPage(0, sortParams);
     setPage(0);
     setPageUserCryptosInsightsResponse(response);
     filteredCryptos.current = response.cryptos;
   }
 
   const returnChangePercentageColor = (changePercentage: string) => {
+    if (Number(changePercentage) <= 0.5 && Number(changePercentage) >= -0.5) {
+      return "text-gray-50";
+    }
+
     if (Number(changePercentage) < 0) {
       return "text-red-500";
     }
@@ -98,8 +102,8 @@ const CryptosPage = () => {
               </thead>
               <tbody>
               {filteredCryptos.current.map((crypto, index) => (
-                <tr
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr key={crypto.cryptoInfo.cryptoId}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <th scope="row" className="px-6 py-4">{index + 1}</th>
                   <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <img className="w-10 h-10 rounded-full" src={crypto.cryptoInfo.image}
@@ -117,18 +121,18 @@ const CryptosPage = () => {
                   <td className="px-6 py-4">{`${crypto.percentage}%`}</td>
                   <td className="px-6 py-4">{`$${crypto.balances.totalUSDBalance}`}</td>
                   <td className="px-6 py-4">{crypto.quantity}</td>
-                  <td className="px-6 py-4">{`$${crypto.marketData.currentPrice.usd}`}</td>
+                  <td className="px-6 py-4">{`$${crypto.cryptoInfo.currentPrice.usd}`}</td>
                   <td
-                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.marketData.priceChange.changePercentageIn24h)}`}>
-                    {`${crypto.marketData.priceChange.changePercentageIn24h}%`}
+                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange.changePercentageIn24h)}`}>
+                    {`${crypto.cryptoInfo.priceChange.changePercentageIn24h}%`}
                   </td>
                   <td
-                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.marketData.priceChange.changePercentageIn7d)}`}>
-                    {`${crypto.marketData.priceChange.changePercentageIn7d}%`}
+                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange.changePercentageIn7d)}`}>
+                    {`${crypto.cryptoInfo.priceChange.changePercentageIn7d}%`}
                   </td>
                   <td
-                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.marketData.priceChange.changePercentageIn30d)}`}>
-                    {`${crypto.marketData.priceChange.changePercentageIn30d}%`}
+                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange.changePercentageIn30d)}`}>
+                    {`${crypto.cryptoInfo.priceChange.changePercentageIn30d}%`}
                   </td>
                   <td className="px-6 py-4">
                     <Link to={`/insights/cryptos/${crypto.cryptoInfo.cryptoId}`}>
@@ -152,7 +156,7 @@ const CryptosPage = () => {
       {
         !error && !isLoadingUserCryptosInsights && pageUserCryptosInsightsResponse.hasNextPage &&
         <LoadMoreButton
-          loadMoreCallback={() => loadMoreCryptos(retrieveCryptosPlatformsInsightsByPage(page + 1, sortParams))}
+          loadMoreCallback={() => loadMoreCryptos(retrieveCryptosInsightsByPage(page + 1, sortParams))}
           isLoadingMore={isLoadingMore}/>
       }
       <Footer/>

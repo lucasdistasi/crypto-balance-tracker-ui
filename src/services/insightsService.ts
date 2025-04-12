@@ -4,15 +4,14 @@ import {SortParams} from "../model/request/SortParams";
 import {BalancesResponse} from "../model/response/BalancesResponse";
 import {DatesBalanceResponse} from "../model/response/insight/DatesBalanceResponse";
 import {PageUserCryptosInsightsResponse} from "../model/response/insight/PageUserCryptosInsightsResponse";
-import {CryptosBalancesInsightsResponse} from "../model/response/insight/CryptosBalancesInsightsResponse";
-import {PlatformsBalancesInsightsResponse} from "../model/response/insight/PlatformsBalancesInsightsResponse";
 import {CryptoInsightResponse} from "../model/response/insight/CryptoInsightResponse";
 import {PlatformInsightsResponse} from "../model/response/insight/PlatformInsightsResponse";
+import {BalancesChartResponse} from "../model/response/insight/BalancesChartResponse";
 
 const CRYPTOS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos/balances");
 const DAYS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/dates-balances");
 const PLATFORMS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/platforms/balances");
-const CRYPTOS_PLATFORMS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos/platforms");
+const CRYPTOS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos");
 const PLATFORMS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/platforms");
 const TOTAL_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/balances");
 const CRYPTO_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos");
@@ -29,24 +28,24 @@ export const retrieveDaysBalancesInsights = async (balancesPeriodValue: string):
     .then(response => response.data);
 }
 
-export const retrieveCryptosPlatformsInsightsByPage = async (
+export const retrieveCryptosInsightsByPage = async (
   page: number,
   sortParams: SortParams
 ): Promise<PageUserCryptosInsightsResponse> => {
   const {sortBy, sortType} = sortParams;
-  const url = CRYPTOS_PLATFORMS_INSIGHTS_ENDPOINT.concat(`?page=${page}&sortBy=${sortBy}&sortType=${sortType}`);
+  const url = CRYPTOS_INSIGHTS_ENDPOINT.concat(`?page=${page}&sortBy=${sortBy}&sortType=${sortType}`);
 
   return await axios.get<PageUserCryptosInsightsResponse>(url)
     .then(response => response.data);
 }
 
-export const retrieveCryptosBalancesInsights = async (): Promise<CryptosBalancesInsightsResponse> => {
-  return await axios.get<CryptosBalancesInsightsResponse>(CRYPTOS_BALANCES_INSIGHTS_ENDPOINT)
+export const retrieveCryptosBalancesInsights = async (): Promise<Array<BalancesChartResponse>> => {
+  return await axios.get<Array<BalancesChartResponse>>(CRYPTOS_BALANCES_INSIGHTS_ENDPOINT)
     .then(response => response.data);
 }
 
-export const retrievePlatformsBalancesInsights = async (): Promise<PlatformsBalancesInsightsResponse> => {
-  return await axios.get<PlatformsBalancesInsightsResponse>(PLATFORMS_BALANCES_INSIGHTS_ENDPOINT)
+export const retrievePlatformsBalancesInsights = async (): Promise<Array<BalancesChartResponse>> => {
+  return await axios.get<Array<BalancesChartResponse>>(PLATFORMS_BALANCES_INSIGHTS_ENDPOINT)
     .then(response => response.data);
 }
 

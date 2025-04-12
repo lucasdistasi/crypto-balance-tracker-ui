@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {PageUserCryptosInsightsResponse} from "../model/response/insight/PageUserCryptosInsightsResponse";
-import {UserCryptosInsights} from "../model/response/insight/UserCryptosInsights";
+import {UserCryptoInsights} from "../model/response/insight/UserCryptoInsights";
 
 export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageUserCryptosInsightsResponse>) {
 
@@ -16,7 +16,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
     cryptos: []
   });
   const [cryptosFilterValue, setCryptosFilterValue] = useState("");
-  const filteredCryptos = useRef<Array<UserCryptosInsights>>([]);
+  const filteredCryptos = useRef<Array<UserCryptoInsights>>([]);
   const [error, setError] = useState(false);
   const [isLoadingUserCryptosInsights, setIsLoadingUserCryptosInsights] = useState(true);
   const [page, setPage] = useState(0);
