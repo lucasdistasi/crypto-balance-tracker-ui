@@ -1,10 +1,6 @@
-import {BalancesResponse} from "../BalancesResponse";
+import {UserCryptoInsights} from "./UserCryptoInsights";
 
 export interface CryptoInsights {
-  id?: string,
-  cryptoName: string,
-  cryptoId?: string,
-  quantity?: string,
-  balances: BalancesResponse,
-  percentage: number
+  id: string,
+  userCryptoInfo: UserCryptoInsights,
 }

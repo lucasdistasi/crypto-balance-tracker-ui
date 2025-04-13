@@ -1,6 +1,8 @@
+import {CryptoInfo} from "../CryptoInfo";
+
 export interface GoalResponse {
   id: string
-  cryptoName: string
+  cryptoInfo: CryptoInfo
   actualQuantity: string
   progress: number
   remainingQuantity: string

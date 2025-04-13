@@ -1,27 +1,26 @@
 import React, {Fragment, useEffect, useState} from "react";
 import ErrorAlert from "../page/ErrorAlert";
 import {retrievePlatformsBalancesInsights} from "../../services/insightsService";
-import {PlatformsBalancesInsightsResponse} from "../../model/response/insight/PlatformsBalancesInsightsResponse";
 import RadialChartSkeleton from "../skeletons/RadialChartSkeleton";
 import BalancesPieChart from "./BalancesPieChart";
+import {BalancesChartResponse} from "../../model/response/insight/BalancesChartResponse";
 
 const PlatformsBalancesChart = () => {
 
-  const [platformsBalances, setPlatformsBalances] = useState<PlatformsBalancesInsightsResponse>({
-    balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
-    },
-    platforms: []
-  });
+  const [platformsBalances, setPlatformsBalances] = useState<Array<BalancesChartResponse>>([
+    {
+      name: "",
+      balance: "0",
+      percentage: 0
+    }
+  ]);
   const [error, setError] = useState(false);
   const [isLoadingPlatformsBalances, setIsLoadingPlatformsBalances] = useState(true);
 
   useEffect(() => {
     (async () => {
         try {
-          const response: PlatformsBalancesInsightsResponse = await retrievePlatformsBalancesInsights();
+          const response: Array<BalancesChartResponse> = await retrievePlatformsBalancesInsights();
           setPlatformsBalances(response);
         } catch (error: unknown) {
           setError(true);
@@ -35,11 +34,11 @@ const PlatformsBalancesChart = () => {
   return (
     <Fragment>
       {
-        !error && !isLoadingPlatformsBalances && platformsBalances.platforms?.length > 0 &&
+        !error && !isLoadingPlatformsBalances && platformsBalances?.length > 0 &&
         <BalancesPieChart chartId="platforms-distribution-pie-chart"
                           chartTitle="Platforms Distributions"
-                          series={platformsBalances.platforms.map(platform => Number(platform.balances.totalUSDBalance))}
-                          labels={platformsBalances.platforms.map(platform => `${platform.platformName} (${platform.percentage}%)`)}/>
+                          series={platformsBalances.map(platform => Number(platform.balance))}
+                          labels={platformsBalances.map(platform => `${platform.name} (${platform.percentage}%)`)}/>
       }
 
       {
