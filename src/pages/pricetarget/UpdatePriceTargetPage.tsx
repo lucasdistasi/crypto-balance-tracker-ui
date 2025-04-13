@@ -73,7 +73,7 @@ const UpdatePriceTargetPage = () => {
           !isLoadingPriceTarget &&
           <h1 className="text-4xl text-gray-900 text-center my-10">
             {
-              `Update ${priceTargetResponse?.cryptoName} Target`
+              `Update ${priceTargetResponse?.cryptoInfo.cryptoName} Target`
             }
           </h1>
         }
@@ -99,7 +99,7 @@ const UpdatePriceTargetPage = () => {
           !fetchInfoError && !isLoadingPriceTarget &&
           <Formik
             initialValues={{
-              cryptoName: priceTargetResponse?.cryptoName ?? '',
+              cryptoName: priceTargetResponse?.cryptoInfo.cryptoName ?? '',
               priceTarget: priceTargetResponse?.priceTarget ?? '0'
             }}
             validationSchema={updatePriceTargetValidationsSchema}

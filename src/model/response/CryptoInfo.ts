@@ -3,8 +3,8 @@ export interface CryptoInfo {
   cryptoId: string,
   symbol: string,
   image: string,
-  currentPrice: CurrentPrice,
-  priceChange: PriceChange,
+  price?: CurrentPrice,
+  priceChange?: PriceChange,
 }
 
 interface CurrentPrice {

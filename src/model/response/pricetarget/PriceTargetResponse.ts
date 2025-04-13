@@ -1,6 +1,8 @@
+import {CryptoInfo} from "../CryptoInfo";
+
 export interface PriceTargetResponse {
   priceTargetId: string,
-  cryptoName: string,
+  cryptoInfo: CryptoInfo,
   currentPrice: string,
   priceTarget: string,
   change: number,

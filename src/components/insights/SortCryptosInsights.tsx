@@ -15,9 +15,7 @@ const SortCryptosInsights = ({updateSortBy, updateSortType, retrieveSortedResult
               onChange={(e) => updateSortBy(e)}>
         <option value={SortBy.PERCENTAGE}>Sort by</option>
         <option value={SortBy.PERCENTAGE}>Percentage</option>
-        <option value={SortBy.MARKET_CAP_RANK}>Market Cap Rank</option>
         <option value={SortBy.CURRENT_PRICE}>Current Price</option>
-        <option value={SortBy.MAX_SUPPLY}>Max Supply</option>
         <option value={SortBy.CHANGE_PRICE_IN_24H}>Change Price In 24H</option>
         <option value={SortBy.CHANGE_PRICE_IN_7D}>Change Price In 7D</option>
         <option value={SortBy.CHANGE_PRICE_IN_30D}>Change Price In 30D</option>

@@ -73,7 +73,7 @@ const UpdateGoalPage = () => {
           !isLoadingGoal &&
           <h1 className="text-4xl text-gray-900 text-center my-10">
             {
-              `Update ${goal?.cryptoName} Goal`
+              `Update ${goal?.cryptoInfo.cryptoName} Goal`
             }
           </h1>
         }
@@ -99,7 +99,7 @@ const UpdateGoalPage = () => {
           !fetchInfoError && !isLoadingGoal &&
           <Formik
             initialValues={{
-              cryptoName: goal?.cryptoName ?? '',
+              cryptoName: goal?.cryptoInfo.cryptoName ?? '',
               goalQuantity: goal?.goalQuantity ?? '0'
             }}
             validationSchema={updateGoalValidationSchema}

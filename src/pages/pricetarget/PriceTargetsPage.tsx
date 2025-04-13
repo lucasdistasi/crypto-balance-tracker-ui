@@ -92,11 +92,11 @@ const PriceTargetsPage = () => {
 
   const sortByCryptoName = () => {
     priceTargetsRef.current = priceTargetsRef.current.toSorted((first, second) => {
-      if (first.cryptoName > second.cryptoName) {
+      if (first.cryptoInfo.cryptoName > second.cryptoInfo.cryptoName) {
         return sortType == SortType.ASCENDING ? 1 : -1;
       }
 
-      if (second.cryptoName > first.cryptoName) {
+      if (second.cryptoInfo.cryptoName > first.cryptoInfo.cryptoName) {
         return sortType == SortType.ASCENDING ? -1 : 1;
       }
 
@@ -133,6 +133,9 @@ const PriceTargetsPage = () => {
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
+                <th scope="col" className="px-6 py-3">
+                  #
+                </th>
                 <SortableTableColumnTitle title="Crypto"
                                           additionalClasses="text-center"
                                           sortFunction={sortByCryptoName}/>
@@ -149,25 +152,40 @@ const PriceTargetsPage = () => {
               </thead>
               <tbody className="w-full">
               {
-                priceTargetsRef.current.map(target => {
+                priceTargetsRef.current.map((target, index) => {
                   return (
-                    <tr
-                      className="bg-gray-100 border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700"
-                      key={target.priceTargetId}>
-                      <TableColumnContent content={target.cryptoName}
-                                          rowScope={true}
-                                          additionalClasses="text-center"/>
+                    <tr key={target.priceTargetId}
+                        className="bg-gray-100 border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
+                      <td className="px-6 py-4">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                        <div className="flex items-center">
+                          <img className="w-10 h-10 rounded-full" src={target.cryptoInfo.image}
+                               alt={`${target.cryptoInfo.cryptoName} logo`}/>
+                          <div className="pl-3">
+                            <div className="text-base font-semibold">
+                              {target.cryptoInfo.symbol.toUpperCase()}
+                            </div>
+                            <div
+                              className="font-normal text-gray-500 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">
+                              {target.cryptoInfo.cryptoName}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
                       <TableColumnContent content={`U$D ${target.priceTarget.toString()}`}
                                           additionalClasses="text-center text-bold"/>
                       <TableColumnContent content={`U$D ${target.currentPrice.toString()}`}
                                           additionalClasses="text-center"/>
                       <TableColumnContent content={`${target.change}%`}
                                           additionalClasses="text-center"/>
-                      <td className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
+                      <td
+                        className="px-6 py-4 text-center flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
                         <EditButton editLink={`/price-targets/${target.priceTargetId}`}/>
                         <DeleteButton deleteFunction={() => deleteTarget(target.priceTargetId)}
                                       deleteId={target.priceTargetId}
-                                      deleteMessage={`Are you sure you want to delete this price target for ${target.cryptoName}?`}/>
+                                      deleteMessage={`Are you sure you want to delete this price target for ${target.cryptoInfo.cryptoName}?`}/>
                       </td>
                     </tr>
                   );

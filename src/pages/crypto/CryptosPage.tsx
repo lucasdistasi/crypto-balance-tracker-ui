@@ -121,18 +121,18 @@ const CryptosPage = () => {
                   <td className="px-6 py-4">{`${crypto.percentage}%`}</td>
                   <td className="px-6 py-4">{`$${crypto.balances.totalUSDBalance}`}</td>
                   <td className="px-6 py-4">{crypto.quantity}</td>
-                  <td className="px-6 py-4">{`$${crypto.cryptoInfo.currentPrice.usd}`}</td>
+                  <td className="px-6 py-4">{`$${crypto.cryptoInfo.price!.usd}`}</td>
                   <td
-                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange.changePercentageIn24h)}`}>
-                    {`${crypto.cryptoInfo.priceChange.changePercentageIn24h}%`}
+                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn24h)}`}>
+                    {`${crypto.cryptoInfo.priceChange!.changePercentageIn24h}%`}
                   </td>
                   <td
-                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange.changePercentageIn7d)}`}>
-                    {`${crypto.cryptoInfo.priceChange.changePercentageIn7d}%`}
+                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn7d)}`}>
+                    {`${crypto.cryptoInfo.priceChange!.changePercentageIn7d}%`}
                   </td>
                   <td
-                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange.changePercentageIn30d)}`}>
-                    {`${crypto.cryptoInfo.priceChange.changePercentageIn30d}%`}
+                    className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn30d)}`}>
+                    {`${crypto.cryptoInfo.priceChange!.changePercentageIn30d}%`}
                   </td>
                   <td className="px-6 py-4">
                     <Link to={`/insights/cryptos/${crypto.cryptoInfo.cryptoId}`}>
