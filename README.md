@@ -75,7 +75,7 @@ This app requires a backend one, you can check instructions on how to run it in 
 
 #### Platform Insights
 
-![Imgur](https://i.imgur.com/l7mqwPJ.png)
+![Imgur](https://i.imgur.com/XSLK1vS.png)
 
 ### Cryptos page
 
@@ -95,7 +95,7 @@ This app requires a backend one, you can check instructions on how to run it in 
 
 #### Goals
 
-![Imgur](https://i.imgur.com/9z9I1Cn.png)
+![Imgur](https://i.imgur.com/eYXq8To.png)
 
 #### Add Goal
 
@@ -104,6 +104,12 @@ This app requires a backend one, you can check instructions on how to run it in 
 #### Update Goal
 
 ![Imgur](https://i.imgur.com/dsQnxCf.png)
+
+### Price Targets Page
+
+### Price Targets
+
+![Imgur](https://i.imgur.com/h03ULMk.png)
 
 ### Platforms page
 
