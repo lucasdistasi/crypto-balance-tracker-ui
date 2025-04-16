@@ -43,34 +43,34 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
             <tbody>
             {
               cryptos.map((crypto, index) => (
-                <tr key={crypto.userCryptoInfo.cryptoInfo.cryptoId}
+                <tr key={crypto.cryptoInfo.cryptoId}
                     className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
                   <td className="px-6 py-4">
                     {index + 1}
                   </td>
                   <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <div className="flex items-center">
-                      <img className="w-10 h-10 rounded-full" src={crypto.userCryptoInfo.cryptoInfo.image}
-                           alt={`${crypto.userCryptoInfo.cryptoInfo.cryptoName} logo`}/>
+                      <img className="w-10 h-10 rounded-full" src={crypto.cryptoInfo.image}
+                           alt={`${crypto.cryptoInfo.cryptoName} logo`}/>
                       <div className="pl-3">
                         <div className="text-base font-semibold">
-                          {crypto.userCryptoInfo.cryptoInfo.symbol.toUpperCase()}
+                          {crypto.cryptoInfo.symbol.toUpperCase()}
                         </div>
                         <div
                           className="font-normal text-gray-500 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">
-                          {crypto.userCryptoInfo.cryptoInfo.cryptoName}
+                          {crypto.cryptoInfo.cryptoName}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    {crypto.userCryptoInfo.quantity}
+                    {crypto.quantity}
                   </td>
                   <td className="px-6 py-4">
-                    {`${crypto.userCryptoInfo.percentage}%`}
+                    {`${crypto.percentage}%`}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {`$ ${crypto.userCryptoInfo.balances.totalUSDBalance}`}
+                    {`$ ${crypto.balances.totalUSDBalance}`}
                   </td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">
@@ -78,7 +78,7 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
                       <TransferButton transferLink={`/transfer/${crypto.id}?redirectTo=${window.location.pathname}`}/>
                       <DeleteButton deleteFunction={() => deleteCryptoFunction(crypto.id)}
                                     deleteId={crypto.id}
-                                    deleteMessage={`Are you sure you want to delete ${crypto.userCryptoInfo.cryptoInfo.cryptoName.toUpperCase()} in ${platformName}?`}/>
+                                    deleteMessage={`Are you sure you want to delete ${crypto.cryptoInfo.cryptoName.toUpperCase()} in ${platformName}?`}/>
                     </div>
                   </td>
                 </tr>
