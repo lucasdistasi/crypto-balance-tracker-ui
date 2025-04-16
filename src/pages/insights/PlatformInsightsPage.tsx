@@ -98,8 +98,8 @@ const PlatformInsightsPage = () => {
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}
-                              series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.userCryptoInfo.balances.totalUSDBalance))}
-                              labels={platformInsightsResponse.cryptos.map(crypto => crypto.userCryptoInfo.cryptoInfo.cryptoName)}/>
+                              series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.balances.totalUSDBalance))}
+                              labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoInfo.cryptoName)}/>
 
             <AddNewButton
               href={`/crypto?platform=${platformInsightsResponse.platformName}&redirectTo=/insights/platform/${platformId}`}

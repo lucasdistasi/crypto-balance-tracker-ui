@@ -92,7 +92,7 @@ const UpdatePlatformPage = () => {
               ({isSubmitting}) => (
                 <Form className="my-4 w-10/12 md:w-9/12 lg:w-1/2">
                   <EditableTextInput label="Platform Name"
-                                     name="platformName"
+                                     name="name"
                                      type="text"/>
                   {
                     !isSubmitting &&
