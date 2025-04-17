@@ -18,8 +18,6 @@ import {handleAxiosError} from "../../utils/utils";
 
 const UpdatePlatformPage = () => {
 
-  // FIXME - Line 95 should be 'name' because the field is not being filled because of field name missmatch with backend
-
   const navigate = useNavigate();
   const params = useParams();
   const platformId: string = params.id!;

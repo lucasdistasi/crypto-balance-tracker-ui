@@ -1,4 +1,4 @@
-import {BalancesResponse} from "../BalancesResponse";
+import {Balances} from "../Balances";
 
 export interface DatesBalanceResponse {
   datesBalances: Array<DatesBalances>,
@@ -8,7 +8,7 @@ export interface DatesBalanceResponse {
 
 export interface DatesBalances {
   date: string,
-  balances: BalancesResponse
+  balances: Balances
 }
 
 interface BalanceChanges {

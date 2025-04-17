@@ -22,9 +22,11 @@ const PlatformInsightsPage = () => {
   const platformId: string = params.platformId!;
   const [platformInsightsResponse, setPlatformInsightsResponse] = useState<PlatformInsightsResponse>({
     balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
+      fiat: {
+        usd: "0",
+        eur: "0"
+      },
+      btc: "0"
     },
     cryptos: [],
     platformName: ""
@@ -92,13 +94,13 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={Number(platformInsightsResponse.balances.totalUSDBalance)}
-                               totalEurValue={Number(platformInsightsResponse.balances.totalEURBalance)}
-                               totalBtcValue={Number(platformInsightsResponse.balances.totalBTCBalance)}/>
+            <TotalBalanceCards totalUsdValue={Number(platformInsightsResponse.balances.fiat.usd)}
+                               totalEurValue={Number(platformInsightsResponse.balances.fiat.eur)}
+                               totalBtcValue={Number(platformInsightsResponse.balances.btc)}/>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}
-                              series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.balances.totalUSDBalance))}
+                              series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.balances.fiat.usd))}
                               labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoInfo.cryptoName)}/>
 
             <AddNewButton

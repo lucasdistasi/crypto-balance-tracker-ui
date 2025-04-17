@@ -70,7 +70,7 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
                     {`${crypto.percentage}%`}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {`$ ${crypto.balances.totalUSDBalance}`}
+                    {`$ ${crypto.balances.fiat.usd}`}
                   </td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">

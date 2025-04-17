@@ -18,9 +18,11 @@ const CryptoInsightsPage = () => {
   const [cryptoInsightResponse, setCryptoInsightResponse] = useState<CryptoInsightResponse>({
     cryptoName: "",
     balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
+      fiat: {
+        usd: "0",
+        eur: "0"
+      },
+      btc: "0"
     },
     platforms: []
   });
@@ -52,13 +54,13 @@ const CryptoInsightsPage = () => {
               {`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
             </h1>
 
-            <TotalBalanceCards totalUsdValue={Number(cryptoInsightResponse.balances.totalUSDBalance)}
-                               totalEurValue={Number(cryptoInsightResponse.balances.totalEURBalance)}
-                               totalBtcValue={Number(cryptoInsightResponse.balances.totalBTCBalance)}/>
+            <TotalBalanceCards totalUsdValue={Number(cryptoInsightResponse.balances.fiat.usd)}
+                               totalEurValue={Number(cryptoInsightResponse.balances.fiat.eur)}
+                               totalBtcValue={Number(cryptoInsightResponse.balances.btc)}/>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
-                              series={cryptoInsightResponse.platforms.map(platform => Number(platform.balances.totalUSDBalance))}
+                              series={cryptoInsightResponse.platforms.map(platform => Number(platform.balances.fiat.usd))}
                               labels={cryptoInsightResponse.platforms.map(platform => platform.platformName)}/>
 
             <CryptoInsightsTable cryptoInsightResponse={cryptoInsightResponse}/>

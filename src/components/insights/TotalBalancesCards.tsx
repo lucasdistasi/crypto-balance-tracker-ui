@@ -1,16 +1,19 @@
 import React, {Fragment, useEffect, useState} from "react";
 import ErrorAlert from "../page/ErrorAlert";
 import TotalBalanceCards from "./TotalBalanceCards";
-import {BalancesResponse} from "../../model/response/BalancesResponse";
 import {retrieveTotalBalancesInsights} from "../../services/insightsService";
 import TotalBalancesCardsSkeleton from "../skeletons/TotalBalancesCardsSkeleton";
+import {TotalBalancesResponse} from "../../model/response/Balances";
 
 const TotalBalancesCards = () => {
 
-  const [totalBalances, setTotalBalances] = useState<BalancesResponse>({
-    totalBTCBalance: "0",
-    totalEURBalance: "0",
-    totalUSDBalance: "0"
+  const [totalBalances, setTotalBalances] = useState<TotalBalancesResponse>({
+    fiat: {
+      usd: "0",
+      eur: "0"
+    },
+    btc: "0",
+    stablecoins: "0"
   });
   const [error, setError] = useState(false);
   const [isLoadingTotalBalances, setIsLoadingTotalBalances] = useState(true);
@@ -18,7 +21,7 @@ const TotalBalancesCards = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response: BalancesResponse = await retrieveTotalBalancesInsights();
+        const response = await retrieveTotalBalancesInsights();
         setTotalBalances(response);
       } catch (error: unknown) {
         setError(true);
@@ -42,9 +45,9 @@ const TotalBalancesCards = () => {
 
       {
         !error && !isLoadingTotalBalances &&
-        <TotalBalanceCards totalUsdValue={Number(totalBalances.totalUSDBalance)}
-                           totalEurValue={Number(totalBalances.totalEURBalance)}
-                           totalBtcValue={Number(totalBalances.totalBTCBalance)}/>
+        <TotalBalanceCards totalUsdValue={Number(totalBalances.fiat.usd)}
+                           totalEurValue={Number(totalBalances.fiat.eur)}
+                           totalBtcValue={Number(totalBalances.btc)}/>
       }
     </Fragment>
   )

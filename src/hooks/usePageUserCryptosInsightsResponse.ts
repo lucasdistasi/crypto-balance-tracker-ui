@@ -9,9 +9,11 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
     totalPages: 0,
     hasNextPage: false,
     balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
+      fiat: {
+        usd: "0",
+        eur: "0"
+      },
+      btc: "0"
     },
     cryptos: []
   });
@@ -53,9 +55,11 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
         totalPages: response.totalPages,
         hasNextPage: response.hasNextPage,
         balances: {
-          totalUSDBalance: response.balances.totalUSDBalance,
-          totalEURBalance: response.balances.totalEURBalance,
-          totalBTCBalance: response.balances.totalBTCBalance
+          fiat: {
+            usd: response.balances.fiat.usd,
+            eur: response.balances.fiat.eur
+          },
+          btc: response.balances.btc
         },
         cryptos: [...pageUserCryptosInsightsResponse.cryptos, ...response.cryptos]
       });

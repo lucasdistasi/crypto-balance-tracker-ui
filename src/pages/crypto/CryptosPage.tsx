@@ -119,7 +119,7 @@ const CryptosPage = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4">{`${crypto.percentage}%`}</td>
-                  <td className="px-6 py-4">{`$${crypto.balances.totalUSDBalance}`}</td>
+                  <td className="px-6 py-4">{`$${crypto.balances.fiat.usd}`}</td>
                   <td className="px-6 py-4">{crypto.quantity}</td>
                   <td className="px-6 py-4">{`$${crypto.cryptoInfo.price!.usd}`}</td>
                   <td
