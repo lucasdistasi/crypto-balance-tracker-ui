@@ -5,7 +5,6 @@ import React, {Fragment, useEffect, useState} from "react";
 import {PlatformInsightsResponse} from "../../model/response/insight/PlatformInsightsResponse";
 import {retrievePlatformInsights} from "../../services/insightsService";
 import {useParams} from "react-router-dom";
-import TotalBalanceCards from "../../components/insights/TotalBalanceCards";
 import PlatformInsightsTable from "../../components/insights/PlatformInsightsTable";
 import {deleteCryptoService} from "../../services/cryptoService";
 import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleton";
@@ -15,6 +14,7 @@ import AddNewButton from "../../components/buttons/AddNewButton";
 import {getPlatformService} from "../../services/platformService";
 import {PlatformResponse} from "../../model/response/platform/PlatformResponse";
 import {isSuccessfulStatus} from "../../utils/utils";
+import InsightCard from "../../components/insights/InsightCard";
 
 const PlatformInsightsPage = () => {
 
@@ -81,9 +81,18 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && !platformInsightsResponse &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={0}
-                               totalEurValue={0}
-                               totalBtcValue={0}/>
+            <InsightCard title={"Total value in USD"}
+                         value={0}
+                         decimals={2}
+                         symbol="$"/>
+            <InsightCard title={"Total value in EUR"}
+                         value={0}
+                         decimals={2}
+                         symbol="€"/>
+            <InsightCard title={"Total value in BTC"}
+                         value={0}
+                         decimals={8}
+                         symbol="₿"/>
 
             <AddNewButton
               href={`/crypto?platform=${platformResponse.name}&redirectTo=/insights/platform/${platformId}`}
@@ -94,9 +103,18 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={Number(platformInsightsResponse.balances.fiat.usd)}
-                               totalEurValue={Number(platformInsightsResponse.balances.fiat.eur)}
-                               totalBtcValue={Number(platformInsightsResponse.balances.btc)}/>
+            <InsightCard title={"Total value in USD"}
+                         value={Number(platformInsightsResponse.balances.fiat.usd)}
+                         decimals={2}
+                         symbol="$"/>
+            <InsightCard title={"Total value in EUR"}
+                         value={Number(platformInsightsResponse.balances.fiat.eur)}
+                         decimals={2}
+                         symbol="€"/>
+            <InsightCard title={"Total value in BTC"}
+                         value={Number(platformInsightsResponse.balances.btc)}
+                         decimals={8}
+                         symbol="₿"/>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}

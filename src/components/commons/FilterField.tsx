@@ -7,7 +7,7 @@ const FilterField = ({filterFunction, filterValue, placeHolder}: {
 }) => {
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-dark-bg">
       <label htmlFor="table-search" className="sr-only">
         Search
       </label>

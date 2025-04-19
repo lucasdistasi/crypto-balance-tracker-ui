@@ -1,11 +1,11 @@
 import React, {Fragment, useEffect, useState} from "react";
 import ErrorAlert from "../page/ErrorAlert";
-import TotalBalanceCards from "./TotalBalanceCards";
 import {retrieveTotalBalancesInsights} from "../../services/insightsService";
 import TotalBalancesCardsSkeleton from "../skeletons/TotalBalancesCardsSkeleton";
 import {TotalBalancesResponse} from "../../model/response/Balances";
+import InsightCard from "./InsightCard";
 
-const TotalBalancesCards = () => {
+const HomeInsightCards = () => {
 
   const [totalBalances, setTotalBalances] = useState<TotalBalancesResponse>({
     fiat: {
@@ -45,12 +45,27 @@ const TotalBalancesCards = () => {
 
       {
         !error && !isLoadingTotalBalances &&
-        <TotalBalanceCards totalUsdValue={Number(totalBalances.fiat.usd)}
-                           totalEurValue={Number(totalBalances.fiat.eur)}
-                           totalBtcValue={Number(totalBalances.btc)}/>
+        <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
+          <InsightCard title={"Total value in USD"}
+                       value={Number(totalBalances.fiat.usd)}
+                       decimals={2}
+                       symbol="$"/>
+          <InsightCard title={"Total value in EUR"}
+                       value={Number(totalBalances.fiat.eur)}
+                       decimals={2}
+                       symbol="€"/>
+          <InsightCard title={"Total value in BTC"}
+                       value={Number(totalBalances.btc)}
+                       decimals={8}
+                       symbol="₿"/>
+          <InsightCard title={"Stablecoins Liquidity"}
+                       value={Number(totalBalances.stablecoins)}
+                       decimals={2}
+                       symbol="$"/>
+        </div>
       }
     </Fragment>
   )
 }
 
-export default TotalBalancesCards
+export default HomeInsightCards

@@ -32,7 +32,7 @@ const CryptoPlatformDropdown = ({label, ...props}: {
             {label}
           </label>
 
-          <Field as="select" className={`${classes} border text-sm rounded-lg block w-full p-2.5`}
+          <Field as="select" className={`${classes} border text-sm rounded-lg block w-full p-2.5 dark:bg-dark-input dark:text-gray-50 dark:border-gray-600`}
                  {...field}
                  {...props}>
             <option value="">
