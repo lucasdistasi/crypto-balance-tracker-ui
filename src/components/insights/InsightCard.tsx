@@ -21,7 +21,7 @@ const CardAnimation = ({balance, decimals, symbol}: {
   return <animated.div>{number.to(n => `${symbol} ${n.toFixed(decimals)}`)}</animated.div>
 }
 
-const TotalBalanceCard = ({title, value, decimals, symbol}: {
+const InsightCard = ({title, value, decimals, symbol}: {
   title: string,
   value: number,
   decimals: number,
@@ -45,4 +45,4 @@ const TotalBalanceCard = ({title, value, decimals, symbol}: {
   );
 }
 
-export default TotalBalanceCard
+export default InsightCard

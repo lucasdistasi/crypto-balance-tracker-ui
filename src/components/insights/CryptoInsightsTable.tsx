@@ -50,17 +50,17 @@ const CryptoInsightsTable = ({cryptoInsightResponse}: {
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {
-                  `$ ${platform.balances.totalUSDBalance}`
+                  `$ ${platform.balances.fiat.usd}`
                 }
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {
-                  `€ ${platform.balances.totalEURBalance}`
+                  `€ ${platform.balances.fiat.eur}`
                 }
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {
-                  `₿ ${platform.balances.totalBTCBalance}`
+                  `₿ ${platform.balances.btc}`
                 }
               </td>
             </tr>

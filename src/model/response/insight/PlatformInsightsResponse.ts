@@ -1,9 +1,9 @@
-import {BalancesResponse} from "../BalancesResponse";
 import {CryptoInfo} from "../CryptoInfo";
+import {Balances} from "../Balances";
 
 export interface PlatformInsightsResponse {
   platformName: string,
-  balances: BalancesResponse,
+  balances: Balances,
   cryptos: Array<CryptoInsights>
 }
 
@@ -12,5 +12,5 @@ interface CryptoInsights {
   cryptoInfo: CryptoInfo,
   quantity: string,
   percentage: number,
-  balances: BalancesResponse,
+  balances: Balances,
 }

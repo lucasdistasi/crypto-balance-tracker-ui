@@ -50,7 +50,7 @@ const FiatDatesBalancesChart = () => {
     const response = await getDaysBalancesInsights(balancesPeriodValue);
 
     const dates: string[] = response.datesBalances?.map((dateBalance: DatesBalances) => dateBalance.date);
-    const usdBalances: number[] = response.datesBalances?.map((dateBalance: DatesBalances) => Number(dateBalance.balances.totalUSDBalance));
+    const usdBalances: number[] = response.datesBalances?.map((dateBalance: DatesBalances) => Number(dateBalance.balances.fiat.usd));
 
     setChartOptionsConfig({
       ...chartOptionsConfig,

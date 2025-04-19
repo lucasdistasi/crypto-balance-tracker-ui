@@ -18,8 +18,6 @@ import {handleAxiosError} from "../../utils/utils";
 
 const UpdatePlatformPage = () => {
 
-  // FIXME - Line 95 should be 'name' because the field is not being filled because of field name missmatch with backend
-
   const navigate = useNavigate();
   const params = useParams();
   const platformId: string = params.id!;
@@ -59,7 +57,7 @@ const UpdatePlatformPage = () => {
     <Fragment>
       <Navbar/>
       <div className="flex flex-col items-center min-h-screen">
-        <h1 className="text-4xl text-gray-900 text-center my-10">
+        <h1 className="text-4xl text-gray-900 text-center my-10 dark:text-gray-50">
           {
             !isLoadingPlatform && `Update ${platformResponse.name}`
           }
