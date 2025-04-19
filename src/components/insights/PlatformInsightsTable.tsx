@@ -3,6 +3,7 @@ import EditButton from "../table/EditButton";
 import TransferButton from "../table/TransferButton";
 import DeleteButton from "../table/DeleteButton";
 import React, {Fragment} from "react";
+import Table from "../table/Table";
 
 const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}: {
   platformInsightsResponse: PlatformInsightsResponse,
@@ -17,31 +18,30 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
       {
         cryptos.length > 0 &&
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-auto mb-20 w-11/12">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                #
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Crypto
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Quantity
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Percentage
-              </th>
-              <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                Balance
-              </th>
-              <th scope="col" className="px-6 py-3 whitespace-nowrap text-center">
-                Action
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            {
+          <Table
+            thead={
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  #
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Crypto
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Quantity
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Percentage
+                </th>
+                <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                  Balance
+                </th>
+                <th scope="col" className="px-6 py-3 whitespace-nowrap text-center">
+                  Action
+                </th>
+              </tr>
+            }
+            tbody={
               cryptos.map((crypto, index) => (
                 <tr key={crypto.cryptoInfo.cryptoId}
                     className="bg-white border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 dark:border-gray-700">
@@ -84,8 +84,7 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
                 </tr>
               ))
             }
-            </tbody>
-          </table>
+          />
         </div>
       }
     </Fragment>

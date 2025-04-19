@@ -28,7 +28,7 @@ const CryptoPlatformDropdown = ({label, ...props}: {
         !isLoadingPlatforms && !error && platforms?.length > 0 &&
         <Fragment>
           <label htmlFor={props.id ?? props.name}
-                 className="text-gray-900 block mb-2 text-sm font-medium">
+                 className="text-gray-900 block mb-2 text-sm font-medium dark:text-gray-50">
             {label}
           </label>
 

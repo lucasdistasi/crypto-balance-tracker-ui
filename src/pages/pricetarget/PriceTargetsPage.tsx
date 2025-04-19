@@ -16,6 +16,7 @@ import EditButton from "../../components/table/EditButton";
 import DeleteButton from "../../components/table/DeleteButton";
 import {SortableTableColumnTitle} from "../../components/table/SortableTableColumnTitle";
 import {PriceTargetResponse} from "../../model/response/pricetarget/PriceTargetResponse";
+import Table from "../../components/table/Table";
 
 const PriceTargetsPage = () => {
 
@@ -130,28 +131,27 @@ const PriceTargetsPage = () => {
         {
           !fetchPriceTargetsError && !isLoadingPriceTargets && priceTargetsRef.current?.length > 0 &&
           <div className="relative overflow-x-auto rounded-lg w-11/12 mt-5">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  #
-                </th>
-                <SortableTableColumnTitle title="Crypto"
-                                          additionalClasses="text-center"
-                                          sortFunction={sortByCryptoName}/>
-                <TableColumnTitle title="Target"
-                                  additionalClasses="text-center"/>
-                <TableColumnTitle title="Current Price"
-                                  additionalClasses="text-center whitespace-nowrap"/>
-                <SortableTableColumnTitle title="Change"
-                                          additionalClasses="text-center"
-                                          sortFunction={sortPriceTargets}/>
-                <TableColumnTitle title="Action"
-                                  additionalClasses="text-center"/>
-              </tr>
-              </thead>
-              <tbody className="w-full">
-              {
+            <Table
+              thead={
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    #
+                  </th>
+                  <SortableTableColumnTitle title="Crypto"
+                                            additionalClasses="text-center"
+                                            sortFunction={sortByCryptoName}/>
+                  <TableColumnTitle title="Target"
+                                    additionalClasses="text-center"/>
+                  <TableColumnTitle title="Current Price"
+                                    additionalClasses="text-center whitespace-nowrap"/>
+                  <SortableTableColumnTitle title="Change"
+                                            additionalClasses="text-center"
+                                            sortFunction={sortPriceTargets}/>
+                  <TableColumnTitle title="Action"
+                                    additionalClasses="text-center"/>
+                </tr>
+              }
+              tbody={
                 priceTargetsRef.current.map((target, index) => {
                   return (
                     <tr key={target.priceTargetId}
@@ -191,8 +191,7 @@ const PriceTargetsPage = () => {
                   );
                 })
               }
-              </tbody>
-            </table>
+            />
           </div>
         }
 

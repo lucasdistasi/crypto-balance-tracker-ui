@@ -20,6 +20,7 @@ export default {
       colors: {
         'dark-bg': '#18181c',
         'dark-input': '#16151a',
+        'dark-1a1c20': '#1a1c20',
       }
     }
   },

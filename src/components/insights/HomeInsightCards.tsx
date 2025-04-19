@@ -46,19 +46,15 @@ const HomeInsightCards = () => {
       {
         !error && !isLoadingTotalBalances &&
         <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
-          <InsightCard title={"Total value in USD"}
+          <InsightCard title={"Holdings"}
                        value={Number(totalBalances.fiat.usd)}
                        decimals={2}
                        symbol="$"/>
-          <InsightCard title={"Total value in EUR"}
-                       value={Number(totalBalances.fiat.eur)}
-                       decimals={2}
-                       symbol="€"/>
           <InsightCard title={"Total value in BTC"}
                        value={Number(totalBalances.btc)}
                        decimals={8}
                        symbol="₿"/>
-          <InsightCard title={"Stablecoins Liquidity"}
+          <InsightCard title={"Liquidity"}
                        value={Number(totalBalances.stablecoins)}
                        decimals={2}
                        symbol="$"/>
