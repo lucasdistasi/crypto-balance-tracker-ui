@@ -18,9 +18,9 @@ export default {
     },
     extend: {
       colors: {
-        'dark-bg': '#18181c',
-        'dark-input': '#16151a',
-        'dark-1a1c20': '#1a1c20',
+        'dark-1': '#1a1c20',
+        'dark-2': '#18181c',
+        'dark-3': '#16151a',
       }
     }
   },

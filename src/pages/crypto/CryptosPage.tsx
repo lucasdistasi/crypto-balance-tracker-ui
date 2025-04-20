@@ -13,6 +13,7 @@ import {Link} from "react-router-dom";
 import TableSkeleton from "../../components/skeletons/TableSkeleton";
 import AddNewButton from "../../components/buttons/AddNewButton";
 import Table from "../../components/table/Table";
+import {toLocale} from "../../utils/utils";
 
 const CryptosPage = () => {
 
@@ -42,7 +43,7 @@ const CryptosPage = () => {
 
   const returnChangePercentageColor = (changePercentage: string) => {
     if (Number(changePercentage) <= 0.5 && Number(changePercentage) >= -0.5) {
-      return "text-gray-50";
+      return "text-black dark:text-white";
     }
 
     if (Number(changePercentage) < 0) {
@@ -53,7 +54,7 @@ const CryptosPage = () => {
       return "text-green-500"
     }
 
-    return "text-gray-50"
+    return "text-black dark:text-white"
   }
 
   return (
@@ -95,9 +96,9 @@ const CryptosPage = () => {
                   <th scope="col" className="px-6 py-3">Balance</th>
                   <th scope="col" className="px-6 py-3">Quantity</th>
                   <th scope="col" className="px-6 py-3">Price</th>
-                  <th scope="col" className="px-6 py-3">24H Change</th>
-                  <th scope="col" className="px-6 py-3">7D Change</th>
-                  <th scope="col" className="px-6 py-3">30D Change</th>
+                  <th scope="col" className="px-6 py-3 whitespace-nowrap">24H Change</th>
+                  <th scope="col" className="px-6 py-3 whitespace-nowrap">7D Change</th>
+                  <th scope="col" className="px-6 py-3 whitespace-nowrap">30D Change</th>
                   <th scope="col" className="px-6 py-3">View</th>
                 </tr>
               }
@@ -120,19 +121,22 @@ const CryptosPage = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4">{`${crypto.percentage}%`}</td>
-                    <td className="px-6 py-4">{`$${crypto.balances.fiat.usd}`}</td>
-                    <td className="px-6 py-4">{crypto.quantity}</td>
-                    <td className="px-6 py-4">{`$${crypto.cryptoInfo.price!.usd}`}</td>
-                    <td
-                      className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn24h)}`}>
+                    <td className="px-6 py-4">
+                      {`$${toLocale(crypto.balances.fiat.usd)}`}
+                    </td>
+                    <td className="px-6 py-4">
+                      {toLocale(crypto.quantity)}
+                    </td>
+                    <td className="px-6 py-4">
+                      {`$${toLocale(crypto.cryptoInfo.price!.usd)}`}
+                    </td>
+                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn24h)}`}>
                       {`${crypto.cryptoInfo.priceChange!.changePercentageIn24h}%`}
                     </td>
-                    <td
-                      className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn7d)}`}>
+                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn7d)}`}>
                       {`${crypto.cryptoInfo.priceChange!.changePercentageIn7d}%`}
                     </td>
-                    <td
-                      className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn30d)}`}>
+                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn30d)}`}>
                       {`${crypto.cryptoInfo.priceChange!.changePercentageIn30d}%`}
                     </td>
                     <td className="px-6 py-4">

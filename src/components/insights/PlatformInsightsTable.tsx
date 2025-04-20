@@ -4,6 +4,7 @@ import TransferButton from "../table/TransferButton";
 import DeleteButton from "../table/DeleteButton";
 import React, {Fragment} from "react";
 import Table from "../table/Table";
+import {toLocale} from "../../utils/utils";
 
 const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}: {
   platformInsightsResponse: PlatformInsightsResponse,
@@ -64,13 +65,13 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    {crypto.quantity}
+                    {toLocale(crypto.quantity)}
                   </td>
                   <td className="px-6 py-4">
                     {`${crypto.percentage}%`}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {`$ ${crypto.balances.fiat.usd}`}
+                    {`$ ${toLocale(crypto.balances.fiat.usd)}`}
                   </td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex flex-col justify-center space-y-2 lg:space-y-0 lg:space-x-4 lg:flex-row">

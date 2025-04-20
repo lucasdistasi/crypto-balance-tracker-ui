@@ -15,11 +15,11 @@ const CheckboxInput = ({label, ...props}: {
         </div>
         <div className="ml-2 text-sm">
           <label htmlFor={props.id ?? props.name}
-                 className="font-medium text-gray-900">
+                 className="font-medium text-gray-900 dark:text-white">
             {label}
           </label>
           <p id="helper-checkbox-text"
-             className="text-xs font-normal text-black">
+             className="text-xs font-normal text-black dark:text-white">
             If checked, receiver platform receives specified quantity; if not, receives specified quantity minus network
             fee.
           </p>

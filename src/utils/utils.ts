@@ -178,3 +178,19 @@ export const handleAxiosError = (
 
   navigate("/error");
 }
+
+export const toLocale = (value: number | string) => {
+  const number = typeof value === 'string' ? parseFloat(value) : value;
+
+  if (isNaN(number)) {
+    throw new Error(`Invalid number value for ${number}`);
+  }
+
+  console.log(number);
+
+  const decimalDigits = number.toString().split('.')[1]?.length ?? 0;
+
+  return number.toLocaleString("en-US", {
+    maximumFractionDigits: decimalDigits
+  })
+}

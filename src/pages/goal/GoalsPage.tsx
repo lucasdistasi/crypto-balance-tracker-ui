@@ -18,6 +18,7 @@ import EditButton from "../../components/table/EditButton";
 import DeleteButton from "../../components/table/DeleteButton";
 import LoadMoreButton from "../../components/buttons/LoadMoreButton";
 import Table from "../../components/table/Table";
+import {toLocale} from "../../utils/utils";
 
 const GoalsPage = () => {
 
@@ -145,7 +146,8 @@ const GoalsPage = () => {
           !error && !isLoadingGoals && filteredGoals.current?.length > 0 &&
           <Fragment>
             <div className="w-11/12 mx-auto flex justify-start">
-              <div className="flex items-center ps-4 border border-gray-600 rounded dark:border-gray-700 my-10 w-full lg:w-56">
+              <div
+                className="flex items-center ps-4 border border-gray-600 rounded dark:border-gray-700 my-10 w-full lg:w-56">
                 <input id="hide-achieved-goals-checkbox"
                        type="checkbox"
                        value=""
@@ -174,58 +176,60 @@ const GoalsPage = () => {
                     <SortableTableColumnTitle title="Progress"
                                               additionalClasses="text-center"
                                               sortFunction={sortByProgress}/>
-                      <TableColumnTitle title="Remaining Quantity"
-                                        additionalClasses="text-center whitespace-nowrap"/>
-                      <SortableTableColumnTitle title="Money Needed"
-                                                additionalClasses="text-center whitespace-nowrap"
-                                                sortFunction={sortByMoneyNeeded}/>
-                      <TableColumnTitle title="Action"
-                                        additionalClasses="text-center"/>
-                    </tr>
-                  }
-                  tbody={
-                    filteredGoals.current.map((goal, index) => (
-                      <tr key={goal.id}
-                          className="bg-gray-100 border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
-                        <td className="px-6 py-4">
-                          {index + 1}
-                        </td>
-                        <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                          <div className="flex items-center">
-                            <img className="w-10 h-10 rounded-full" src={goal.cryptoInfo.image}
-                                 alt={`${goal.cryptoInfo.cryptoName} logo`}/>
-                            <div className="pl-3">
-                              <div className="text-base font-semibold">
-                                {goal.cryptoInfo.symbol.toUpperCase()}
-                              </div>
-                              <div
-                                className="font-normal text-gray-500 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">
-                                {goal.cryptoInfo.cryptoName}
-                              </div>
+                    <TableColumnTitle title="Remaining Quantity"
+                                      additionalClasses="text-center whitespace-nowrap"/>
+                    <SortableTableColumnTitle title="Money Needed"
+                                              additionalClasses="text-center whitespace-nowrap"
+                                              sortFunction={sortByMoneyNeeded}/>
+                    <TableColumnTitle title="Action"
+                                      additionalClasses="text-center"/>
+                  </tr>
+                }
+                tbody={
+                  filteredGoals.current.map((goal, index) => (
+                    <tr key={goal.id}
+                        className="bg-gray-100 border-b dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
+                      <td className="px-6 py-4">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                        <div className="flex items-center">
+                          <img className="w-10 h-10 rounded-full" src={goal.cryptoInfo.image}
+                               alt={`${goal.cryptoInfo.cryptoName} logo`}/>
+                          <div className="pl-3">
+                            <div className="text-base font-semibold">
+                              {goal.cryptoInfo.symbol.toUpperCase()}
+                            </div>
+                            <div
+                              className="font-normal text-gray-500 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">
+                              {goal.cryptoInfo.cryptoName}
                             </div>
                           </div>
-                        </td>
-                        <TableColumnContent content={goal.goalQuantity.toString()}
-                                            additionalClasses="text-center"/>
-                        <td className="text-center">
-                          <GoalProgress progress={goal.progress} actualQuantity={goal.actualQuantity}/>
-                        </td>
-                        <TableColumnContent content={goal.remainingQuantity.toString()}
-                                            additionalClasses="text-center"/>
-                        <TableColumnContent content={`U$D ${goal.moneyNeeded.toString()}`}
-                                            additionalClasses="whitespace-nowrap text-center"/>
-                        <td
-                          className="px-6 py-4 text-center flex flex-col justify-center space-y-2 xl:space-y-0 xl:space-x-4 xl:flex-row">
-                          <EditButton editLink={`/goal/${goal.id}`}/>
-                          <DeleteButton deleteFunction={() => deleteGoal(goal.id)}
-                                        deleteId={goal.id}
-                                        deleteMessage={`Are you sure you want to delete your ${goal.cryptoInfo.cryptoName} goal?`}/>
-                        </td>
-                      </tr>
-                    ))
-                  }
-                />
-              </div>
+                        </div>
+                      </td>
+                      <TableColumnContent content={toLocale(goal.goalQuantity)}
+                                          additionalClasses="text-center"/>
+                      <td className="text-center">
+                        <GoalProgress progress={goal.progress} actualQuantity={toLocale(goal.actualQuantity)}/>
+                      </td>
+
+                      <TableColumnContent content={toLocale(goal.remainingQuantity)}
+                                          additionalClasses="text-center"/>
+
+                      <TableColumnContent content={`$ ${toLocale(goal.moneyNeeded)}`}
+                                          additionalClasses="whitespace-nowrap text-center"/>
+                      <td
+                        className="px-6 py-4 text-center flex flex-col justify-center space-y-2 xl:space-y-0 xl:space-x-4 xl:flex-row">
+                        <EditButton editLink={`/goal/${goal.id}`}/>
+                        <DeleteButton deleteFunction={() => deleteGoal(goal.id)}
+                                      deleteId={goal.id}
+                                      deleteMessage={`Are you sure you want to delete your ${goal.cryptoInfo.cryptoName} goal?`}/>
+                      </td>
+                    </tr>
+                  ))
+                }
+              />
+            </div>
           </Fragment>
         }
 

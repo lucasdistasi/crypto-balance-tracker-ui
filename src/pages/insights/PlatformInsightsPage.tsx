@@ -85,10 +85,6 @@ const PlatformInsightsPage = () => {
                          value={0}
                          decimals={2}
                          symbol="$"/>
-            <InsightCard title={"Total value in EUR"}
-                         value={0}
-                         decimals={2}
-                         symbol="€"/>
             <InsightCard title={"Total value in BTC"}
                          value={0}
                          decimals={8}
@@ -103,18 +99,16 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
-            <InsightCard title={"Total value in USD"}
-                         value={Number(platformInsightsResponse.balances.fiat.usd)}
-                         decimals={2}
-                         symbol="$"/>
-            <InsightCard title={"Total value in EUR"}
-                         value={Number(platformInsightsResponse.balances.fiat.eur)}
-                         decimals={2}
-                         symbol="€"/>
-            <InsightCard title={"Total value in BTC"}
-                         value={Number(platformInsightsResponse.balances.btc)}
-                         decimals={8}
-                         symbol="₿"/>
+            <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
+              <InsightCard title={"Total value in USD"}
+                           value={Number(platformInsightsResponse.balances.fiat.usd)}
+                           decimals={2}
+                           symbol="$"/>
+              <InsightCard title={"Total value in BTC"}
+                           value={Number(platformInsightsResponse.balances.btc)}
+                           decimals={8}
+                           symbol="₿"/>
+            </div>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}

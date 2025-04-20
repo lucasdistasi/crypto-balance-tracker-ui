@@ -56,18 +56,16 @@ const CryptoInsightsPage = () => {
               {`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
             </h1>
 
-            <InsightCard title={"Total value in USD"}
-                         value={Number(cryptoInsightResponse.balances.fiat.usd)}
-                         decimals={2}
-                         symbol="$"/>
-            <InsightCard title={"Total value in EUR"}
-                         value={Number(cryptoInsightResponse.balances.fiat.eur)}
-                         decimals={2}
-                         symbol="€"/>
-            <InsightCard title={"Total value in BTC"}
-                         value={Number(cryptoInsightResponse.balances.btc)}
-                         decimals={8}
-                         symbol="₿"/>
+            <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
+              <InsightCard title={"Total value in USD"}
+                           value={Number(cryptoInsightResponse.balances.fiat.usd)}
+                           decimals={2}
+                           symbol="$"/>
+              <InsightCard title={"Total value in BTC"}
+                           value={Number(cryptoInsightResponse.balances.btc)}
+                           decimals={8}
+                           symbol="₿"/>
+            </div>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}

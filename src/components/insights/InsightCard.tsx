@@ -18,7 +18,11 @@ const CardAnimation = ({balance, decimals, symbol}: {
     }
   });
 
-  return <animated.div>{number.to(n => `${symbol} ${n.toFixed(decimals)}`)}</animated.div>
+  return (
+    <animated.div>
+      {number.to(n => `${symbol} ${n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`)}
+    </animated.div>
+  )
 }
 
 const InsightCard = ({title, value, decimals, symbol}: {
@@ -29,7 +33,7 @@ const InsightCard = ({title, value, decimals, symbol}: {
 }) => {
 
   return (
-    <div className="xl:max-w w-1/6 mb-8 p-6 bg-gray-100 border border-gray-200 rounded-lg shadow text-center dark:bg-dark-1a1c20 dark:border-gray-500">
+    <div className="mb-8 p-6 bg-gray-100 border border-gray-200 rounded-lg shadow text-left md:w-full xl:w-1/6 dark:bg-dark-1 dark:border-gray-500">
       <h5 className="w-full mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
         {
           title

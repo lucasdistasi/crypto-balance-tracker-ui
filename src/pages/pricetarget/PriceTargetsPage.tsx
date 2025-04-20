@@ -17,6 +17,7 @@ import DeleteButton from "../../components/table/DeleteButton";
 import {SortableTableColumnTitle} from "../../components/table/SortableTableColumnTitle";
 import {PriceTargetResponse} from "../../model/response/pricetarget/PriceTargetResponse";
 import Table from "../../components/table/Table";
+import {toLocale} from "../../utils/utils";
 
 const PriceTargetsPage = () => {
 
@@ -174,9 +175,9 @@ const PriceTargetsPage = () => {
                           </div>
                         </div>
                       </td>
-                      <TableColumnContent content={`U$D ${target.priceTarget.toString()}`}
+                      <TableColumnContent content={`$ ${toLocale(target.priceTarget)}`}
                                           additionalClasses="text-center text-bold"/>
-                      <TableColumnContent content={`U$D ${target.currentPrice.toString()}`}
+                      <TableColumnContent content={`$ ${toLocale(target.currentPrice)}`}
                                           additionalClasses="text-center"/>
                       <TableColumnContent content={`${target.change}%`}
                                           additionalClasses="text-center"/>
