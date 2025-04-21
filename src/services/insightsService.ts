@@ -7,6 +7,7 @@ import {CryptoInsightResponse} from "../model/response/insight/CryptoInsightResp
 import {PlatformInsightsResponse} from "../model/response/insight/PlatformInsightsResponse";
 import {BalancesChartResponse} from "../model/response/insight/BalancesChartResponse";
 import {TotalBalancesResponse} from "../model/response/Balances";
+import {CryptoInfo} from "../model/response/CryptoInfo";
 
 const CRYPTOS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos/balances");
 const DAYS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/dates-balances");
@@ -15,6 +16,12 @@ const CRYPTOS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/c
 const PLATFORMS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/platforms");
 const TOTAL_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/balances");
 const CRYPTO_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos");
+const TOP_CRYPTO_24H_ENDPOIINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/top");
+
+export const retrieveTopCrypto24h = async (): Promise<CryptoInfo> => {
+  return await axios.get<CryptoInfo>(TOP_CRYPTO_24H_ENDPOIINT)
+    .then(response => response.data)
+}
 
 export const retrieveTotalBalancesInsights = async (): Promise<TotalBalancesResponse> => {
   return await axios.get<TotalBalancesResponse>(TOTAL_BALANCES_INSIGHTS_ENDPOINT)
