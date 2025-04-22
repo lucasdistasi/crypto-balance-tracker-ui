@@ -94,11 +94,11 @@ const PriceTargetsPage = () => {
 
   const sortByCryptoName = () => {
     priceTargetsRef.current = priceTargetsRef.current.toSorted((first, second) => {
-      if (first.cryptoInfo.cryptoName > second.cryptoInfo.cryptoName) {
+      if (first.cryptoInfo.cryptoName! > second.cryptoInfo.cryptoName!) {
         return sortType == SortType.ASCENDING ? 1 : -1;
       }
 
-      if (second.cryptoInfo.cryptoName > first.cryptoInfo.cryptoName) {
+      if (second.cryptoInfo.cryptoName! > first.cryptoInfo.cryptoName!) {
         return sortType == SortType.ASCENDING ? -1 : 1;
       }
 

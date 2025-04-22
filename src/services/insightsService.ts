@@ -6,26 +6,19 @@ import {PageUserCryptosInsightsResponse} from "../model/response/insight/PageUse
 import {CryptoInsightResponse} from "../model/response/insight/CryptoInsightResponse";
 import {PlatformInsightsResponse} from "../model/response/insight/PlatformInsightsResponse";
 import {BalancesChartResponse} from "../model/response/insight/BalancesChartResponse";
-import {TotalBalancesResponse} from "../model/response/Balances";
-import {CryptoInfo} from "../model/response/CryptoInfo";
+import {HomeInsightsResponse} from "../model/response/insight/HomeInsightsResponse";
 
+const HOME_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights");
 const CRYPTOS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos/balances");
 const DAYS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/dates-balances");
 const PLATFORMS_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/platforms/balances");
 const CRYPTOS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos");
 const PLATFORMS_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/platforms");
-const TOTAL_BALANCES_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/balances");
 const CRYPTO_INSIGHTS_ENDPOINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/cryptos");
-const TOP_CRYPTO_24H_ENDPOIINT = CRYPTO_BALANCE_TRACKER_URL.concat("/insights/top");
 
-export const retrieveTopCrypto24h = async (): Promise<CryptoInfo> => {
-  return await axios.get<CryptoInfo>(TOP_CRYPTO_24H_ENDPOIINT)
+export const retrieveHomeInsights = async (): Promise<HomeInsightsResponse> => {
+  return await axios.get<HomeInsightsResponse>(HOME_INSIGHTS_ENDPOINT)
     .then(response => response.data)
-}
-
-export const retrieveTotalBalancesInsights = async (): Promise<TotalBalancesResponse> => {
-  return await axios.get<TotalBalancesResponse>(TOTAL_BALANCES_INSIGHTS_ENDPOINT)
-    .then(response => response.data);
 }
 
 export const retrieveDaysBalancesInsights = async (balancesPeriodValue: string): Promise<DatesBalanceResponse> => {

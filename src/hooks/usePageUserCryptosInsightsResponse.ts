@@ -48,7 +48,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
 
       filteredCryptos.current = [...filteredCryptos.current,
         ...response.cryptos.filter(crypto =>
-          crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(cryptosFilterValue) || crypto.cryptoInfo.symbol.startsWith(cryptosFilterValue))
+          crypto.cryptoInfo.cryptoName!.toLowerCase().startsWith(cryptosFilterValue) || crypto.cryptoInfo.symbol.startsWith(cryptosFilterValue))
       ];
       setPageUserCryptosInsightsResponse({
         page: response.page,
@@ -72,7 +72,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
 
   function filterTable(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value.toLowerCase();
-    filteredCryptos.current = pageUserCryptosInsightsResponse.cryptos.filter(crypto => crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(value) || crypto.cryptoInfo.symbol.startsWith(value));
+    filteredCryptos.current = pageUserCryptosInsightsResponse.cryptos.filter(crypto => crypto.cryptoInfo.cryptoName!.toLowerCase().startsWith(value) || crypto.cryptoInfo.symbol.startsWith(value));
     setCryptosFilterValue(value);
   }
 

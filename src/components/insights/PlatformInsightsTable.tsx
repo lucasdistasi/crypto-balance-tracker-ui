@@ -79,7 +79,7 @@ const PlatformInsightsTable = ({platformInsightsResponse, deleteCryptoFunction}:
                       <TransferButton transferLink={`/transfer/${crypto.id}?redirectTo=${window.location.pathname}`}/>
                       <DeleteButton deleteFunction={() => deleteCryptoFunction(crypto.id)}
                                     deleteId={crypto.id}
-                                    deleteMessage={`Are you sure you want to delete ${crypto.cryptoInfo.cryptoName.toUpperCase()} in ${platformName}?`}/>
+                                    deleteMessage={`Are you sure you want to delete ${crypto.cryptoInfo.cryptoName!.toUpperCase()} in ${platformName}?`}/>
                     </div>
                   </td>
                 </tr>

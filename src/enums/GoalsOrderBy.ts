@@ -16,11 +16,11 @@ export function sortGoals(lastOrderBy: GoalsOrderBy, goals: Array<GoalResponse>,
 
     case GoalsOrderBy.SORT_BY_CRYPTO_NAME:
       return goals.toSorted((a, b) => {
-        if (a.cryptoInfo.cryptoName < b.cryptoInfo.cryptoName) {
+        if (a.cryptoInfo.cryptoName! < b.cryptoInfo.cryptoName!) {
           return sortAscending ? 1 : -1;
         }
 
-        if (b.cryptoInfo.cryptoName < a.cryptoInfo.cryptoName) {
+        if (b.cryptoInfo.cryptoName! < a.cryptoInfo.cryptoName!) {
           return sortAscending ? -1 : 1;
         }
 

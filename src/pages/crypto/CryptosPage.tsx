@@ -130,13 +130,13 @@ const CryptosPage = () => {
                     <td className="px-6 py-4">
                       {`$${toLocale(crypto.cryptoInfo.price!.usd)}`}
                     </td>
-                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn24h)}`}>
+                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn24h!)}`}>
                       {`${crypto.cryptoInfo.priceChange!.changePercentageIn24h}%`}
                     </td>
-                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn7d)}`}>
+                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn7d!)}`}>
                       {`${crypto.cryptoInfo.priceChange!.changePercentageIn7d}%`}
                     </td>
-                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn30d)}`}>
+                    <td className={`px-6 py-4 ${returnChangePercentageColor(crypto.cryptoInfo.priceChange!.changePercentageIn30d!)}`}>
                       {`${crypto.cryptoInfo.priceChange!.changePercentageIn30d}%`}
                     </td>
                     <td className="px-6 py-4">
