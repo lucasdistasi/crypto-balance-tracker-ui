@@ -1,30 +1,3 @@
-import {useSpring, animated} from "react-spring";
-
-const CardAnimation = ({balance, decimals, symbol}: {
-  balance: number,
-  decimals: number,
-  symbol: string
-}) => {
-  const {number} = useSpring({
-    from: {
-      number: 0
-    },
-    number: balance,
-    delay: 50,
-    config: {
-      mass: 1,
-      tension: 200,
-      friction: 50,
-    }
-  });
-
-  return (
-    <animated.div>
-      {number.to(n => `${symbol} ${n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`)}
-    </animated.div>
-  )
-}
-
 const InsightCard = ({title, value, decimals, symbol}: {
   title: string,
   value: number,
@@ -41,7 +14,7 @@ const InsightCard = ({title, value, decimals, symbol}: {
       </h5>
       <div className="font-semibold text-lg text-gray-700 dark:text-gray-400">
         {
-          <CardAnimation balance={value} decimals={decimals} symbol={symbol}/>
+          `${symbol} ${value.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`
         }
       </div>
     </div>
