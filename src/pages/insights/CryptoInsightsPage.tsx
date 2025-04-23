@@ -18,7 +18,11 @@ const CryptoInsightsPage = () => {
   const params = useParams();
   const coingeckoCryptoId: string = params.coingeckoCryptoId!;
   const [cryptoInsightResponse, setCryptoInsightResponse] = useState<CryptoInsightResponse>({
-    cryptoName: "",
+    cryptoInfo: {
+      cryptoId: "",
+      symbol: "",
+      image: ""
+    },
     balances: {
       fiat: {
         usd: "0",
@@ -53,7 +57,7 @@ const CryptoInsightsPage = () => {
           !error && !isLoadingCryptoInsightResponse &&
           <Fragment>
             <h1 className="text-4xl text-center mt-10">
-              {`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
+              {`${cryptoInsightResponse.cryptoInfo.cryptoName!.toUpperCase()} DISTRIBUTION`}
             </h1>
 
             <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
@@ -68,7 +72,7 @@ const CryptoInsightsPage = () => {
             </div>
 
             <BalancesPieChart chartId="platform-pie-chart"
-                              chartTitle={`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
+                              chartTitle={`${cryptoInsightResponse.cryptoInfo.cryptoName!.toUpperCase()} DISTRIBUTION`}
                               series={cryptoInsightResponse.platforms.map(platform => Number(platform.balances.fiat.usd))}
                               labels={cryptoInsightResponse.platforms.map(platform => platform.platformName)}/>
 
