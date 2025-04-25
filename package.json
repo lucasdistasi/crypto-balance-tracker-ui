@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "serve": "vite preview --port 5173",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "tailwind-upgrade": "npx @tailwindcss/upgrade@next"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.4",
