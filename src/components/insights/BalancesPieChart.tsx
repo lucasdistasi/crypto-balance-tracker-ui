@@ -80,7 +80,7 @@ const BalancesPieChart = ({chartId, chartTitle, series, labels}: {
   }
 
   return (
-    <div className="w-11/12 md:w-1/2 bg-gray-100 rounded-lg shadow p-4 mx-auto my-24 md:p-6 border-2 border-gray-300 dark:border-gray-800 dark:bg-dark-1">
+    <div className="w-11/12 md:w-1/2 bg-gray-100 rounded-lg shadow-sm p-4 mx-auto my-24 md:p-6 border-2 border-gray-300 dark:border-gray-800 dark:bg-dark-1">
       <div className="flex justify-between items-start">
         <div className="flex-col items-center">
           <div className="flex items-center mb-1">

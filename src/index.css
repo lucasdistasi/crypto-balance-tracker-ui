@@ -1,5 +1,10 @@
 @import "tailwindcss";
-@plugin "flowbite/plugin";
+
+@plugin 'flowbite/plugin' {
+    charts: true;
+}
+
+@source '../node_modules/flowbite/**/*.js';
 
 /* https://tailwindcss.com/docs/dark-mode */
 /* https://tailwindcss.com/blog/tailwindcss-v4 */
@@ -20,6 +25,24 @@
     --color-dark-1: oklch(0.23 0.0083 264.39);
     --color-dark-2: oklch(0.21 0.0078 285.71);
     --color-dark-3: oklch(0.2 0.01 294.64);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentcolor);
+    }
 }
 
 .active {

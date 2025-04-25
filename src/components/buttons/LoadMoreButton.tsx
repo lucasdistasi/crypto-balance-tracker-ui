@@ -9,14 +9,14 @@ const LoadMoreButton = ({loadMoreCallback, isLoadingMore}: {
         !isLoadingMore &&
         <button
           type="button"
-          className="w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg mt-10 text-md px-5 py-2.5 text-center hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+          className="w-full text-white bg-linear-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg mt-10 text-md px-5 py-2.5 text-center hover:bg-linear-to-br focus:ring-4 focus:outline-hidden focus:ring-blue-300 dark:focus:ring-blue-800"
           onClick={() => loadMoreCallback()}>
           Load more
         </button> ||
 
         <button
           type="button"
-          className="w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center cursor-not-allowed"
+          className="w-full text-white bg-linear-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-linear-to-br focus:ring-4 focus:outline-hidden focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center cursor-not-allowed"
           disabled>
           Loading more
           <svg

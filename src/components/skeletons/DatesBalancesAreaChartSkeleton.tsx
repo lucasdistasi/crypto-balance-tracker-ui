@@ -13,7 +13,7 @@ const DatesBalancesAreaChartSkeleton = () => {
 
   return (
     <div className="container flex flex-row mx-auto animate-pulse">
-      <div className="w-full bg-gray-100 rounded-lg shadow p-4 md:p-6 dark:bg-gray-800">
+      <div className="w-full bg-gray-100 rounded-lg shadow-sm p-4 md:p-6 dark:bg-gray-800">
         <div className="flex justify-between">
           <div>
             <p className="text-base font-normal text-gray-500 dark:text-gray-400">

@@ -6,7 +6,7 @@ const EditableTextInput = ({label, ...props}: {
   const [field, meta] = useField(props);
 
   const classes = meta.touched && meta.error ?
-    'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500 focus:outline-none dark:bg-red-100 dark:text-black dark:border-red-500' :
+    'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500 focus:outline-hidden dark:bg-red-100 dark:text-black dark:border-red-500' :
     'bg-gray-100 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:text-white';
 
   return (

@@ -11,7 +11,7 @@ const CryptoPlatformDropdown = ({label, ...props}: {
   const {platforms, error, isLoadingPlatforms} = usePlatforms();
 
   const classes = meta.touched && meta.error ?
-    'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500 focus:outline-none' :
+    'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500 focus:outline-hidden' :
     'bg-gray-100 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500';
 
   return (

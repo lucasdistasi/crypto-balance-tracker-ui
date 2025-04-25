@@ -65,7 +65,7 @@ const HomeInsightCards = () => {
                        value={Number(homeInsightsResponse.stablecoins)}
                        decimals={2}
                        symbol="$"/>
-          <div className="mb-8 p-6 bg-gray-100 border border-gray-200 rounded-lg shadow text-left md:w-full xl:w-1/6 dark:bg-dark-1 dark:border-gray-500">
+          <div className="mb-8 p-6 bg-gray-100 border border-gray-200 rounded-lg shadow-sm text-left md:w-full xl:w-1/6 dark:bg-dark-1 dark:border-gray-500">
             <h5 className="w-full mb-4 font-bold tracking-tight text-gray-900 dark:text-white">
               Top Gainer (24h)
             </h5>

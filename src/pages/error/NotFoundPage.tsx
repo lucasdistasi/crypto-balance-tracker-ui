@@ -15,7 +15,7 @@ const NotFoundPage = () => {
           <p className="mt-4 mb-8 dark:text-gray-100">
             But dont worry, you can find plenty of other things on our homepage.
           </p>
-          <Link to="/" className="px-8 py-3 font-semibold rounded dark:bg-gray-400 dark:text-black">
+          <Link to="/" className="px-8 py-3 font-semibold rounded-sm dark:bg-gray-400 dark:text-black">
             Take me back home
           </Link>
         </div>

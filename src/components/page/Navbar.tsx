@@ -13,7 +13,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-200 mb-12 border-b border-b-gray-700 dark:bg-dark-3">
-      <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
+      <div className="mx-auto flex max-w-(--breakpoint-xl) flex-wrap items-center justify-between p-4">
         <Link to="/" className="flex items-center">
           <img src="/bitcoin.svg" className="mr-3 h-8" alt="Bitcoin Logo"/>
           <span
