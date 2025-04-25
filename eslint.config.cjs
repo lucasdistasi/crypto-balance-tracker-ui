@@ -72,7 +72,6 @@ module.exports = [
       'dist//*',
       '.eslintrc.cjs',
       'eslint.config.cjs',
-      'tailwind.config.js',
       'postcss.config.js'
     ],
   }
