@@ -68,7 +68,12 @@ module.exports = [
       },
     },
     ignores: [
-      'dist/**/*', '.eslintrc.cjs', 'eslint.config.cjs', 'tailwind.config.js', 'postcss.config.js'
+      'node_modules//*',
+      'dist//*',
+      '.eslintrc.cjs',
+      'eslint.config.cjs',
+      'tailwind.config.js',
+      'postcss.config.js'
     ],
   }
 ];
