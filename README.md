@@ -12,16 +12,15 @@ TypeScript-ReactJS application to consume endpoints from one of the following ba
 
 ## Technologies used :sparkles:
 
-- TypeScript
-- ReactJS
-- Vite
-- Tailwind
-- Flowbite
+- TypeScript 5
+- React 19
+- Vite 6
+- Tailwind 4
+- Flowbite 3
 - Axios
 - Formik
 - Yup
-- React Google Charts
-- React Spring
+- Apex Charts
 
 ### I want to try this API on my local machine. What should I do? :tada:
 
@@ -35,7 +34,7 @@ This app requires a backend one, you can check instructions on how to run it in 
 
 ### Home page
 
-![Imgur](https://i.imgur.com/aMZzSk3.png)
+![Imgur](https://i.imgur.com/6xTy9B3.png)
 
 ### Cryptos page
 
