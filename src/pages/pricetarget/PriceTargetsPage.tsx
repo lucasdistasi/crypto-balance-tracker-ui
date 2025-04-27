@@ -16,6 +16,8 @@ import EditButton from "../../components/table/EditButton";
 import DeleteButton from "../../components/table/DeleteButton";
 import {SortableTableColumnTitle} from "../../components/table/SortableTableColumnTitle";
 import {PriceTargetResponse} from "../../model/response/pricetarget/PriceTargetResponse";
+import Table from "../../components/table/Table";
+import {toLocale} from "../../utils/utils";
 
 const PriceTargetsPage = () => {
 
@@ -92,11 +94,11 @@ const PriceTargetsPage = () => {
 
   const sortByCryptoName = () => {
     priceTargetsRef.current = priceTargetsRef.current.toSorted((first, second) => {
-      if (first.cryptoInfo.cryptoName > second.cryptoInfo.cryptoName) {
+      if (first.cryptoInfo.cryptoName! > second.cryptoInfo.cryptoName!) {
         return sortType == SortType.ASCENDING ? 1 : -1;
       }
 
-      if (second.cryptoInfo.cryptoName > first.cryptoInfo.cryptoName) {
+      if (second.cryptoInfo.cryptoName! > first.cryptoInfo.cryptoName!) {
         return sortType == SortType.ASCENDING ? -1 : 1;
       }
 
@@ -130,28 +132,27 @@ const PriceTargetsPage = () => {
         {
           !fetchPriceTargetsError && !isLoadingPriceTargets && priceTargetsRef.current?.length > 0 &&
           <div className="relative overflow-x-auto rounded-lg w-11/12 mt-5">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  #
-                </th>
-                <SortableTableColumnTitle title="Crypto"
-                                          additionalClasses="text-center"
-                                          sortFunction={sortByCryptoName}/>
-                <TableColumnTitle title="Target"
-                                  additionalClasses="text-center"/>
-                <TableColumnTitle title="Current Price"
-                                  additionalClasses="text-center whitespace-nowrap"/>
-                <SortableTableColumnTitle title="Change"
-                                          additionalClasses="text-center"
-                                          sortFunction={sortPriceTargets}/>
-                <TableColumnTitle title="Action"
-                                  additionalClasses="text-center"/>
-              </tr>
-              </thead>
-              <tbody className="w-full">
-              {
+            <Table
+              thead={
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    #
+                  </th>
+                  <SortableTableColumnTitle title="Crypto"
+                                            additionalClasses="text-center"
+                                            sortFunction={sortByCryptoName}/>
+                  <TableColumnTitle title="Target"
+                                    additionalClasses="text-center"/>
+                  <TableColumnTitle title="Current Price"
+                                    additionalClasses="text-center whitespace-nowrap"/>
+                  <SortableTableColumnTitle title="Change"
+                                            additionalClasses="text-center"
+                                            sortFunction={sortPriceTargets}/>
+                  <TableColumnTitle title="Action"
+                                    additionalClasses="text-center"/>
+                </tr>
+              }
+              tbody={
                 priceTargetsRef.current.map((target, index) => {
                   return (
                     <tr key={target.priceTargetId}
@@ -174,9 +175,9 @@ const PriceTargetsPage = () => {
                           </div>
                         </div>
                       </td>
-                      <TableColumnContent content={`U$D ${target.priceTarget.toString()}`}
+                      <TableColumnContent content={`$ ${toLocale(target.priceTarget)}`}
                                           additionalClasses="text-center text-bold"/>
-                      <TableColumnContent content={`U$D ${target.currentPrice.toString()}`}
+                      <TableColumnContent content={`$ ${toLocale(target.currentPrice)}`}
                                           additionalClasses="text-center"/>
                       <TableColumnContent content={`${target.change}%`}
                                           additionalClasses="text-center"/>
@@ -191,8 +192,7 @@ const PriceTargetsPage = () => {
                   );
                 })
               }
-              </tbody>
-            </table>
+            />
           </div>
         }
 

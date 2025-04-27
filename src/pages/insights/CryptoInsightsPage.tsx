@@ -5,22 +5,30 @@ import React, {Fragment, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {CryptoInsightResponse} from "../../model/response/insight/CryptoInsightResponse";
 import {retrieveCryptoInsights} from "../../services/insightsService";
-import TotalBalanceCards from "../../components/insights/TotalBalanceCards";
 import CryptoInsightsTable from "../../components/insights/CryptoInsightsTable";
 import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleton";
 import ErrorComponent from "../../components/page/ErrorComponent";
 import BalancesPieChart from "../../components/insights/BalancesPieChart";
+import InsightCard from "../../components/insights/InsightCard";
 
 const CryptoInsightsPage = () => {
+
+  // TODO - handle !error && !isLoadingCryptoInsightResponse && !cryptoInsightResponse on render
 
   const params = useParams();
   const coingeckoCryptoId: string = params.coingeckoCryptoId!;
   const [cryptoInsightResponse, setCryptoInsightResponse] = useState<CryptoInsightResponse>({
-    cryptoName: "",
+    cryptoInfo: {
+      cryptoId: "",
+      symbol: "",
+      image: ""
+    },
     balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
+      fiat: {
+        usd: "0",
+        eur: "0"
+      },
+      btc: "0"
     },
     platforms: []
   });
@@ -49,16 +57,23 @@ const CryptoInsightsPage = () => {
           !error && !isLoadingCryptoInsightResponse &&
           <Fragment>
             <h1 className="text-4xl text-center mt-10">
-              {`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
+              {`${cryptoInsightResponse.cryptoInfo.cryptoName!.toUpperCase()} DISTRIBUTION`}
             </h1>
 
-            <TotalBalanceCards totalUsdValue={Number(cryptoInsightResponse.balances.totalUSDBalance)}
-                               totalEurValue={Number(cryptoInsightResponse.balances.totalEURBalance)}
-                               totalBtcValue={Number(cryptoInsightResponse.balances.totalBTCBalance)}/>
+            <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
+              <InsightCard title={"Total value in USD"}
+                           value={Number(cryptoInsightResponse.balances.fiat.usd)}
+                           decimals={2}
+                           symbol="$"/>
+              <InsightCard title={"Total value in BTC"}
+                           value={Number(cryptoInsightResponse.balances.btc)}
+                           decimals={8}
+                           symbol="₿"/>
+            </div>
 
             <BalancesPieChart chartId="platform-pie-chart"
-                              chartTitle={`${cryptoInsightResponse.cryptoName.toUpperCase()} DISTRIBUTION`}
-                              series={cryptoInsightResponse.platforms.map(platform => Number(platform.balances.totalUSDBalance))}
+                              chartTitle={`${cryptoInsightResponse.cryptoInfo.cryptoName!.toUpperCase()} DISTRIBUTION`}
+                              series={cryptoInsightResponse.platforms.map(platform => Number(platform.balances.fiat.usd))}
                               labels={cryptoInsightResponse.platforms.map(platform => platform.platformName)}/>
 
             <CryptoInsightsTable cryptoInsightResponse={cryptoInsightResponse}/>

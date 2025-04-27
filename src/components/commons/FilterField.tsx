@@ -7,7 +7,7 @@ const FilterField = ({filterFunction, filterValue, placeHolder}: {
 }) => {
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-dark-2">
       <label htmlFor="table-search" className="sr-only">
         Search
       </label>
@@ -25,7 +25,7 @@ const FilterField = ({filterFunction, filterValue, placeHolder}: {
         </div>
         <input type="text"
                id="table-search"
-               className="mb-5 block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-2/4 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+               className="mb-5 block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-2/4 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-dark-3 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                placeholder={placeHolder}
                onChange={event => filterFunction(event)}
                value={filterValue}

@@ -71,7 +71,7 @@ const UpdateGoalPage = () => {
       <div className="flex flex-col items-center min-h-screen">
         {
           !isLoadingGoal &&
-          <h1 className="text-4xl text-gray-900 text-center my-10">
+          <h1 className="text-4xl text-gray-900 text-center my-10 dark:text-gray-50">
             {
               `Update ${goal?.cryptoInfo.cryptoName} Goal`
             }

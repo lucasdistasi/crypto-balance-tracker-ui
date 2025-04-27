@@ -31,7 +31,7 @@ const InternalErrorPage = () => {
         <p className="text-3xl">
           This is not good... Something unexpected just happened.
         </p>
-        <Link to="/" className="px-8 py-3 font-semibold rounded dark:bg-gray-400 dark:text-black">
+        <Link to="/" className="px-8 py-3 font-semibold rounded-sm dark:bg-gray-400 dark:text-black">
           Take me back home
         </Link>
       </div>

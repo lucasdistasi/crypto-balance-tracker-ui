@@ -12,6 +12,7 @@ import {TableColumnContent} from "../../components/table/TableColumnContent";
 import EditButton from "../../components/table/EditButton";
 import {ViewInsightsButton} from "../../components/table/ViewInsightsButton";
 import DeleteButton from "../../components/table/DeleteButton";
+import Table from "../../components/table/Table";
 
 const PlatformsPage = () => {
 
@@ -58,18 +59,17 @@ const PlatformsPage = () => {
         {
           !error && !isLoadingPlatforms && platforms?.length > 0 &&
           <div className="relative overflow-x-auto rounded-lg m-10 w-11/12">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <SortableTableColumnTitle title="Name"
-                                          additionalClasses="text-center"
-                                          sortFunction={sortByPlatformName}/>
-                <TableColumnTitle title="Action"
-                                  additionalClasses="text-center"/>
-              </tr>
-              </thead>
-              <tbody>
-              {
+            <Table
+              thead={
+                <tr>
+                  <SortableTableColumnTitle title="Name"
+                                            additionalClasses="text-center"
+                                            sortFunction={sortByPlatformName}/>
+                  <TableColumnTitle title="Action"
+                                    additionalClasses="text-center"/>
+                </tr>
+              }
+              tbody={
                 platforms.map(platform => {
                   const {id: platformId, name: platformName} = platform;
 
@@ -92,8 +92,7 @@ const PlatformsPage = () => {
                   );
                 })
               }
-              </tbody>
-            </table>
+            />
           </div>
         }
       </div>

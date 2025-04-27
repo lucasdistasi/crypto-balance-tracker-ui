@@ -5,7 +5,6 @@ import React, {Fragment, useEffect, useState} from "react";
 import {PlatformInsightsResponse} from "../../model/response/insight/PlatformInsightsResponse";
 import {retrievePlatformInsights} from "../../services/insightsService";
 import {useParams} from "react-router-dom";
-import TotalBalanceCards from "../../components/insights/TotalBalanceCards";
 import PlatformInsightsTable from "../../components/insights/PlatformInsightsTable";
 import {deleteCryptoService} from "../../services/cryptoService";
 import InsightsPageSkeleton from "../../components/skeletons/InsightsPageSkeleton";
@@ -15,6 +14,7 @@ import AddNewButton from "../../components/buttons/AddNewButton";
 import {getPlatformService} from "../../services/platformService";
 import {PlatformResponse} from "../../model/response/platform/PlatformResponse";
 import {isSuccessfulStatus} from "../../utils/utils";
+import InsightCard from "../../components/insights/InsightCard";
 
 const PlatformInsightsPage = () => {
 
@@ -22,9 +22,11 @@ const PlatformInsightsPage = () => {
   const platformId: string = params.platformId!;
   const [platformInsightsResponse, setPlatformInsightsResponse] = useState<PlatformInsightsResponse>({
     balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
+      fiat: {
+        usd: "0",
+        eur: "0"
+      },
+      btc: "0"
     },
     cryptos: [],
     platformName: ""
@@ -79,9 +81,14 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && !platformInsightsResponse &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={0}
-                               totalEurValue={0}
-                               totalBtcValue={0}/>
+            <InsightCard title={"Total value in USD"}
+                         value={0}
+                         decimals={2}
+                         symbol="$"/>
+            <InsightCard title={"Total value in BTC"}
+                         value={0}
+                         decimals={8}
+                         symbol="₿"/>
 
             <AddNewButton
               href={`/crypto?platform=${platformResponse.name}&redirectTo=/insights/platform/${platformId}`}
@@ -92,14 +99,21 @@ const PlatformInsightsPage = () => {
         {
           !error && !isLoadingPlatformInsightsResponse && platformInsightsResponse?.cryptos?.length > 0 &&
           <Fragment>
-            <TotalBalanceCards totalUsdValue={Number(platformInsightsResponse.balances.totalUSDBalance)}
-                               totalEurValue={Number(platformInsightsResponse.balances.totalEURBalance)}
-                               totalBtcValue={Number(platformInsightsResponse.balances.totalBTCBalance)}/>
+            <div className="container mt-16 flex flex-col w-full mx-auto justify-between xl:flex-row">
+              <InsightCard title={"Total value in USD"}
+                           value={Number(platformInsightsResponse.balances.fiat.usd)}
+                           decimals={2}
+                           symbol="$"/>
+              <InsightCard title={"Total value in BTC"}
+                           value={Number(platformInsightsResponse.balances.btc)}
+                           decimals={8}
+                           symbol="₿"/>
+            </div>
 
             <BalancesPieChart chartId="platform-pie-chart"
                               chartTitle={`${platformInsightsResponse.platformName} DISTRIBUTION`}
-                              series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.balances.totalUSDBalance))}
-                              labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoInfo.cryptoName)}/>
+                              series={platformInsightsResponse.cryptos.map(crypto => Number(crypto.balances.fiat.usd))}
+                              labels={platformInsightsResponse.cryptos.map(crypto => crypto.cryptoInfo.cryptoName!)}/>
 
             <AddNewButton
               href={`/crypto?platform=${platformInsightsResponse.platformName}&redirectTo=/insights/platform/${platformId}`}

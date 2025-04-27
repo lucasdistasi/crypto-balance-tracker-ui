@@ -50,7 +50,7 @@ const FiatBalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selected
 
   return (
     <div className="container flex flex-row mx-auto mb-20">
-      <div className="w-full bg-gray-100 rounded-lg shadow p-4 md:p-6 dark:bg-gray-800">
+      <div className="w-full bg-gray-100 rounded-lg shadow-sm p-4 md:p-6 border-2 border-gray-300 dark:border-gray-800 dark:bg-dark-1">
         <div className="flex justify-between">
           <div>
             <p className="text-base font-normal text-gray-500 dark:text-gray-400">
@@ -85,7 +85,7 @@ const FiatBalancesAreaChart = ({datesBalanceResponse, updateDatesRange, selected
         }
 
         <select id="date-range"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/5 p-2.5 dark:bg-dark-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange={e => handleDateRangeChange(e)}
                 defaultValue={selectedPeriodTime}>
           {

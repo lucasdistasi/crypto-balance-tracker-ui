@@ -1,9 +1,8 @@
 import {CryptoInfo} from "../CryptoInfo";
 import {Balances} from "../Balances";
 
-export interface UserCryptoInsights {
-  cryptoInfo: CryptoInfo
-  quantity: string
-  percentage: number
+export interface HomeInsightsResponse {
   balances: Balances
+  stablecoins: string
+  top24hGainer: CryptoInfo
 }

@@ -9,9 +9,11 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
     totalPages: 0,
     hasNextPage: false,
     balances: {
-      totalUSDBalance: "0",
-      totalEURBalance: "0",
-      totalBTCBalance: "0"
+      fiat: {
+        usd: "0",
+        eur: "0"
+      },
+      btc: "0"
     },
     cryptos: []
   });
@@ -46,16 +48,18 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
 
       filteredCryptos.current = [...filteredCryptos.current,
         ...response.cryptos.filter(crypto =>
-          crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(cryptosFilterValue) || crypto.cryptoInfo.symbol.startsWith(cryptosFilterValue))
+          crypto.cryptoInfo.cryptoName!.toLowerCase().startsWith(cryptosFilterValue) || crypto.cryptoInfo.symbol.startsWith(cryptosFilterValue))
       ];
       setPageUserCryptosInsightsResponse({
         page: response.page,
         totalPages: response.totalPages,
         hasNextPage: response.hasNextPage,
         balances: {
-          totalUSDBalance: response.balances.totalUSDBalance,
-          totalEURBalance: response.balances.totalEURBalance,
-          totalBTCBalance: response.balances.totalBTCBalance
+          fiat: {
+            usd: response.balances.fiat.usd,
+            eur: response.balances.fiat.eur
+          },
+          btc: response.balances.btc
         },
         cryptos: [...pageUserCryptosInsightsResponse.cryptos, ...response.cryptos]
       });
@@ -68,7 +72,7 @@ export function usePageUserCryptosInsightsResponse(callback: () => Promise<PageU
 
   function filterTable(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value.toLowerCase();
-    filteredCryptos.current = pageUserCryptosInsightsResponse.cryptos.filter(crypto => crypto.cryptoInfo.cryptoName.toLowerCase().startsWith(value) || crypto.cryptoInfo.symbol.startsWith(value));
+    filteredCryptos.current = pageUserCryptosInsightsResponse.cryptos.filter(crypto => crypto.cryptoInfo.cryptoName!.toLowerCase().startsWith(value) || crypto.cryptoInfo.symbol.startsWith(value));
     setCryptosFilterValue(value);
   }
 

@@ -11,7 +11,7 @@ const CryptoPlatformDropdown = ({label, ...props}: {
   const {platforms, error, isLoadingPlatforms} = usePlatforms();
 
   const classes = meta.touched && meta.error ?
-    'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500 focus:outline-none' :
+    'bg-red-100 border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500 focus:outline-hidden' :
     'bg-gray-100 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500';
 
   return (
@@ -28,11 +28,11 @@ const CryptoPlatformDropdown = ({label, ...props}: {
         !isLoadingPlatforms && !error && platforms?.length > 0 &&
         <Fragment>
           <label htmlFor={props.id ?? props.name}
-                 className="text-gray-900 block mb-2 text-sm font-medium">
+                 className="text-gray-900 block mb-2 text-sm font-medium dark:text-gray-50">
             {label}
           </label>
 
-          <Field as="select" className={`${classes} border text-sm rounded-lg block w-full p-2.5`}
+          <Field as="select" className={`${classes} border text-sm rounded-lg block w-full p-2.5 dark:bg-dark-3 dark:text-gray-50 dark:border-gray-600`}
                  {...field}
                  {...props}>
             <option value="">

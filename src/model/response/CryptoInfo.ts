@@ -1,5 +1,5 @@
 export interface CryptoInfo {
-  cryptoName: string,
+  cryptoName?: string,
   cryptoId: string,
   symbol: string,
   image: string,
@@ -10,11 +10,11 @@ export interface CryptoInfo {
 interface CurrentPrice {
   usd: string
   eur: string
-  btc: string
+  btc?: string
 }
 
 interface PriceChange {
-  changePercentageIn24h: string
-  changePercentageIn7d: string
-  changePercentageIn30d: string
+  changePercentageIn24h?: string
+  changePercentageIn7d?: string
+  changePercentageIn30d?: string
 }
